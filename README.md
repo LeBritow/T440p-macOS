@@ -101,7 +101,7 @@ python -c "import plistlib; plistlib.load(open('Config.plist','rb'))"
 ## Problemas conhecidos
 
 - Leitor de cartão SD não funciona (limitação do Haswell/Apple).
-- [Adicione aqui problemas que você encontrar no seu setup]
+- etc
 
 ## Créditos
 
