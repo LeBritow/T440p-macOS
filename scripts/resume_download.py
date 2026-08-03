@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import os
 import sys
 from urllib.parse import urlparse
@@ -7,7 +7,7 @@ from urllib.request import Request, urlopen
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 import macrecovery
 
-BID = 'Mac-42FD25EABCABB274'
+BID = 'Mac-226CB3C6A851A671'
 MLB = '00000000000000000'
 OUTDIR = 'com.apple.recovery.boot'
 DMG = os.path.join(OUTDIR, 'BaseSystem.dmg')
