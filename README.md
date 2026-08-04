@@ -34,6 +34,7 @@ Detalhes: [`hackintosh-t440p/01-especificacoes/`](hackintosh-t440p/01-especifica
 | Leitor SD (panic de boot/wake/shutdown) — saga completa + research de fix | 🔇 Desativado | [`03-leitor-sd/`](hackintosh-t440p/03-leitor-sd/) |
 | Boot direto (ShowPicker=false) + conserto EFI `dirty` | ✅ | [`04-boot-direto/`](hackintosh-t440p/04-boot-direto/) |
 | config.plist em produção + referência de kexts/quirks | ✅ | [`05-config-open-core/`](hackintosh-t440p/05-config-open-core/) |
+| Pós-instalação: TRIM, monitoramento, manutenção EFI, roadmap Sequoia | ✅ | [`06-pos-instalacao/`](hackintosh-t440p/06-pos-instalacao/) |
 | EFI completa que funcionava no Sonoma (snapshot) | ✅ | [`efi-sonoma-14.8.8/`](hackintosh-t440p/efi-sonoma-14.8.8/) |
 | Teclado ABNT2 — `?`/`/`, `'`/`\`, Delete contextual, Cmd+Tab | ✅ | [`remap-teclado/`](remap-teclado/README.md) |
 
@@ -60,6 +61,7 @@ hackintosh-t440p/        Documentação completa deste projeto
   ├── 03-leitor-sd/
   ├── 04-boot-direto/
   ├── 05-config-open-core/
+  ├── 06-pos-instalacao/
   └── efi-sonoma-14.8.8/   snapshot do EFI funcional (Sonoma)
 remap-teclado/           Remapeador do teclado ABNT2 (C + LaunchAgent)
 ```
