@@ -86,5 +86,6 @@ This build relies on many open-source projects — Acidanthera (OpenCore, Lilu,
 WhateverGreen, VirtualSMC, AppleALC, ...), OpenIntelWireless (AirportItlwm),
 zhen-zen (YogaSMC), 0xFireWolf (RealtekCardReader), cholonam (Sinetek-rtsx),
 RehabMan, Dolnor & Sniki (CodecCommander), VoodooProjects (VoodooRMI),
-corpnewt (USBMap, GenSMBIOS), exelban (Stats), Dortania (install guide), and more.
+corpnewt (USBMap, GenSMBIOS), exelban (Stats), Dortania (install guide), Tulugaak &
+valnoxy (base EFI collection this build started from), and more.
 Full list: [`hackintosh-t440p/07-credits.md`](hackintosh-t440p/07-credits.md).

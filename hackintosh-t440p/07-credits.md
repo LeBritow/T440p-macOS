@@ -37,6 +37,17 @@ used here and you are not credited, open an issue and it will be fixed.
 | [Stats](https://github.com/exelban/stats) | exelban | System monitoring (CPU/RAM/temps) |
 | [Dortania / OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/) | Dortania | Canonical installation/reference docs |
 
+## Base EFI
+
+| Project | Author(s) | Used for |
+|---------|-----------|----------|
+| [t440p-hackintosh-efi-collection](https://github.com/Tulugaak/t440p-hackintosh-efi-collection) | Tulugaak | Base EFI this build started from (OpenCore 1.0.4) |
+| ACPI patches (in the collection) | [valnoxy](https://github.com/valnoxy) | SSDTs (battery, power, ThinkPad, etc.) |
+
+> The collection's Sonoma EFIs ship with **both** AirportItlwm builds (14.0–14.3.1
+> and 14.4+); the SD reader is not supported by its author either. SMBIOS guidance
+> (`MacBookPro16,1` for Sonoma, `MacBookPro14,1` for Ventura) matches what was used here.
+
 ## Special mentions
 
 - **Acidanthera** also maintains the OpenCore documentation and the whole kext

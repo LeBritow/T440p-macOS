@@ -53,4 +53,4 @@ efi-sonoma-14.8.8/      snapshot of the working EFI (Sonoma)
 
 This build relies on many open-source projects (Acidanthera, OpenIntelWireless,
 zhen-zen, 0xFireWolf, cholonam, RehabMan, Dolnor, Sniki, VoodooProjects, corpnewt,
-exelban, Dortania, ...). Full list with authors: [07-credits.md](07-credits.md).
+exelban, Dortania, Tulugaak & valnoxy (base EFI), ...). Full list with authors: [07-credits.md](07-credits.md).

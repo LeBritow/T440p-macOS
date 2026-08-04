@@ -4,6 +4,11 @@
 stable enough — each caused panics. The SD reader stays off; boot and sleep/wake
 are now stable.
 
+> Provenance: the base EFI this build started from
+> ([Tulugaak/t440p-hackintosh-efi-collection](https://github.com/Tulugaak/t440p-hackintosh-efi-collection))
+> also ships without SD support — "no compatible kext". We went further and tested
+> both RealtekCardReader and Sinetek-rtsx before disabling the reader by choice.
+
 ## The problem
 
 - Built-in SD reader = **Realtek RTS5227** (`pci10ec,5227`), left side.
