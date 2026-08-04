@@ -1,47 +1,49 @@
-# Hackintosh ThinkPad T440p — Problemas e Soluções
+# Hackintosh ThinkPad T440p — Issues and Solutions
 
-Documentação de **problemas reais resolvidos (e aceitos)** num ThinkPad T440p rodando
-macOS **14.8.8 (Sonoma)** com **OpenCore 1.0.4** — para quem tem o mesmo notebook (ou
-o mesmo chipset Haswell/8-series) e os mesmos sintomas.
+Documentation of **real issues resolved (and accepted)** on a ThinkPad T440p
+running macOS **14.8.8 (Sonoma)** with **OpenCore 1.0.4** — for anyone with the
+same laptop (or the same Haswell / 8-series chipset) and the same symptoms.
 
-## Resumo
+## Summary
 
-| Problema | Status | Solução |
-|----------|--------|---------|
-| [Porta USB traseira esquerda morta](02-porta-usb-morta/) | 🚫 **Sem solução** | É **EHCI**; macOS 14 removeu o driver. Porta aceita como morta |
-| [Leitor de cartão SD (RTS5227)](03-leitor-sd/) | 🔇 **Desativado** | As duas kexts panikavam (boot **e** wake). Ver research de fix no Sinetek |
-| [Boot direto ao logo (sem menu)](04-boot-direto/) | ✅ Aplicado | `ShowPicker=false`, `Timeout=0`; menu com **Esc** |
-| [EFI não monta (FAT dirty)](04-boot-direto/) | ✅ Conserto manual | `sudo fsck_msdos -y /dev/rdisk0s1` |
-| Config.plist completo | — | [05-config-open-core/](05-config-open-core/) |
+| Issue | Status | Solution |
+|-------|--------|----------|
+| [Dead rear-left USB port](02-dead-usb-port/) | 🚫 **No solution** | It is **EHCI**; macOS 14 removed the driver. Accepted as dead |
+| [SD card reader (RTS5227)](03-sd-card-reader/) | 🔇 Disabled | Both kexts panicked (boot/wake/shutdown); reader disabled |
+| [Direct boot to logo (no menu)](04-direct-boot/) | ✅ Applied | `ShowPicker=false`, `Timeout=0`; menu via **Esc** |
+| [EFI won't mount (FAT dirty)](04-direct-boot/) | ✅ Manual fix | `sudo fsck_msdos -y /dev/rdisk0s1` |
+| Production config.plist | — | [05-open-core-config/](05-open-core-config/) |
+| Post-install: TRIM, monitoring, Sequoia roadmap | — | [06-post-install/](06-post-install/) |
+| ABNT2 keyboard remap | ✅ Working | [keyboard-remap/](../keyboard-remap/README.md) |
 
-## Specs rápidas
+## Quick specs
 
 ThinkPad **T440p** · Core **i7-4700MQ** · **HD 4600** (Metal 2) · **16 GB** RAM ·
-SSD **240 GB** SATA/APFS · WiFi **Intel** · BT **Broadcom BCM_4350C2** ·
-Leitor SD **Realtek RTS5227** · SMBIOS `MacBookPro16,1` · macOS 14.8.8 (23J620).
+SSD **240 GB** SATA/APFS · Wi-Fi **Intel** · BT **Broadcom BCM_4350C2** ·
+SD reader **Realtek RTS5227** · SMBIOS `MacBookPro16,1` · macOS 14.8.8 (23J620).
 
-Detalhes completos: [01-especificacoes/](01-especificacoes/especificacoes.md)
+Full details: [01-specifications/](01-specifications/specs.md)
 
-## Lições aprendidas (vale ouro)
+## Key lessons
 
-1. **Sempre `config.plist.bak-<data>` antes de mexer no config.** Foi o backup que
-   salvou o boot quando o USBInjectAll travou a máquina.
-2. **Kexts USB antigas (USBInjectAll 0.8.1) quebram o boot no Sonoma.** Evitar.
-3. **Não vale a pena brigar com EHCI no macOS 14.** Driver removido pela Apple;
-   até o caminho do OCLP panika. Aceita a porta morta e segue a vida.
-4. **Leitor SD realtek no Sonoma é uma casca de banana:** RealtekCardReader panika
-   no boot com cartão **e** no wake do sleep (mesmo sem cartão); Sinetek tem bug de
-   shutdown. Desativamos as duas.
-5. **EFI FAT fica `dirty` com desligamentos sujos** — se a EFI não montar, rodar o
-   `fsck_msdos` manual (ver [04-boot-direto](04-boot-direto/)).
+1. **Always keep a `config.plist.bak-<date>` before editing the config.** A backup
+   restored the boot after USBInjectAll locked the machine.
+2. **Legacy USB kexts (USBInjectAll 0.8.1) break boot on Sonoma.** Avoid them.
+3. **Do not fight EHCI on macOS 14.** The driver was removed by Apple; even the
+   OCLP route panics. Accept the dead port and move on.
+4. **The Realtek SD reader is a trap on Sonoma:** panics at boot **and** on wake
+   from sleep (even with no card); Sinetek has a shutdown bug. Both were disabled.
+5. **The EFI partition gets `dirty` after unclean shutdowns** — if the EFI will
+   not mount, run the manual `fsck_msdos` (see [04-direct-boot](04-direct-boot/)).
 
-## Estrutura
+## Layout
 
 ```
-hackintosh-t440p/
-  01-especificacoes/      specs do notebook (coletadas do sistema)
-  02-porta-usb-morta/     diagnóstico EHCI + SSDT-DEHCI.aml + tentativa USBInjectAll
-  03-leitor-sd/           saga RealtekCardReader vs Sinetek-rtsx + protocolo
-  04-boot-direto/         ShowPicker=false + conserto do EFI dirty
-  05-config-open-core/    config.plist em produção + referência de kexts/quirks
+01-specifications/      laptop specs (collected from the system)
+02-dead-usb-port/       EHCI diagnosis + SSDT-DEHCI.aml + USBInjectAll attempt
+03-sd-card-reader/      RealtekCardReader vs Sinetek saga + fix research
+04-direct-boot/         ShowPicker=false + dirty-EFI repair
+05-open-core-config/    production config.plist + kext/quirk reference
+06-post-install/        TRIM, monitoring, EFI maintenance, Sequoia roadmap
+efi-sonoma-14.8.8/      snapshot of the working EFI (Sonoma)
 ```
