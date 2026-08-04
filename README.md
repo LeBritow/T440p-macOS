@@ -51,6 +51,19 @@ Detailed specs: [`01-specifications/`](hackintosh-t440p/01-specifications/specs.
 | Post-install: TRIM, monitoring, EFI maintenance, Sequoia roadmap | ✅ | [`06-post-install/`](hackintosh-t440p/06-post-install/) |
 | ABNT2 keyboard remap (`?`/`/`, `'`/`\`, Delete, Cmd+Tab) | ✅ Solved | [`keyboard-remap/`](keyboard-remap/README.md) |
 
+## Sequoia status
+
+**Sonoma 14.8.8 is stable and in daily use.** We are now **working on macOS
+Sequoia (15)** — updates to OpenCore and the kexts are being tested. Progress is
+tracked in [issue #1](https://github.com/LeBritow/T440p-hackintosh-sonoma/issues/1)
+(checklist + roadmap). The upgrade plan is in
+[`06-post-install/`](hackintosh-t440p/06-post-install/README.md).
+
+## Contributing
+
+Found a fix, a better kext, or a tip for this hardware? Open an **issue** or a
+**pull request** — see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## Key lessons
 
 1. **Always back up `config.plist` (`config.plist.bak-<date>`) before editing it.**

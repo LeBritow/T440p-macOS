@@ -24,6 +24,16 @@ SD reader **Realtek RTS5227** · SMBIOS `MacBookPro16,1` · macOS 14.8.8 (23J620
 
 Full details: [01-specifications/](01-specifications/specs.md)
 
+## Status and roadmap
+
+**Sonoma 14.8.8 is stable and in daily use.** A **Sequoia (15)** upgrade is being
+prepared — track it in
+[issue #1](https://github.com/LeBritow/T440p-hackintosh-sonoma/issues/1).
+
+## Contributing
+
+Share your fixes and ideas — see [`CONTRIBUTING.md`](../CONTRIBUTING.md).
+
 ## Key lessons
 
 1. **Always keep a `config.plist.bak-<date>` before editing the config.** A backup
