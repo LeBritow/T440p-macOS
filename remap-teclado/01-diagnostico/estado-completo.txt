@@ -1,0 +1,643 @@
+==================================================
+DATA: Mon Aug  3 19:53:47 -03 2026
+==================================================
+
+== 1. hidutil UserKeyMapping (remap macOS embutido) ==
+(
+        {
+        HIDUsage = 62;
+        HIDUsagePage = 7;
+        UserDefinedUsage = 44;
+        UserDefinedUsagePage = 7;
+    }
+)
+
+== 2. kextstat (kexts PS2 carregados) ==
+   79    3 0xffffff800582a000 0x1a000    0x1a000    as.acidanthera.voodoo.driver.PS2Controller (2.3.7) E3314D9C-A923-3BFF-8F79-8D8F7627085F <17 9 7 6 3 1>
+  110    0 0xffffff8005933000 0x26000    0x26000    as.acidanthera.voodoo.driver.PS2Trackpad (2.3.7) 1FA8330F-5F0D-3C85-BB69-D3737574B108 <79 71 7 6 3>
+  111    0 0xffffff800591d000 0xd000     0xd000     as.acidanthera.voodoo.driver.PS2Keyboard (2.3.7) EFA883F4-7558-3E98-A352-E202CB3DFAAF <79 71 9 7 6 3 1>
+  112    0 0xffffff800592a000 0x9000     0x9000     as.acidanthera.voodoo.driver.PS2Mouse (2.3.7) 6CFD46B1-C488-362D-9FF4-C5428A64F579 <79 71 7 6 3>
+
+== 3. board-id / product (SMBIOS) ==
+      "manufacturer" = <"Acidanthera">
+      "product-name" = <"MacBookPro16,1">
+      "board-id" = <"Mac-E1008331FDC96864">
+
+== 4. Arvore ApplePS2Keyboard (plist carregado + Platform Profile) ==
++-o ApplePS2Keyboard  <class ApplePS2Keyboard, id 0x10000030e, registered, matched, active, busy 0 (881 ms), retain 10>
+  | {
+  |   "IOClass" = "ApplePS2Keyboard"
+  |   "Use ISO layout keyboard" = No
+  |   "HIDVirtualDevice" = No
+  |   "Transport" = "PS2"
+  |   "SleepPressTime" = 0
+  |   "Swap capslock and left control" = No
+  |   "IOMatchedAtBoot" = Yes
+  |   "Make Application key into Apple Fn key" = No
+  |   "HIDF12EjectDelay" = 250
+  |   "IOProviderClass" = "ApplePS2KeyboardDevice"
+  |   "HIDDeviceEventID" = 782
+  |   "Product" = "Keyboard"
+  |   "HIDKeyboardCapsLockDoesLock" = No
+  |   "HIDKeyboardKeysDefined" = Yes
+  |   "IOProbeScore" = 0
+  |   "Make right modifier keys into Hangul and Hanja" = No
+  |   "Platform Profile" = {"DELL"={"WN09"={"Breakless PS2"=("e01b","e008","e01e","e005","e06e","e006"),"Custom ADB Map"=("e01b=70","e06e=83"),"Custom PS2 Map"=("56=2b","29=56","2b=29","e01e=e037","e037=e01e")},"SNB-CPT"={"Function Keys Standard"=(";The following 12 items map Fn+fkeys to Fn+fkeys","e06e=e06e;Fn+f1 macro translated","e008=e008;Fn+f2 regular scancode and EC query call q8c","e01e=e037;Fn+f3 regular scancode and EC controls LED","e005=e005;Fn+f4 no ps2scancode and EC query call q81","e006=e006;Fn+f5 no ps2scancode and EC query call q80","e00c=e00c;Fn+f6 no ps2scancode and EC query call q8a",";Fn+f7 no macro just regular f key","e010=e010; Fn+f8 regular scancode","e022=e022; Fn+f9 regular scancode","e019=e019;Fn+f10 regular scancode","e02e=e02e;Fn+f11 regular scancode","e030=e030;Fn+f12 regular scancode",";Fn+f13 is mute dedicated button that always produces e020 regardless of Fn",";The following 12 items map fkeys to fkeys","3b=3b","3c=3c","3d=3d","3e=3e","3f=3f","40=40","41=41","42=42","43=43","44=44","57=57","58=58"),"ActionSwipeDown"="63 d, 63 u","ActionSwipeUp"="61 d, 61 u","Breakless PS2"=("e01e;Touchpad Fn+f3 is breakless","e06e;REVIEW: temporary for case that macro inversion does not work..."),"Custom ADB Map"=("e009=83;Dell Support to Launchpad","e0f1=71;Call brightens up w RKA1 for special mode (was =90)","e0f2=6b;Call brightens down w RKA2 for special mode (was =91)","e06e=70;Map vidmirror key for special mode default is adb90"),"Custom PS2 Map"=("e01e=e037;Map tp disable to Fn+f3","e037=e01e;Prevent PrntScr from triggering tp disable"),"Function Keys Special"=(";The following 12 items map Fn+fkeys to fkeys","e06e=3b","e008=3c","e01e=3d","e005=3e","e006=3f","e00c=40",";Fn+f7 no dedicated macro","e010=42","e022=43","e019=44","e02e=57","e030=58",";The following 12 items map fkeys to Fn+fkeys","3b=e06e;Map vidmirror key to f1","3c=e0f0;Map radio toggle action from EC query to f2","3d=e037;Map touchpad toggle button to f3","3e=e0f2;Map acpi RKA2 to f4 brightness down","3f=e0f1;Map acpi RKA1 to f5 brightness up","40=e0f3;Map acpi RKA3 to f6 keyboard backlight",";Fn+f7 no macro","42=e010","43=e022","44=e019","57=e02e","58=e030"),"MaximumMacroTime"=35000000,"Note-Author"="TimeWalker aka TimeWalker75a","Note-Comment"="Keyboard Profile for DELL SandyBridge SecureCore Tiano based laptops (Vostro 3450 & 3750, Inspiron N4110, XPS L502x & L702x & L511z)","Macro Inversion"=(";This section maps ps2 codes (packet format) received quickly (macros) into fake ps2 codes (packet format)",";Fn+F1",<ffff026e00000000025b0119>,<ffff02ee0000000002db0199>,<ffff02ee00000000019902db>)},"HSW-LPT"="Dell-Keys","Dell-Keys"={"Breakless PS2"=("e005","e006"),"Function Keys Special"=(";The following 12 items map Fn+fkeys to fkeys","e020=3b","e02e=3c","e030=3d","e022=3e",";Fn+f5 macro",";Fn+f6 macro",";Fn+f7 macro",";Fn+f8 macro",";Fn+f9 macro",";Fn+f10 no code","e005=57","e006=58",";The following 12 items map fkeys to Fn+fkeys","3b=e020","3c=e02e","3d=e030","3e=e022",";Fn+f5 macro",";Fn+f6 macro",";Fn+f7 macro",";Fn+f8 macro",";Fn+f9 macro",";Fn+f10 no code","57=e005","58=e006"),"Function Keys Standard"=(";The following 12 items map Fn+fkeys to Fn+fkeys","e020=e020","e02e=e02e","e030=e030","e022=e022",";Fn+f5 macro",";Fn+f6 macro",";Fn+f7 macro",";Fn+f8 macro",";Fn+f9 macro",";Fn+f10 no code","e005=e005","e006=e006",";The following 12 items map fkeys to fkeys","3b=3b","3c=3c","3d=3d","3e=3e","3f=3f","40=40","41=41","42=42","43=43","44=44","57=57","58=58")},"WN09a"={"Breakless PS2"=("e01b","e008","e01e","e005","e06e","e006"),"Custom ADB Map"=("e01b=70","e06e=83"),"Custom PS2 Map"=("e01e=e037","e037=e01e")}},"Intel"={"CALPELLA"="SamsungKeys","SamsungKeys"={"Custom ADB Map"=("e002=70","e006=80","e008=71 (was =90)","e009=6b (was =91)"),"Function Keys Standard"=(";The following 12 items map Fn+fkeys to Fn+fkeys",";fn+f1 no code","e003=e003",";fn+f3 weird code","e002=e002","e004=e004","e020=e020","e031=e031","e033=e033","e006=e006",";fn+f10 weird code",";fn+f11 no code",";fn+f12 scrolllock",";The following 12 items map fkeys to fkeys","3b=3b","3c=3c","3d=3d","3e=3e","3f=3f","40=40","41=41","42=42","43=43","44=44","57=57","58=58"),"Function Keys Special"=(";The following 12 items map Fn+fkeys to fkeys",";fn+f1 no code","e003=3c",";fn+f3 weird code","e002=3e","e004=3f","e020=40","e031=41","e033=42","e006=43",";fn+f10 weird code",";fn+f11 no code",";fn+f12 scrolllock",";The following 12 items map fkeys to Fn+fkeys",";fn+f1 no code","3c=e003",";fn+f3 weird code","3e=e002","3f=e004","40=e020","41=e031","42=e033","43=e006",";fn+f10 weird code",";fn+f11 no code",";fn+f12 scrolllock"),"Breakless PS2"=("e003","e002","e004","e020",";e031","e033","e006","e077","e079","e008","e009")}},"HPQOEM"={"167E"="ProBook-102;ProBook 4330s","179B"="ProBook-87;ProBook 6470b","1962"="Haswell-Envy;HP Envy 15-j063cl","17F3"="ProBook-102;ProBook 4440s","167C"="ProBook-102;ProBook 4530s","1965"="Haswell-Envy;HP Envy 17t-j100","17F6"="ProBook-102;ProBook 4540s","179C"="ProBook-87;ProBook 6470b","1963"="Haswell-Envy;HP Envy 15-j063cl","198F"="ProBook-87;ProBook 450s G0","ProBook-102"={"Function Keys Standard"=(";The following 12 items map Fn+fkeys to Fn+fkeys","e05f=e05f","e012=e012","e017=e017","e06e=e06e","e00a=e00a","e009=e009","e020=e020","e02e=e02e","e030=e030","e010=e010","e022=e022","e019=e019",";The following 12 items map fkeys to fkeys","3b=3b","3c=3c","3d=3d","3e=3e","3f=3f","40=40","41=41","42=42","43=43","44=44","57=57","58=58"),"SleepPressTime"=3000,"Function Keys Special"=(";The following 12 items map Fn+fkeys to fkeys","e05f=3b","e012=3c","e017=3d","e06e=3e","e00a=3f","e009=40","e020=41","e02e=42","e030=43","e010=44","e022=57","e019=58",";The following 12 items map fkeys to Fn+fkeys","3b=e05f","3c=e012","3d=e017","3e=e06e","3f=e00a","40=e009","41=e020","42=e02e","43=e030","44=e010","57=e022","58=e019"),"Custom PS2 Map"=("e005=0")},"1619"="ProBook-87;ProBook 6560b","Haswell-Envy"={"Custom ADB Map"=("e019=42;next","e010=4d;previous"),"Custom PS2 Map"=("e045=e037","e0ab=0;bogus Fn+F2/F3")},"164F"="ProBook-87;ProBook 5330m","1966"="Haswell-Envy;HP Envy 17t-j000","161C"="ProBook-87;ProBook 8460p","17A9"="ProBook-87;ProBook 8570b","1680"="ProBook-102;ProBook 4230s","17F0"="ProBook-102;ProBook 4340s","1949"="ProBook-87;ProBook 450s G1","1942"="ProBook-87;ProBook 450s G1","ProBook-87"={"Custom ADB Map"=("46=4d;scroll => Previous-track","e045=34;pause => Play-Pause","e052=42;insert => Next-track","e046=92;break => Eject"),"Function Keys Standard"=(";The following 8 items map Fn+fkeys to Fn+fkeys","e05f=e05f","e06e=e06e","e02e=e02e","e030=e030","e009=e009","e012=e012","e017=e017","e033=e033",";The following 8 items map fkeys to fkeys","3d=3d","3e=3e","40=40","41=41","42=42","43=43","44=44"),"Function Keys Special"=(";The following 8 items map Fn+fkeys to fkeys","e05f=3d","e06e=3e","e02e=40","e030=41","e009=42","e012=43","e017=44","e033=57",";The following 8 items map fkeys to Fn+fkeys","3d=e05f","3e=e06e","40=e02e","41=e030","42=e037","43=e012","44=e017"),"SleepPressTime"=3000,"Custom PS2 Map"=("e005=0")},"1411"="ProBook-102;ProBook 4520s"},"Default"={"HIDF12EjectDelay"=250,"LogScanCodes"=1,"Make Application key into right windows"=Yes,"SleepPressTime"=0,"Custom PS2 Map"=(";Items must be strings in the form of scanfrom=scanto (in hex)","e027=0;disable discrete fnkeys toggle","e028=0;disable discrete trackpad toggle",";CLEAN TEST v2: if 'a' types 1 the map mechanism works","1e=02;key 'a' (scan 0x1E) -> should type 1","1d=03;left-ctrl (scan 0x1D) -> should type 2","e01d=04;right-ctrl (E0 1D) -> should type 3","35=05;key '?'/slash real (0x35) -> should type 4","2b=06;key next to shift (0x2B) -> should type 5","29=07;key '~' accent (0x29) -> should type 6"),"Make right modifier keys into Hangul and Hanja"=No,"Make Application key into Apple Fn key"=No,"Use ISO layout keyboard"=No,"Swap capslock and left control"=No,"Swap command and option"=No,"Breakless PS2"=(";Items must be strings in the form of breaklessscan (in hex)"),"alt_handler_id"=3,"Custom ADB Map"=(";Items must be strings in the form of scanfrom=adbto (in hex)")},"SECCSD"={"SamsungKeys"={"Breakless PS2"=("e020","e02e","e030")},"LH43STAR"="SamsungKeys"}}
+  |   "HIDResetPointer" = Yes
+  |   "CFBundleIdentifierKernel" = "as.acidanthera.voodoo.driver.PS2Keyboard"
+  |   "HIDSubinterfaceID" = 3
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "CFBundleIdentifier" = "as.acidanthera.voodoo.driver.PS2Keyboard"
+  |   "RM,deliverNotifications" = Yes
+  |   "HIDInterfaceID" = 2
+  |   "HIDKeyboardSupportedModifiers" = 0
+  |   "HIDKind" = 1
+  |   "HIDKeyMapping" = <00000b01013802013b03013a040137051552414c535455455857565b5c434b517b7d7e7c4e5906017207013f09013c0a013e0b013d0c0136a20d006100410001000100ca00c7000100010d007300530013001300fb00a7001300130d0064004400040004014401b6000400040d006600460006000600a601ac000600060d006800480008000800e300eb000018000d006700470007000700f100e1000700070d007a005a001a001a00cf0157001a001a0d007800580018001801b401ce001800180d006300430003000301e301d3000300030d007600560016001601d601e00016001602003c003e0d006200420002000201e501f2000200020d007100510011001100fa00ea001100110d007700570017001701c801c7001700170d006500450005000500c200c5000500050d007200520012001201e201d2001200120d007900590019001900a501db001900190d007400540014001401e401d4001400140a0031002101ad00a10e003200400032000000b200b3000000000a0033002300a301ba0a0034002400a200a80e0036005e0036001e00b600c3001e001e0a0035002501a500bd0a003d002b01b901b10a0039002800ac00ab0a0037002601b001ab0e002d005f001f001f00b100d0001f001f0a0038002a00b700b40a0030002900ad00bb0e005d007d001d001d002700ba001d001d0d006f004f000f000f00f900e9000f000f0d007500550015001500c800cd001500150e005b007b001b001b006000aa001b001b0d006900490009000900c100f5000900090d0070005000100010017001500010001010000d00030d006c004c000c000c00f800e8000c000c0d006a004a000a000a00c600ae000a000a0a0027002200a901ae0d006b004b000b000b00ce00af000b000b0a003b003a01b201a20e005c007c001c001c00e300eb001c001c0a002c003c00cb01a30a002f003f01b800bf0d006e004e000e000e00c401af000e000e0d006d004d000d000d016d01d8000d000d0a002e003e00bc01b302000900190c00200000008000000a0060007e006001bb02007f0008ff02001b007effffffffffffffffffff00fe3600002eff00002aff00002bff00001bffffff0e002f005c002f001c002f005c00000a0000000dff00002d00fe3700fe380e003d007c003d001c003d007c0000184600003000003100003200003300003400003500003600003700fe39000038000039ffffff00fe2400fe2500fe2600fe2200fe2700fe28ff00fe2aff00fe3200fe3500fe33ff00fe29ff00fe2bff00fe34ff00fe2e00fe3000fe2d00fe2300fe2f00fe2100fe3100fe200001ac0001ae0001af0001ad0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001102ff04003102ff04003202ff04003302ff04003402ff04003502ff04003602ff04003702ff04003802ff04003902ff04003002ff04002d02ff04003d02ff04007002ff04005d02ff04005b03ff04ff01005b03ff04ff01005d0e04390572067f074a004801490a470f7010341142124d029003910e92>
+  |   "Swap command and option" = No
+  |   "Make Application key into right windows" = Yes
+  |   "LogScanCodes" = 1
+  | }
+  | 
+  +-o IOHIDKeyboardEventDevice  <class IOHIDKeyboardEventDevice, id 0x100000310, registered, matched, active, busy 0 (881 ms), retain 8>
+  | +-o IOHIDInterface  <class IOHIDInterface, id 0x100000313, registered, matched, active, busy 0 (488 ms), retain 10>
+  |   +-o AppleUserHIDEventDriver  <class AppleUserHIDEventService, id 0x1000003e5, registered, matched, active, busy 0 (0 ms), retain 16>
+  |     +-o IOHIDEventServiceUserClient  <class IOHIDEventServiceUserClient, id 0x10000045c, !registered, !matched, active, busy 0, retain 6>
+  +-o IOHIDSystem  <class IOHIDSystem, id 0x1000002ae, registered, matched, active, busy 0 (7 ms), retain 16>
+    +-o IOHIDUserClient  <class IOHIDUserClient, id 0x10000041d, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDEventSystemUserClient  <class IOHIDEventSystemUserClient, id 0x10000045b, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x1000004ca, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x1000004dd, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x100000540, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x100000567, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x10000080b, !registered, !matched, active, busy 0, retain 5>
+
++-o ApplePS2Keyboard  <class ApplePS2Keyboard, id 0x10000030e, registered, matched, active, busy 0 (881 ms), retain 10>
+  | {
+  |   "IOClass" = "ApplePS2Keyboard"
+  |   "Use ISO layout keyboard" = No
+  |   "HIDVirtualDevice" = No
+  |   "Transport" = "PS2"
+  |   "SleepPressTime" = 0
+  |   "Swap capslock and left control" = No
+  |   "IOMatchedAtBoot" = Yes
+  |   "Make Application key into Apple Fn key" = No
+  |   "HIDF12EjectDelay" = 250
+  |   "IOProviderClass" = "ApplePS2KeyboardDevice"
+  |   "HIDDeviceEventID" = 782
+  |   "Product" = "Keyboard"
+  |   "HIDKeyboardCapsLockDoesLock" = No
+  |   "HIDKeyboardKeysDefined" = Yes
+  |   "IOProbeScore" = 0
+  |   "Make right modifier keys into Hangul and Hanja" = No
+  |   "Platform Profile" = {"DELL"={"WN09"={"Breakless PS2"=("e01b","e008","e01e","e005","e06e","e006"),"Custom ADB Map"=("e01b=70","e06e=83"),"Custom PS2 Map"=("56=2b","29=56","2b=29","e01e=e037","e037=e01e")},"SNB-CPT"={"Function Keys Standard"=(";The following 12 items map Fn+fkeys to Fn+fkeys","e06e=e06e;Fn+f1 macro translated","e008=e008;Fn+f2 regular scancode and EC query call q8c","e01e=e037;Fn+f3 regular scancode and EC controls LED","e005=e005;Fn+f4 no ps2scancode and EC query call q81","e006=e006;Fn+f5 no ps2scancode and EC query call q80","e00c=e00c;Fn+f6 no ps2scancode and EC query call q8a",";Fn+f7 no macro just regular f key","e010=e010; Fn+f8 regular scancode","e022=e022; Fn+f9 regular scancode","e019=e019;Fn+f10 regular scancode","e02e=e02e;Fn+f11 regular scancode","e030=e030;Fn+f12 regular scancode",";Fn+f13 is mute dedicated button that always produces e020 regardless of Fn",";The following 12 items map fkeys to fkeys","3b=3b","3c=3c","3d=3d","3e=3e","3f=3f","40=40","41=41","42=42","43=43","44=44","57=57","58=58"),"ActionSwipeDown"="63 d, 63 u","ActionSwipeUp"="61 d, 61 u","Breakless PS2"=("e01e;Touchpad Fn+f3 is breakless","e06e;REVIEW: temporary for case that macro inversion does not work..."),"Custom ADB Map"=("e009=83;Dell Support to Launchpad","e0f1=71;Call brightens up w RKA1 for special mode (was =90)","e0f2=6b;Call brightens down w RKA2 for special mode (was =91)","e06e=70;Map vidmirror key for special mode default is adb90"),"Custom PS2 Map"=("e01e=e037;Map tp disable to Fn+f3","e037=e01e;Prevent PrntScr from triggering tp disable"),"Function Keys Special"=(";The following 12 items map Fn+fkeys to fkeys","e06e=3b","e008=3c","e01e=3d","e005=3e","e006=3f","e00c=40",";Fn+f7 no dedicated macro","e010=42","e022=43","e019=44","e02e=57","e030=58",";The following 12 items map fkeys to Fn+fkeys","3b=e06e;Map vidmirror key to f1","3c=e0f0;Map radio toggle action from EC query to f2","3d=e037;Map touchpad toggle button to f3","3e=e0f2;Map acpi RKA2 to f4 brightness down","3f=e0f1;Map acpi RKA1 to f5 brightness up","40=e0f3;Map acpi RKA3 to f6 keyboard backlight",";Fn+f7 no macro","42=e010","43=e022","44=e019","57=e02e","58=e030"),"MaximumMacroTime"=35000000,"Note-Author"="TimeWalker aka TimeWalker75a","Note-Comment"="Keyboard Profile for DELL SandyBridge SecureCore Tiano based laptops (Vostro 3450 & 3750, Inspiron N4110, XPS L502x & L702x & L511z)","Macro Inversion"=(";This section maps ps2 codes (packet format) received quickly (macros) into fake ps2 codes (packet format)",";Fn+F1",<ffff026e00000000025b0119>,<ffff02ee0000000002db0199>,<ffff02ee00000000019902db>)},"HSW-LPT"="Dell-Keys","Dell-Keys"={"Breakless PS2"=("e005","e006"),"Function Keys Special"=(";The following 12 items map Fn+fkeys to fkeys","e020=3b","e02e=3c","e030=3d","e022=3e",";Fn+f5 macro",";Fn+f6 macro",";Fn+f7 macro",";Fn+f8 macro",";Fn+f9 macro",";Fn+f10 no code","e005=57","e006=58",";The following 12 items map fkeys to Fn+fkeys","3b=e020","3c=e02e","3d=e030","3e=e022",";Fn+f5 macro",";Fn+f6 macro",";Fn+f7 macro",";Fn+f8 macro",";Fn+f9 macro",";Fn+f10 no code","57=e005","58=e006"),"Function Keys Standard"=(";The following 12 items map Fn+fkeys to Fn+fkeys","e020=e020","e02e=e02e","e030=e030","e022=e022",";Fn+f5 macro",";Fn+f6 macro",";Fn+f7 macro",";Fn+f8 macro",";Fn+f9 macro",";Fn+f10 no code","e005=e005","e006=e006",";The following 12 items map fkeys to fkeys","3b=3b","3c=3c","3d=3d","3e=3e","3f=3f","40=40","41=41","42=42","43=43","44=44","57=57","58=58")},"WN09a"={"Breakless PS2"=("e01b","e008","e01e","e005","e06e","e006"),"Custom ADB Map"=("e01b=70","e06e=83"),"Custom PS2 Map"=("e01e=e037","e037=e01e")}},"Intel"={"CALPELLA"="SamsungKeys","SamsungKeys"={"Custom ADB Map"=("e002=70","e006=80","e008=71 (was =90)","e009=6b (was =91)"),"Function Keys Standard"=(";The following 12 items map Fn+fkeys to Fn+fkeys",";fn+f1 no code","e003=e003",";fn+f3 weird code","e002=e002","e004=e004","e020=e020","e031=e031","e033=e033","e006=e006",";fn+f10 weird code",";fn+f11 no code",";fn+f12 scrolllock",";The following 12 items map fkeys to fkeys","3b=3b","3c=3c","3d=3d","3e=3e","3f=3f","40=40","41=41","42=42","43=43","44=44","57=57","58=58"),"Function Keys Special"=(";The following 12 items map Fn+fkeys to fkeys",";fn+f1 no code","e003=3c",";fn+f3 weird code","e002=3e","e004=3f","e020=40","e031=41","e033=42","e006=43",";fn+f10 weird code",";fn+f11 no code",";fn+f12 scrolllock",";The following 12 items map fkeys to Fn+fkeys",";fn+f1 no code","3c=e003",";fn+f3 weird code","3e=e002","3f=e004","40=e020","41=e031","42=e033","43=e006",";fn+f10 weird code",";fn+f11 no code",";fn+f12 scrolllock"),"Breakless PS2"=("e003","e002","e004","e020",";e031","e033","e006","e077","e079","e008","e009")}},"HPQOEM"={"167E"="ProBook-102;ProBook 4330s","179B"="ProBook-87;ProBook 6470b","1962"="Haswell-Envy;HP Envy 15-j063cl","17F3"="ProBook-102;ProBook 4440s","167C"="ProBook-102;ProBook 4530s","1965"="Haswell-Envy;HP Envy 17t-j100","17F6"="ProBook-102;ProBook 4540s","179C"="ProBook-87;ProBook 6470b","1963"="Haswell-Envy;HP Envy 15-j063cl","198F"="ProBook-87;ProBook 450s G0","ProBook-102"={"Function Keys Standard"=(";The following 12 items map Fn+fkeys to Fn+fkeys","e05f=e05f","e012=e012","e017=e017","e06e=e06e","e00a=e00a","e009=e009","e020=e020","e02e=e02e","e030=e030","e010=e010","e022=e022","e019=e019",";The following 12 items map fkeys to fkeys","3b=3b","3c=3c","3d=3d","3e=3e","3f=3f","40=40","41=41","42=42","43=43","44=44","57=57","58=58"),"SleepPressTime"=3000,"Function Keys Special"=(";The following 12 items map Fn+fkeys to fkeys","e05f=3b","e012=3c","e017=3d","e06e=3e","e00a=3f","e009=40","e020=41","e02e=42","e030=43","e010=44","e022=57","e019=58",";The following 12 items map fkeys to Fn+fkeys","3b=e05f","3c=e012","3d=e017","3e=e06e","3f=e00a","40=e009","41=e020","42=e02e","43=e030","44=e010","57=e022","58=e019"),"Custom PS2 Map"=("e005=0")},"1619"="ProBook-87;ProBook 6560b","Haswell-Envy"={"Custom ADB Map"=("e019=42;next","e010=4d;previous"),"Custom PS2 Map"=("e045=e037","e0ab=0;bogus Fn+F2/F3")},"164F"="ProBook-87;ProBook 5330m","1966"="Haswell-Envy;HP Envy 17t-j000","161C"="ProBook-87;ProBook 8460p","17A9"="ProBook-87;ProBook 8570b","1680"="ProBook-102;ProBook 4230s","17F0"="ProBook-102;ProBook 4340s","1949"="ProBook-87;ProBook 450s G1","1942"="ProBook-87;ProBook 450s G1","ProBook-87"={"Custom ADB Map"=("46=4d;scroll => Previous-track","e045=34;pause => Play-Pause","e052=42;insert => Next-track","e046=92;break => Eject"),"Function Keys Standard"=(";The following 8 items map Fn+fkeys to Fn+fkeys","e05f=e05f","e06e=e06e","e02e=e02e","e030=e030","e009=e009","e012=e012","e017=e017","e033=e033",";The following 8 items map fkeys to fkeys","3d=3d","3e=3e","40=40","41=41","42=42","43=43","44=44"),"Function Keys Special"=(";The following 8 items map Fn+fkeys to fkeys","e05f=3d","e06e=3e","e02e=40","e030=41","e009=42","e012=43","e017=44","e033=57",";The following 8 items map fkeys to Fn+fkeys","3d=e05f","3e=e06e","40=e02e","41=e030","42=e037","43=e012","44=e017"),"SleepPressTime"=3000,"Custom PS2 Map"=("e005=0")},"1411"="ProBook-102;ProBook 4520s"},"Default"={"HIDF12EjectDelay"=250,"LogScanCodes"=1,"Make Application key into right windows"=Yes,"SleepPressTime"=0,"Custom PS2 Map"=(";Items must be strings in the form of scanfrom=scanto (in hex)","e027=0;disable discrete fnkeys toggle","e028=0;disable discrete trackpad toggle",";CLEAN TEST v2: if 'a' types 1 the map mechanism works","1e=02;key 'a' (scan 0x1E) -> should type 1","1d=03;left-ctrl (scan 0x1D) -> should type 2","e01d=04;right-ctrl (E0 1D) -> should type 3","35=05;key '?'/slash real (0x35) -> should type 4","2b=06;key next to shift (0x2B) -> should type 5","29=07;key '~' accent (0x29) -> should type 6"),"Make right modifier keys into Hangul and Hanja"=No,"Make Application key into Apple Fn key"=No,"Use ISO layout keyboard"=No,"Swap capslock and left control"=No,"Swap command and option"=No,"Breakless PS2"=(";Items must be strings in the form of breaklessscan (in hex)"),"alt_handler_id"=3,"Custom ADB Map"=(";Items must be strings in the form of scanfrom=adbto (in hex)")},"SECCSD"={"SamsungKeys"={"Breakless PS2"=("e020","e02e","e030")},"LH43STAR"="SamsungKeys"}}
+  |   "HIDResetPointer" = Yes
+  |   "CFBundleIdentifierKernel" = "as.acidanthera.voodoo.driver.PS2Keyboard"
+  |   "HIDSubinterfaceID" = 3
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "CFBundleIdentifier" = "as.acidanthera.voodoo.driver.PS2Keyboard"
+  |   "RM,deliverNotifications" = Yes
+  |   "HIDInterfaceID" = 2
+  |   "HIDKeyboardSupportedModifiers" = 0
+  |   "HIDKind" = 1
+  |   "HIDKeyMapping" = <00000b01013802013b03013a040137051552414c535455455857565b5c434b517b7d7e7c4e5906017207013f09013c0a013e0b013d0c0136a20d006100410001000100ca00c7000100010d007300530013001300fb00a7001300130d0064004400040004014401b6000400040d006600460006000600a601ac000600060d006800480008000800e300eb000018000d006700470007000700f100e1000700070d007a005a001a001a00cf0157001a001a0d007800580018001801b401ce001800180d006300430003000301e301d3000300030d007600560016001601d601e00016001602003c003e0d006200420002000201e501f2000200020d007100510011001100fa00ea001100110d007700570017001701c801c7001700170d006500450005000500c200c5000500050d007200520012001201e201d2001200120d007900590019001900a501db001900190d007400540014001401e401d4001400140a0031002101ad00a10e003200400032000000b200b3000000000a0033002300a301ba0a0034002400a200a80e0036005e0036001e00b600c3001e001e0a0035002501a500bd0a003d002b01b901b10a0039002800ac00ab0a0037002601b001ab0e002d005f001f001f00b100d0001f001f0a0038002a00b700b40a0030002900ad00bb0e005d007d001d001d002700ba001d001d0d006f004f000f000f00f900e9000f000f0d007500550015001500c800cd001500150e005b007b001b001b006000aa001b001b0d006900490009000900c100f5000900090d0070005000100010017001500010001010000d00030d006c004c000c000c00f800e8000c000c0d006a004a000a000a00c600ae000a000a0a0027002200a901ae0d006b004b000b000b00ce00af000b000b0a003b003a01b201a20e005c007c001c001c00e300eb001c001c0a002c003c00cb01a30a002f003f01b800bf0d006e004e000e000e00c401af000e000e0d006d004d000d000d016d01d8000d000d0a002e003e00bc01b302000900190c00200000008000000a0060007e006001bb02007f0008ff02001b007effffffffffffffffffff00fe3600002eff00002aff00002bff00001bffffff0e002f005c002f001c002f005c00000a0000000dff00002d00fe3700fe380e003d007c003d001c003d007c0000184600003000003100003200003300003400003500003600003700fe39000038000039ffffff00fe2400fe2500fe2600fe2200fe2700fe28ff00fe2aff00fe3200fe3500fe33ff00fe29ff00fe2bff00fe34ff00fe2e00fe3000fe2d00fe2300fe2f00fe2100fe3100fe200001ac0001ae0001af0001ad0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001102ff04003102ff04003202ff04003302ff04003402ff04003502ff04003602ff04003702ff04003802ff04003902ff04003002ff04002d02ff04003d02ff04007002ff04005d02ff04005b03ff04ff01005b03ff04ff01005d0e04390572067f074a004801490a470f7010341142124d029003910e92>
+  |   "Swap command and option" = No
+  |   "Make Application key into right windows" = Yes
+  |   "LogScanCodes" = 1
+  | }
+  | 
+  +-o IOHIDKeyboardEventDevice  <class IOHIDKeyboardEventDevice, id 0x100000310, registered, matched, active, busy 0 (881 ms), retain 8>
+  | +-o IOHIDInterface  <class IOHIDInterface, id 0x100000313, registered, matched, active, busy 0 (488 ms), retain 10>
+  |   +-o AppleUserHIDEventDriver  <class AppleUserHIDEventService, id 0x1000003e5, registered, matched, active, busy 0 (0 ms), retain 16>
+  |     +-o IOHIDEventServiceUserClient  <class IOHIDEventServiceUserClient, id 0x10000045c, !registered, !matched, active, busy 0, retain 6>
+  +-o IOHIDSystem  <class IOHIDSystem, id 0x1000002ae, registered, matched, active, busy 0 (7 ms), retain 16>
+    +-o IOHIDUserClient  <class IOHIDUserClient, id 0x10000041d, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDEventSystemUserClient  <class IOHIDEventSystemUserClient, id 0x10000045b, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x1000004ca, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x1000004dd, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x100000540, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x100000567, !registered, !matched, active, busy 0, retain 5>
+    +-o IOHIDParamUserClient  <class IOHIDParamUserClient, id 0x10000080b, !registered, !matched, active, busy 0, retain 5>
+
+
+== 5. Copias de VoodooPS2 no disco ==
+/Volumes/EFI/EFI/OC/Kexts/VoodooPS2Controller.kext
+
+== 6. Conteudo do Info.plist do kext (estado atual) ==
+{
+  "BuildMachineOSBuild" => "23H222"
+  "CFBundleExecutable" => "VoodooPS2Keyboard"
+  "CFBundleGetInfoString" => "2.3.7, Copyright Apple Computer, Inc. 2000-2003, RehabMan 2012-2013"
+  "CFBundleIdentifier" => "as.acidanthera.voodoo.driver.PS2Keyboard"
+  "CFBundleInfoDictionaryVersion" => "6.0"
+  "CFBundleName" => "Voodoo PS/2 Keyboard"
+  "CFBundlePackageType" => "KEXT"
+  "CFBundleShortVersionString" => "2.3.7"
+  "CFBundleSignature" => "????"
+  "CFBundleSupportedPlatforms" => [
+    0 => "MacOSX"
+  ]
+  "CFBundleVersion" => "2.3.7"
+  "DTCompiler" => "com.apple.compilers.llvm.clang.1_0"
+  "DTPlatformBuild" => ""
+  "DTPlatformName" => "macosx"
+  "DTPlatformVersion" => "14.2"
+  "DTSDKBuild" => "23C53"
+  "DTSDKName" => "macosx14.2"
+  "DTXcode" => "1520"
+  "DTXcodeBuild" => "15C500b"
+  "IOKitPersonalities" => {
+    "ApplePS2Keyboard" => {
+      "CFBundleIdentifier" => "as.acidanthera.voodoo.driver.PS2Keyboard"
+      "IOClass" => "ApplePS2Keyboard"
+      "IOProviderClass" => "ApplePS2KeyboardDevice"
+      "Platform Profile" => {
+        "Default" => {
+          "alt_handler_id" => 3
+          "Breakless PS2" => [
+            0 => ";Items must be strings in the form of breaklessscan (in hex)"
+          ]
+          "Custom ADB Map" => [
+            0 => ";Items must be strings in the form of scanfrom=adbto (in hex)"
+          ]
+          "Custom PS2 Map" => [
+            0 => ";Items must be strings in the form of scanfrom=scanto (in hex)"
+            1 => "e027=0;disable discrete fnkeys toggle"
+            2 => "e028=0;disable discrete trackpad toggle"
+            3 => ";CLEAN TEST v2: if 'a' types 1 the map mechanism works"
+            4 => "1e=02;key 'a' (scan 0x1E) -> should type 1"
+            5 => "1d=03;left-ctrl (scan 0x1D) -> should type 2"
+            6 => "e01d=04;right-ctrl (E0 1D) -> should type 3"
+            7 => "35=05;key '?'/slash real (0x35) -> should type 4"
+            8 => "2b=06;key next to shift (0x2B) -> should type 5"
+            9 => "29=07;key '~' accent (0x29) -> should type 6"
+          ]
+          "HIDF12EjectDelay" => 250
+          "LogScanCodes" => 1
+          "Make Application key into Apple Fn key" => 0
+          "Make Application key into right windows" => 1
+          "Make right modifier keys into Hangul and Hanja" => 0
+          "SleepPressTime" => 0
+          "Swap capslock and left control" => 0
+          "Swap command and option" => 0
+          "Use ISO layout keyboard" => 0
+        }
+        "DELL" => {
+          "Dell-Keys" => {
+            "Breakless PS2" => [
+              0 => "e005"
+              1 => "e006"
+            ]
+            "Function Keys Special" => [
+              0 => ";The following 12 items map Fn+fkeys to fkeys"
+              1 => "e020=3b"
+              2 => "e02e=3c"
+              3 => "e030=3d"
+              4 => "e022=3e"
+              5 => ";Fn+f5 macro"
+              6 => ";Fn+f6 macro"
+              7 => ";Fn+f7 macro"
+              8 => ";Fn+f8 macro"
+              9 => ";Fn+f9 macro"
+              10 => ";Fn+f10 no code"
+              11 => "e005=57"
+              12 => "e006=58"
+              13 => ";The following 12 items map fkeys to Fn+fkeys"
+              14 => "3b=e020"
+              15 => "3c=e02e"
+              16 => "3d=e030"
+              17 => "3e=e022"
+              18 => ";Fn+f5 macro"
+              19 => ";Fn+f6 macro"
+              20 => ";Fn+f7 macro"
+              21 => ";Fn+f8 macro"
+              22 => ";Fn+f9 macro"
+              23 => ";Fn+f10 no code"
+              24 => "57=e005"
+              25 => "58=e006"
+            ]
+            "Function Keys Standard" => [
+              0 => ";The following 12 items map Fn+fkeys to Fn+fkeys"
+              1 => "e020=e020"
+              2 => "e02e=e02e"
+              3 => "e030=e030"
+              4 => "e022=e022"
+              5 => ";Fn+f5 macro"
+              6 => ";Fn+f6 macro"
+              7 => ";Fn+f7 macro"
+              8 => ";Fn+f8 macro"
+              9 => ";Fn+f9 macro"
+              10 => ";Fn+f10 no code"
+              11 => "e005=e005"
+              12 => "e006=e006"
+              13 => ";The following 12 items map fkeys to fkeys"
+              14 => "3b=3b"
+              15 => "3c=3c"
+              16 => "3d=3d"
+              17 => "3e=3e"
+              18 => "3f=3f"
+              19 => "40=40"
+              20 => "41=41"
+              21 => "42=42"
+              22 => "43=43"
+              23 => "44=44"
+              24 => "57=57"
+              25 => "58=58"
+            ]
+          }
+          "HSW-LPT" => "Dell-Keys"
+          "SNB-CPT" => {
+            "ActionSwipeDown" => "63 d, 63 u"
+            "ActionSwipeUp" => "61 d, 61 u"
+            "Breakless PS2" => [
+              0 => "e01e;Touchpad Fn+f3 is breakless"
+              1 => "e06e;REVIEW: temporary for case that macro inversion does not work..."
+            ]
+            "Custom ADB Map" => [
+              0 => "e009=83;Dell Support to Launchpad"
+              1 => "e0f1=71;Call brightens up w RKA1 for special mode (was =90)"
+              2 => "e0f2=6b;Call brightens down w RKA2 for special mode (was =91)"
+              3 => "e06e=70;Map vidmirror key for special mode default is adb90"
+            ]
+            "Custom PS2 Map" => [
+              0 => "e01e=e037;Map tp disable to Fn+f3"
+              1 => "e037=e01e;Prevent PrntScr from triggering tp disable"
+            ]
+            "Function Keys Special" => [
+              0 => ";The following 12 items map Fn+fkeys to fkeys"
+              1 => "e06e=3b"
+              2 => "e008=3c"
+              3 => "e01e=3d"
+              4 => "e005=3e"
+              5 => "e006=3f"
+              6 => "e00c=40"
+              7 => ";Fn+f7 no dedicated macro"
+              8 => "e010=42"
+              9 => "e022=43"
+              10 => "e019=44"
+              11 => "e02e=57"
+              12 => "e030=58"
+              13 => ";The following 12 items map fkeys to Fn+fkeys"
+              14 => "3b=e06e;Map vidmirror key to f1"
+              15 => "3c=e0f0;Map radio toggle action from EC query to f2"
+              16 => "3d=e037;Map touchpad toggle button to f3"
+              17 => "3e=e0f2;Map acpi RKA2 to f4 brightness down"
+              18 => "3f=e0f1;Map acpi RKA1 to f5 brightness up"
+              19 => "40=e0f3;Map acpi RKA3 to f6 keyboard backlight"
+              20 => ";Fn+f7 no macro"
+              21 => "42=e010"
+              22 => "43=e022"
+              23 => "44=e019"
+              24 => "57=e02e"
+              25 => "58=e030"
+            ]
+            "Function Keys Standard" => [
+              0 => ";The following 12 items map Fn+fkeys to Fn+fkeys"
+              1 => "e06e=e06e;Fn+f1 macro translated"
+              2 => "e008=e008;Fn+f2 regular scancode and EC query call q8c"
+              3 => "e01e=e037;Fn+f3 regular scancode and EC controls LED"
+              4 => "e005=e005;Fn+f4 no ps2scancode and EC query call q81"
+              5 => "e006=e006;Fn+f5 no ps2scancode and EC query call q80"
+              6 => "e00c=e00c;Fn+f6 no ps2scancode and EC query call q8a"
+              7 => ";Fn+f7 no macro just regular f key"
+              8 => "e010=e010; Fn+f8 regular scancode"
+              9 => "e022=e022; Fn+f9 regular scancode"
+              10 => "e019=e019;Fn+f10 regular scancode"
+              11 => "e02e=e02e;Fn+f11 regular scancode"
+              12 => "e030=e030;Fn+f12 regular scancode"
+              13 => ";Fn+f13 is mute dedicated button that always produces e020 regardless of Fn"
+              14 => ";The following 12 items map fkeys to fkeys"
+              15 => "3b=3b"
+              16 => "3c=3c"
+              17 => "3d=3d"
+              18 => "3e=3e"
+              19 => "3f=3f"
+              20 => "40=40"
+              21 => "41=41"
+              22 => "42=42"
+              23 => "43=43"
+              24 => "44=44"
+              25 => "57=57"
+              26 => "58=58"
+            ]
+            "Macro Inversion" => [
+              0 => ";This section maps ps2 codes (packet format) received quickly (macros) into fake ps2 codes (packet format)"
+              1 => ";Fn+F1"
+              2 => {length = 12, bytes = 0xffff026e00000000025b0119}
+              3 => {length = 12, bytes = 0xffff02ee0000000002db0199}
+              4 => {length = 12, bytes = 0xffff02ee00000000019902db}
+            ]
+            "MaximumMacroTime" => 35000000
+            "Note-Author" => "TimeWalker aka TimeWalker75a"
+            "Note-Comment" => "Keyboard Profile for DELL SandyBridge SecureCore Tiano based laptops (Vostro 3450 & 3750, Inspiron N4110, XPS L502x & L702x & L511z)"
+          }
+          "WN09" => {
+            "Breakless PS2" => [
+              0 => "e01b"
+              1 => "e008"
+              2 => "e01e"
+              3 => "e005"
+              4 => "e06e"
+              5 => "e006"
+            ]
+            "Custom ADB Map" => [
+              0 => "e01b=70"
+              1 => "e06e=83"
+            ]
+            "Custom PS2 Map" => [
+              0 => "56=2b"
+              1 => "29=56"
+              2 => "2b=29"
+              3 => "e01e=e037"
+              4 => "e037=e01e"
+            ]
+          }
+          "WN09a" => {
+            "Breakless PS2" => [
+              0 => "e01b"
+              1 => "e008"
+              2 => "e01e"
+              3 => "e005"
+              4 => "e06e"
+              5 => "e006"
+            ]
+            "Custom ADB Map" => [
+              0 => "e01b=70"
+              1 => "e06e=83"
+            ]
+            "Custom PS2 Map" => [
+              0 => "e01e=e037"
+              1 => "e037=e01e"
+            ]
+          }
+        }
+        "HPQOEM" => {
+          "17A9" => "ProBook-87;ProBook 8570b"
+          "17F0" => "ProBook-102;ProBook 4340s"
+          "17F3" => "ProBook-102;ProBook 4440s"
+          "17F6" => "ProBook-102;ProBook 4540s"
+          "161C" => "ProBook-87;ProBook 8460p"
+          "164F" => "ProBook-87;ProBook 5330m"
+          "167C" => "ProBook-102;ProBook 4530s"
+          "167E" => "ProBook-102;ProBook 4330s"
+          "179B" => "ProBook-87;ProBook 6470b"
+          "179C" => "ProBook-87;ProBook 6470b"
+          "198F" => "ProBook-87;ProBook 450s G0"
+          "1411" => "ProBook-102;ProBook 4520s"
+          "1619" => "ProBook-87;ProBook 6560b"
+          "1680" => "ProBook-102;ProBook 4230s"
+          "1942" => "ProBook-87;ProBook 450s G1"
+          "1949" => "ProBook-87;ProBook 450s G1"
+          "1962" => "Haswell-Envy;HP Envy 15-j063cl"
+          "1963" => "Haswell-Envy;HP Envy 15-j063cl"
+          "1965" => "Haswell-Envy;HP Envy 17t-j100"
+          "1966" => "Haswell-Envy;HP Envy 17t-j000"
+          "Haswell-Envy" => {
+            "Custom ADB Map" => [
+              0 => "e019=42;next"
+              1 => "e010=4d;previous"
+            ]
+            "Custom PS2 Map" => [
+              0 => "e045=e037"
+              1 => "e0ab=0;bogus Fn+F2/F3"
+            ]
+          }
+          "ProBook-87" => {
+            "Custom ADB Map" => [
+              0 => "46=4d;scroll => Previous-track"
+              1 => "e045=34;pause => Play-Pause"
+              2 => "e052=42;insert => Next-track"
+              3 => "e046=92;break => Eject"
+            ]
+            "Custom PS2 Map" => [
+              0 => "e005=0"
+            ]
+            "Function Keys Special" => [
+              0 => ";The following 8 items map Fn+fkeys to fkeys"
+              1 => "e05f=3d"
+              2 => "e06e=3e"
+              3 => "e02e=40"
+              4 => "e030=41"
+              5 => "e009=42"
+              6 => "e012=43"
+              7 => "e017=44"
+              8 => "e033=57"
+              9 => ";The following 8 items map fkeys to Fn+fkeys"
+              10 => "3d=e05f"
+              11 => "3e=e06e"
+              12 => "40=e02e"
+              13 => "41=e030"
+              14 => "42=e037"
+              15 => "43=e012"
+              16 => "44=e017"
+            ]
+            "Function Keys Standard" => [
+              0 => ";The following 8 items map Fn+fkeys to Fn+fkeys"
+              1 => "e05f=e05f"
+              2 => "e06e=e06e"
+              3 => "e02e=e02e"
+              4 => "e030=e030"
+              5 => "e009=e009"
+              6 => "e012=e012"
+              7 => "e017=e017"
+              8 => "e033=e033"
+              9 => ";The following 8 items map fkeys to fkeys"
+              10 => "3d=3d"
+              11 => "3e=3e"
+              12 => "40=40"
+              13 => "41=41"
+              14 => "42=42"
+              15 => "43=43"
+              16 => "44=44"
+            ]
+            "SleepPressTime" => 3000
+          }
+          "ProBook-102" => {
+            "Custom PS2 Map" => [
+              0 => "e005=0"
+            ]
+            "Function Keys Special" => [
+              0 => ";The following 12 items map Fn+fkeys to fkeys"
+              1 => "e05f=3b"
+              2 => "e012=3c"
+              3 => "e017=3d"
+              4 => "e06e=3e"
+              5 => "e00a=3f"
+              6 => "e009=40"
+              7 => "e020=41"
+              8 => "e02e=42"
+              9 => "e030=43"
+              10 => "e010=44"
+              11 => "e022=57"
+              12 => "e019=58"
+              13 => ";The following 12 items map fkeys to Fn+fkeys"
+              14 => "3b=e05f"
+              15 => "3c=e012"
+              16 => "3d=e017"
+              17 => "3e=e06e"
+              18 => "3f=e00a"
+              19 => "40=e009"
+              20 => "41=e020"
+              21 => "42=e02e"
+              22 => "43=e030"
+              23 => "44=e010"
+              24 => "57=e022"
+              25 => "58=e019"
+            ]
+            "Function Keys Standard" => [
+              0 => ";The following 12 items map Fn+fkeys to Fn+fkeys"
+              1 => "e05f=e05f"
+              2 => "e012=e012"
+              3 => "e017=e017"
+              4 => "e06e=e06e"
+              5 => "e00a=e00a"
+              6 => "e009=e009"
+              7 => "e020=e020"
+              8 => "e02e=e02e"
+              9 => "e030=e030"
+              10 => "e010=e010"
+              11 => "e022=e022"
+              12 => "e019=e019"
+              13 => ";The following 12 items map fkeys to fkeys"
+              14 => "3b=3b"
+              15 => "3c=3c"
+              16 => "3d=3d"
+              17 => "3e=3e"
+              18 => "3f=3f"
+              19 => "40=40"
+              20 => "41=41"
+              21 => "42=42"
+              22 => "43=43"
+              23 => "44=44"
+              24 => "57=57"
+              25 => "58=58"
+            ]
+            "SleepPressTime" => 3000
+          }
+        }
+        "Intel" => {
+          "CALPELLA" => "SamsungKeys"
+          "SamsungKeys" => {
+            "Breakless PS2" => [
+              0 => "e003"
+              1 => "e002"
+              2 => "e004"
+              3 => "e020"
+              4 => ";e031"
+              5 => "e033"
+              6 => "e006"
+              7 => "e077"
+              8 => "e079"
+              9 => "e008"
+              10 => "e009"
+            ]
+            "Custom ADB Map" => [
+              0 => "e002=70"
+              1 => "e006=80"
+              2 => "e008=71 (was =90)"
+              3 => "e009=6b (was =91)"
+            ]
+            "Function Keys Special" => [
+              0 => ";The following 12 items map Fn+fkeys to fkeys"
+              1 => ";fn+f1 no code"
+              2 => "e003=3c"
+              3 => ";fn+f3 weird code"
+              4 => "e002=3e"
+              5 => "e004=3f"
+              6 => "e020=40"
+              7 => "e031=41"
+              8 => "e033=42"
+              9 => "e006=43"
+              10 => ";fn+f10 weird code"
+              11 => ";fn+f11 no code"
+              12 => ";fn+f12 scrolllock"
+              13 => ";The following 12 items map fkeys to Fn+fkeys"
+              14 => ";fn+f1 no code"
+              15 => "3c=e003"
+              16 => ";fn+f3 weird code"
+              17 => "3e=e002"
+              18 => "3f=e004"
+              19 => "40=e020"
+              20 => "41=e031"
+              21 => "42=e033"
+              22 => "43=e006"
+              23 => ";fn+f10 weird code"
+              24 => ";fn+f11 no code"
+              25 => ";fn+f12 scrolllock"
+            ]
+            "Function Keys Standard" => [
+              0 => ";The following 12 items map Fn+fkeys to Fn+fkeys"
+              1 => ";fn+f1 no code"
+              2 => "e003=e003"
+              3 => ";fn+f3 weird code"
+              4 => "e002=e002"
+              5 => "e004=e004"
+              6 => "e020=e020"
+              7 => "e031=e031"
+              8 => "e033=e033"
+              9 => "e006=e006"
+              10 => ";fn+f10 weird code"
+              11 => ";fn+f11 no code"
+              12 => ";fn+f12 scrolllock"
+              13 => ";The following 12 items map fkeys to fkeys"
+              14 => "3b=3b"
+              15 => "3c=3c"
+              16 => "3d=3d"
+              17 => "3e=3e"
+              18 => "3f=3f"
+              19 => "40=40"
+              20 => "41=41"
+              21 => "42=42"
+              22 => "43=43"
+              23 => "44=44"
+              24 => "57=57"
+              25 => "58=58"
+            ]
+          }
+        }
+        "SECCSD" => {
+          "LH43STAR" => "SamsungKeys"
+          "SamsungKeys" => {
+            "Breakless PS2" => [
+              0 => "e020"
+              1 => "e02e"
+              2 => "e030"
+            ]
+          }
+        }
+      }
+    }
+  }
+  "LSMinimumSystemVersion" => "10.10"
+  "OSBundleLibraries" => {
+    "as.acidanthera.voodoo.driver.PS2Controller" => "2.3.7"
+    "com.apple.iokit.IOHIDFamily" => "1.0.0b1"
+    "com.apple.kpi.bsd" => "8.0.0"
+    "com.apple.kpi.iokit" => "8.0.0"
+    "com.apple.kpi.libkern" => "8.0.0"
+    "com.apple.kpi.mach" => "8.0.0"
+    "com.apple.kpi.unsupported" => "8.0.0"
+  }
+  "OSBundleRequired" => "Console"
+}
+
+== 7. config.plist do OpenCore (chaves de teclado) ==
+        "BundlePath" => "VoodooPS2Controller.kext"
+        "Comment" => "V2.3.5"
+        "Enabled" => 1
+        "ExecutablePath" => "Contents/MacOS/VoodooPS2Controller"
+        "MaxKernel" => ""
+        "MinKernel" => ""
+        "PlistPath" => "Contents/Info.plist"
+      }
+      9 => {
+        "Arch" => "Any"
+--
+        "BundlePath" => "VoodooPS2Controller.kext/Contents/PlugIns/VoodooInput.kext"
+        "Comment" => "V1.1.4"
+        "Enabled" => 0
+        "ExecutablePath" => "Contents/MacOS/VoodooInput"
+        "MaxKernel" => ""
+        "MinKernel" => ""
+        "PlistPath" => "Contents/Info.plist"
+--
+        "BundlePath" => "VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Keyboard.kext"

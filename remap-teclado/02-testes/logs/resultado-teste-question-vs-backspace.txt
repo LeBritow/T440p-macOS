@@ -1,0 +1,45 @@
+kbtest2: TESTE FOCADO - '?' vs Backspace
+A '?' deve estar na POSICAO DO CTRL DIREITO.
+Keycodes: '?'=62(ctrl dir)  Backspace=51  Ctrl-esq=59
+Se o mapa VoodooPS2 funcionasse: '?'=3(20), 'a'=1(18).
+------------------------------------------------------------
+PRONTO por 45s. Pressione em ORDEM, 3x cada:
+  1) tecla '?'  (no Ctrl direito)
+  2) tecla Backspace fisica (grande, acima do Enter)
+  (NAO digite mais nada)
+FLAG kc= 62(0x3e) flags=CTRL chars=(0, '')
+FLAG kc= 62(0x3e) flags=- chars=(0, '')
+FLAG kc= 62(0x3e) flags=CTRL chars=(0, '')
+FLAG kc= 62(0x3e) flags=- chars=(0, '')
+FLAG kc= 62(0x3e) flags=CTRL chars=(0, '')
+FLAG kc= 62(0x3e) flags=- chars=(0, '')
+DOWN kc= 51(0x33) flags=- chars=(1, '\x08')
+UP   kc= 51(0x33) flags=- chars=(1, '\x08')
+DOWN kc= 51(0x33) flags=- chars=(1, '\x08')
+UP   kc= 51(0x33) flags=- chars=(1, '\x08')
+DOWN kc= 51(0x33) flags=- chars=(1, '\x08')
+UP   kc= 51(0x33) flags=- chars=(1, '\x08')
+DOWN kc=  0(0x00) flags=- chars=(1, 'a')
+UP   kc=  0(0x00) flags=- chars=(1, 'a')
+DOWN kc=  0(0x00) flags=- chars=(1, 'a')
+UP   kc=  0(0x00) flags=- chars=(1, 'a')
+DOWN kc=  0(0x00) flags=- chars=(1, 'a')
+UP   kc=  0(0x00) flags=- chars=(1, 'a')
+DOWN kc= 51(0x33) flags=- chars=(1, '\x08')
+UP   kc= 51(0x33) flags=- chars=(1, '\x08')
+DOWN kc= 51(0x33) flags=- chars=(1, '\x08')
+UP   kc= 51(0x33) flags=- chars=(1, '\x08')
+DOWN kc= 51(0x33) flags=- chars=(1, '\x08')
+UP   kc= 51(0x33) flags=- chars=(1, '\x08')
+FLAG kc= 62(0x3e) flags=CTRL chars=(0, '')
+FLAG kc= 62(0x3e) flags=- chars=(0, '')
+FLAG kc= 62(0x3e) flags=CTRL chars=(0, '')
+FLAG kc= 62(0x3e) flags=- chars=(0, '')
+FLAG kc= 62(0x3e) flags=CTRL chars=(0, '')
+FLAG kc= 62(0x3e) flags=- chars=(0, '')
+FLAG kc= 62(0x3e) flags=CTRL chars=(0, '')
+FLAG kc= 62(0x3e) flags=- chars=(0, '')
+DOWN kc= 53(0x35) flags=- chars=(1, '\x1b')
+UP   kc= 53(0x35) flags=- chars=(1, '\x1b')
+------------------------------------------------------------
+fim.
