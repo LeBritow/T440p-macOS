@@ -15,7 +15,7 @@ with the same laptop (or any Haswell / Intel 8-series chipset).
 |-----------|--------|
 | Boot | Straight to the Apple logo (picker disabled; hold **Esc** at power-on for the menu) |
 | Wi-Fi / Bluetooth / Ethernet / Audio | ✅ Working |
-| Rear-left USB port | 🔌 **Dead** — EHCI controller, driver removed in macOS 14 (no solution) |
+| Left-side USB port (below the SD reader) | 🔌 **Dead** — EHCI controller, driver removed in macOS 14 (no solution) |
 | SD card reader (RTS5227) | 🔇 **Disabled** — both drivers caused boot/wake/shutdown panics |
 | ABNT2 keyboard (`?`→`/`) | ✅ Fixed with a userspace remapper (see `keyboard-remap/`) |
 
@@ -44,7 +44,7 @@ Detailed specs: [`01-specifications/`](hackintosh-t440p/01-specifications/specs.
 
 | Issue | Outcome | Details |
 |-------|---------|---------|
-| Dead rear-left USB port (EHCI, no driver in Sonoma) | 🚫 No solution | [`02-dead-usb-port/`](hackintosh-t440p/02-dead-usb-port/) |
+| Dead left-side USB port, below the SD reader (EHCI, no driver in Sonoma) | 🚫 No solution | [`02-dead-usb-port/`](hackintosh-t440p/02-dead-usb-port/) |
 | SD card reader (boot/wake/shutdown panics) — full investigation + fix research | 🔇 Disabled | [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
 | Direct boot (`ShowPicker=false`) + dirty-EFI repair | ✅ Solved | [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
 | Production `config.plist` + kext/quirk reference | ✅ | [`05-open-core-config/`](hackintosh-t440p/05-open-core-config/) |

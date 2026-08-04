@@ -8,7 +8,7 @@ same laptop (or the same Haswell / 8-series chipset) and the same symptoms.
 
 | Issue | Status | Solution |
 |-------|--------|----------|
-| [Dead rear-left USB port](02-dead-usb-port/) | 🚫 **No solution** | It is **EHCI**; macOS 14 removed the driver. Accepted as dead |
+| [Dead left-side USB port (below the SD reader)](02-dead-usb-port/) | 🚫 **No solution** | It is **EHCI**; macOS 14 removed the driver. Accepted as dead |
 | [SD card reader (RTS5227)](03-sd-card-reader/) | 🔇 Disabled | Both kexts panicked (boot/wake/shutdown); reader disabled |
 | [Direct boot to logo (no menu)](04-direct-boot/) | ✅ Applied | `ShowPicker=false`, `Timeout=0`; menu via **Esc** |
 | [EFI won't mount (FAT dirty)](04-direct-boot/) | ✅ Manual fix | `sudo fsck_msdos -y /dev/rdisk0s1` |

@@ -68,9 +68,9 @@ the upgrade does not "burn the bridge".
 
 | Item | Situation |
 |------|-----------|
-| Rear-**right** USB (Always-On) | ✅ Working |
+| **Right-side** USB (Always-On) | ✅ Working |
 | Left **USB 3.0** (top/bottom) | ✅ Working |
-| Rear-**left** USB (below SD) | 🔌 Dead — EHCI without driver on Sonoma |
+| **Left-side** USB (below SD) | 🔌 Dead — EHCI without driver on Sonoma |
 | **SD** card reader (RTS5227) | 🔇 Disabled (kexts panicked on boot/wake/shutdown) |
 | Wi-Fi / BT / Audio / Ethernet / Battery | ✅ Working |
 | Boot | Direct to logo; **Esc** at power-on = menu |

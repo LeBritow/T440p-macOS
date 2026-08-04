@@ -1,13 +1,13 @@
-# Dead Rear-Left USB Port — Diagnosis: EHCI, no solution on Sonoma
+# Dead Left-Side USB Port (Below the SD Reader) — Diagnosis: EHCI, no solution on Sonoma
 
 **Status: NO SOLUTION.** The port is controlled by the **EHCI** controller, whose
 driver Apple removed in macOS 14. Accepted as a hardware limitation.
 
 ## The problem
 
-- The **rear-left** USB port (below the SD reader) does not work: a USB device does
-  not light up and is not enumerated.
-- The **rear-right** port (Always-On, battery icon) works normally.
+- The **left-side** USB port (right below the SD reader) does not work: a USB device
+  does not light up and is not enumerated.
+- The **right-side** port (Always-On, battery icon) works normally.
 - The SD reader and the dead port are on the **same side** (left).
 
 ## Hypotheses tested (in order)
@@ -33,7 +33,8 @@ driver Apple removed in macOS 14. Accepted as a hardware limitation.
 
 ## Conclusion
 
-1. The dead port is **EHCI** (legacy USB 2.0). On the T440p it sits at the rear-left.
+1. The dead port is **EHCI** (legacy USB 2.0). On the T440p it sits on the left
+   side, right below the SD reader.
 2. macOS 14 has no EHCI driver → the port is **physically unreachable** on Sonoma.
 3. The OCLP route (injecting the legacy USB driver) **also panics** on 14.1+.
 4. `SSDT-DEHCI.aml` disables the controller at boot; even without it there is no
