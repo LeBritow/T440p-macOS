@@ -290,18 +290,11 @@
 						<string>;Items must be strings in the form of scanfrom=scanto (in hex)</string>
 						<string>e027=0;disable discrete fnkeys toggle</string>
 						<string>e028=0;disable discrete trackpad toggle</string>
-						<string>;CLEAN TEST v2: if 'a' types 1 the map mechanism works</string>
-						<string>1e=02;key 'a' (scan 0x1E) -&gt; should type 1</string>
-						<string>1d=03;left-ctrl (scan 0x1D) -&gt; should type 2</string>
-						<string>e01d=04;right-ctrl (E0 1D) -&gt; should type 3</string>
-						<string>35=05;key '?'/slash real (0x35) -&gt; should type 4</string>
-						<string>2b=06;key next to shift (0x2B) -&gt; should type 5</string>
-						<string>29=07;key '~' accent (0x29) -&gt; should type 6</string>
 					</array>
 					<key>HIDF12EjectDelay</key>
 					<integer>250</integer>
 					<key>LogScanCodes</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>Make Application key into Apple Fn key</key>
 					<false/>
 					<key>Make Application key into right windows</key>
