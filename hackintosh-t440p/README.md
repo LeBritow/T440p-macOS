@@ -45,5 +45,12 @@ Full details: [01-specifications/](01-specifications/specs.md)
 04-direct-boot/         ShowPicker=false + dirty-EFI repair
 05-open-core-config/    production config.plist + kext/quirk reference
 06-post-install/        TRIM, monitoring, EFI maintenance, Sequoia roadmap
+07-credits.md           credits for every kext/driver/tool used
 efi-sonoma-14.8.8/      snapshot of the working EFI (Sonoma)
 ```
+
+## Credits
+
+This build relies on many open-source projects (Acidanthera, OpenIntelWireless,
+zhen-zen, 0xFireWolf, cholonam, RehabMan, Dolnor, Sniki, VoodooProjects, corpnewt,
+exelban, Dortania, ...). Full list with authors: [07-credits.md](07-credits.md).

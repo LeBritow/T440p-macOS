@@ -75,6 +75,16 @@ hackintosh-t440p/        Full project documentation
   ├── 04-direct-boot/
   ├── 05-open-core-config/
   ├── 06-post-install/
+  ├── 07-credits.md       Credits for every kext/driver/tool used
   └── efi-sonoma-14.8.8/  Snapshot of the working EFI (Sonoma)
 keyboard-remap/          ABNT2 keyboard remapper (C + LaunchAgent)
 ```
+
+## Credits
+
+This build relies on many open-source projects — Acidanthera (OpenCore, Lilu,
+WhateverGreen, VirtualSMC, AppleALC, ...), OpenIntelWireless (AirportItlwm),
+zhen-zen (YogaSMC), 0xFireWolf (RealtekCardReader), cholonam (Sinetek-rtsx),
+RehabMan, Dolnor & Sniki (CodecCommander), VoodooProjects (VoodooRMI),
+corpnewt (USBMap, GenSMBIOS), exelban (Stats), Dortania (install guide), and more.
+Full list: [`hackintosh-t440p/07-credits.md`](hackintosh-t440p/07-credits.md).
