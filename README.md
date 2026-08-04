@@ -79,7 +79,7 @@ Found a fix, a better kext, or a tip for this hardware? Open an **issue** or a
 ## Repository layout
 
 ```
-EFI/                     OpenCore EFI — placeholder SMBIOS
+EFI/                     OpenCore EFI — placeholder SMBIOS (== release v1.0.0)
 scripts/                 Recovery download utilities (macrecovery)
 hackintosh-t440p/        Full project documentation
   ├── 01-specifications/
@@ -92,6 +92,13 @@ hackintosh-t440p/        Full project documentation
   └── efi-sonoma-14.8.8/  Snapshot of the working EFI (Sonoma)
 keyboard-remap/          ABNT2 keyboard remapper (C + LaunchAgent)
 ```
+
+## Releases
+
+Ready-to-use EFI zips are published under
+[Releases](https://github.com/LeBritow/T440p-hackintosh-sonoma/releases) —
+the current one is **v1.0.0** (Sonoma 14.8.8, OpenCore 1.0.4). Generate your own
+SMBIOS before using it (see the SMBIOS notice above).
 
 ## Credits
 

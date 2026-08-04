@@ -26,19 +26,23 @@ The Haswell chipset exposes **two USB controllers** in the DSDT:
 - **XHCI** — `pci8086,8c31` / `pciclass,0c0330` — the USB 3.0 ports and most 2.0 ports.
 - **EHCI** — `EHC1@1d0000` — legacy USB 2.0 ports (one of them is **dead** on macOS).
 
-Ports mapped in the USBMap kext:
+Ports mapped in the USBMap kext (production):
 
-| USBMap port | Register | Physical name |
-|-------------|----------|---------------|
-| HS01 | 3 | Top Right |
-| HS02 | 6 | Bottom Right |
-| HS03 | 255 (BT) | Bluetooth |
-| HS04 | — | Webcam |
-| SS01 | 0x10 | Top Left USB 3.0 |
-| SS02 | 0x11 | Bottom Left USB 3.0 |
+| USBMap port | Register | Connector | Physical name |
+|-------------|----------|-----------|---------------|
+| HS01 | 6 | USB 2.0 | Top Right |
+| HS02 | 3 | USB 2.0 | Bottom Right |
+| HS03 | 11 | Internal | Bluetooth |
+| HS04 | 12 | Internal | Webcam |
+| HS05 | 1 | USB 2.0 | Top Left (added during investigation) |
+| HS06 | 2 | USB 2.0 | Bottom Left (added during investigation) |
+| SS01 | 0x10 | USB 3.0 | Top Left |
+| SS02 | 0x11 | USB 3.0 | Bottom Left |
 
 Actual XHCI ports present at runtime (from `ioreg`): `HSP2@3`, `HSP5@6`, `HSPA@b`,
-`HSPB@c`. Registers 1 and 2 **do not exist** on the XHCI controller.
+`HSPB@c`. **HS05/HS06 (registers 1 and 2) were added to the USBMap during the
+dead-port investigation — they do not exist on the XHCI controller**, which is how
+the dead port was identified as EHCI (see `02-dead-usb-port/`).
 
 ## Software
 
