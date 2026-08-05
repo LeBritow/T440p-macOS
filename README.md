@@ -1,8 +1,9 @@
 # T440p Hackintosh — macOS 15.7.8 (Sequoia) via OpenCore
 
 This guide installs **macOS Sequoia 15.7.8** on a **Lenovo ThinkPad T440p** using
-the EFI in this repository (**OpenCore 1.0.7**). Everything here is hardware-
-verified on the author's machine (i7-4700MQ, HD 4600, 16 GB, Intel WiFi).
+the EFI in this repository (**OpenCore 1.0.7**). Everything here is verified on
+**my own T440p** (i7-4700MQ, HD 4600, 16 GB, Intel WiFi) — this is the exact EFI
+I use daily, exported from my machine.
 
 > **SMBIOS notice:** All SMBIOS data in this repository are **placeholders**
 > (`AAAAAAAA...`). Before using the EFI, **generate your own values with
@@ -10,7 +11,7 @@ verified on the author's machine (i7-4700MQ, HD 4600, 16 GB, Intel WiFi).
 
 ---
 
-## What works / what doesn't
+## What works / what doesn't (on my machine)
 
 | Component | Status |
 |-----------|--------|
@@ -35,16 +36,28 @@ verified on the author's machine (i7-4700MQ, HD 4600, 16 GB, Intel WiFi).
 
 ## 1. Generate your own SMBIOS
 
-The EFI ships with placeholder values. Generate your own `MacBookPro16,1` values
-with [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) and write them into
-`EFI/OC/Config.plist` → `PlatformInfo → Generic`:
+The EFI ships with placeholder values. On a Mac with
+[GenSMBIOS](https://github.com/corpnewt/GenSMBIOS):
+
+```bash
+cd GenSMBIOS
+python3 genSMBIOS.command
+# pick MacBookPro16,1 → copy the Serial / Board Serial / UUID it prints
+```
+
+Then write the values into `EFI/OC/Config.plist` → `PlatformInfo → Generic`:
 
 | Key | Value |
 |-----|-------|
 | `SystemProductName` | `MacBookPro16,1` |
 | `SystemSerialNumber` | *your generated serial* |
-| `MLB` | *your generated MLB* |
+| `MLB` | *your generated Board Serial* |
 | `SystemUUID` | *your generated UUID* |
+| `ROM` | your **real** MAC address of the Ethernet port |
+
+`ROM` is important: I set mine to my real Intel Ethernet MAC so the OS sees a
+stable value. For all three generated values, each install must use a **fresh
+set** — never reuse a serial that's already in use (iCloud/iMessage risk).
 
 ## 2. BIOS / UEFI settings (T440p)
 
@@ -79,11 +92,19 @@ python3 macrecovery.py -b Mac-937A206F2EE63C01 download
 ```
 
 The recovery image is downloaded as `BaseSystem.dmg` + `BaseSystem.chunklist`
-(Big Sur and later). Create two partitions on the stick: one **Mac OS Extended
-(Journaled)** and one small **EFI** partition. Restore `BaseSystem.dmg` to the
-Mac OS Extended partition (`asr restore --source BaseSystem.dmg --target /dev/diskXs2`
-or via Disk Utility's Restore). Finally copy the **`EFI/`** folder from this repo
-to the stick's EFI partition.
+(Big Sur and later). Now:
+
+1. Create **two partitions** on the stick: one **Mac OS Extended (Journaled)**
+   and one small **EFI** (GUID always creates the 200 MB EFI partition — use it).
+2. Restore `BaseSystem.dmg` to the Mac OS Extended partition:
+   `asr restore --source BaseSystem.dmg --target /dev/diskXs2` (or via Disk
+   Utility's Restore).
+3. Copy the **`EFI/`** folder from this repo into the stick's EFI partition:
+
+```bash
+diskutil mount diskX          # mounts every volume, including the EFI partition
+cp -R EFI /Volumes/EFI/       # from the repo root
+```
 
 > Alternative: the [Dortania OpenCore Guide](https://dortania.github.io/OpenCore-Install-Guide/)
 > has a full step-by-step for creating the USB — the `scripts/` here are the same
@@ -92,53 +113,77 @@ to the stick's EFI partition.
 ## 4. Boot the installer
 
 1. Insert the USB, power on, press **F12**, choose the USB (UEFI).
-2. OpenCore's picker appears. Select the **macOS Installer** entry
-   (an external drive icon with the macOS name).
-3. When the installer loads, open **Disk Utility**, erase the internal SSD as
+2. OpenCore's picker appears. **Reset NVRAM once** (a picker entry) — recommended
+   on the very first boot so the NVRAM variables are clean.
+3. Select the **macOS Installer** entry (an external drive icon with the macOS
+   name).
+4. When the installer loads, open **Disk Utility**, erase the internal SSD as
    **APFS, GUID Partition Map**, close Disk Utility, and run **Install macOS
    Sequoia**.
-4. The machine reboots several times. If the picker doesn't show the install
+5. The machine reboots several times. If the picker doesn't show the install
    volume automatically, keep selecting the **macOS Installer** entry each time
    until the installer finishes and you reach the setup assistant.
 
-## 5. First boot + post-install
+## 5. Move the EFI to the internal disk
 
-### 5a. OpenCore Legacy Patcher (WiFi + graphics) — REQUIRED
+You can keep booting from the USB forever, but the clean setup is to make the
+SSD self-booting. After the first successful boot:
+
+1. Mount the internal SSD's EFI partition (the empty ~200 MB one GUID created
+   during the erase) and copy the EFI folder into it:
+   ```bash
+   diskutil list                    # internal disk, e.g. /dev/disk0
+   sudo diskutil mount disk0s1      # → /Volumes/EFI
+   cp -R /Volumes/USB/EFI /Volumes/EFI/   # copy from the stick's EFI partition
+   ```
+2. In the OpenCore picker, your internal volume now boots on its own. You can
+   remove the USB once you've verified it.
+3. From now on, keep a backup of this EFI partition — the FAT volume gets flagged
+   `dirty` after unclean shutdowns (see "Maintenance tip" below).
+
+## 6. Post-install
+
+### 6a. OpenCore Legacy Patcher (WiFi + graphics) — REQUIRED
 
 This machine needs the OCLP root patch for **both WiFi and the HD 4600**:
 
-1. Download [OpenCore Legacy Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher)
-   (the GUI app) and open it.
-2. **Post-Install Root Patch** → it applies the patches for the **network**
-   (AirportItlwm-Mod → native AirPort) and the **graphics** (HD 4600).
+1. **Get OCLP before you need it:** WiFi is **not** working yet at this point, so
+   download [OpenCore Legacy Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher)
+   on **another machine** and transfer it via USB — **or** plug an Ethernet cable
+   (the Intel I217-V works out of the box with IntelMausi).
+2. Open the app → **Post-Install Root Patch** → it applies the patches for the
+   **network** (AirportItlwm-Mod → native AirPort) and the **graphics** (HD 4600).
 3. Reboot. WiFi shows up as a native AirPort interface and the UI is fully
    accelerated (blur, animations).
 
 > OCLP needs the root volume to be patchable — the config already keeps
 > `csr-active-config = 0x80003` and `amfi_get_out_of_my_way=1`.
 
-### 5b. ABNT2 keyboard remap
+### 6b. ABNT2 keyboard remap
 
 On a Brazilian ABNT2 keyboard the `?`/`/` key (and the `'`↔`\`, `"`↔`|` swaps)
-are wrong. The fix is a userspace remapper in this repo:
+are wrong. The fix is a userspace remapper in this repo — the folder is portable,
+keep it anywhere:
 
 ```bash
-cp -R keyboard-remap/05-remap-usuario "/Users/<you>/Documents/Default Project/remap-teclado/05-remap-usuario"
-cd "/Users/<you>/Documents/Default Project/remap-teclado/05-remap-usuario"
+cp -R keyboard-remap/05-remap-usuario ~/remap-teclado/05-remap-usuario
+cd ~/remap-teclado/05-remap-usuario
 ./instalar.sh
 ```
 
-Then add the binary to **System Settings → Privacy & Security → Accessibility**
-(the remap can't receive keys without it). Full docs: [`keyboard-remap/`](keyboard-remap/README.md).
+`instalar.sh` detects its own location and rewrites the LaunchAgent path — no
+editing needed. Then add the binary to **System Settings → Privacy & Security →
+Accessibility** (the remap can't receive keys without it). Full docs:
+[`keyboard-remap/`](keyboard-remap/README.md).
 
-### 5c. Optional tweaks
+### 6c. Optional tweaks
 
 - **TRIM** for the SSD: `sudo trimforce enable` (type `y` twice; auto-reboots).
 - **Direct boot** (skip the picker): see `hackintosh-t440p/04-direct-boot/`.
 
 ---
 
-## Specifications
+## Specifications (my machine)
 
 | Item | Value |
 |------|-------|
@@ -179,10 +224,10 @@ shutdowns and stops mounting — fix with
 
 ---
 
-## Key lessons
+## Key lessons I learned
 
 1. **Always back up `config.plist` (`config.plist.bak-<date>`) before editing it.**
-   A single backup restored the boot after USBInjectAll locked the machine.
+   A single backup restored my boot after USBInjectAll locked the machine.
 2. **Do not use legacy USB kexts (USBInjectAll 0.8.1) on Sonoma/Sequoia** — it breaks boot.
 3. **Do not fight EHCI on macOS 14/15** — Apple removed the driver; even the OCLP
    path panics. The legacy USB 2.0 port has no solution.
@@ -221,7 +266,7 @@ Ready-to-use EFI zips are published under
 [Releases](https://github.com/LeBritow/T440p-hackintosh-sonoma/releases):
 
 - **v1.0.0** — Sonoma 14.8.8 (OC 1.0.4) *(kept — for anyone installing Sonoma)*.
-- **v2.0.0** — Sequoia 15.7.8 (OC 1.0.7) *(pending)*.
+- **v2.0.0** — Sequoia 15.7.8 (OC 1.0.7).
 
 Generate your own SMBIOS before using them (see the SMBIOS notice above).
 

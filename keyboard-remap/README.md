@@ -109,10 +109,13 @@ Logs: `/tmp/remap-question.err.log` (shows each swap: `swap kc=... <down|up> '<c
 
 ### Installing from scratch (redone after the Sequoia fresh install)
 
-1. Copy the `05-remap-usuario/` folder to
-   `/Users/gustavobrito/Documents/Default Project/remap-teclado/05-remap-usuario/`
-   (the plist and `instalar.sh` hard-code this path).
-2. `./instalar.sh` — creates `~/Library/LaunchAgents`, copies the plist and runs
+The folder is **portable** — you can keep it anywhere (`instalar.sh` auto-detects
+its own location and rewrites the plist path at install time):
+
+1. Copy the `05-remap-usuario/` folder anywhere you like (e.g.
+   `~/remap-teclado/05-remap-usuario/`).
+2. `./instalar.sh` — creates `~/Library/LaunchAgents`, copies the plist, rewrites
+   the `ProgramArguments` path to the folder's real location and runs
    `launchctl load`.
 3. Add the `remap-question` binary to **System Settings → Privacy & Security →
    Accessibility** (once).
