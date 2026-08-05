@@ -69,7 +69,7 @@ The working Sequoia build (OC 1.0.7) loads 33 kexts. Key ones for Sequoia:
 | `AirportItlwm_Sequoia.kext` | Sequoia build of IntelWiFi — `MinKernel 24.0.0`; native AirPort after the OCLP post-install patch |
 | `AirportItlwm.kext` | Sonoma build kept with `MaxKernel 23.9.9` (fallback, unused on Sequoia) |
 | `IOSkywalkFamily.kext` / `IO80211FamilyLegacy.kext` | Required by the Sequoia WiFi kext (`MinKernel 24.0.0`) |
-| `AMFIPass.kext` | 1.4.0 — needs `-amfipassbeta`; keeps full GPU acceleration + blur on Haswell |
+| `AMFIPass.kext` | 1.4.0 — needs `-amfipassbeta`; enables GPU acceleration on Haswell (which OCLP then patches) |
 | `BrcmPatchRAM3.kext` | Broadcom firmware uploader (with `BlueToolFixup`) |
 | `Kernel.Block` | `com.apple.iokit.IOSkywalkFamily` blocked so the downgraded kext loads on Sequoia |
 

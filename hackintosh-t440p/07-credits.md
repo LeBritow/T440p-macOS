@@ -21,11 +21,11 @@ used here and you are not credited, open an issue and it will be fixed.
 | [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | Acidanthera | Event hiding/handling |
 | [BlueToolFixup](https://github.com/acidanthera/BrcmPatchRAM) | Acidanthera | Broadcom BT |
 | [BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM) | Acidanthera | Broadcom BT firmware |
-| [AMFIPass](https://github.com/ic005k/OpenCore-Mod) | ic005k / community | Bypass AMFI + `-amfipassbeta` (keeps HD 4600 acceleration on Sequoia) |
+| [AMFIPass](https://github.com/ic005k/OpenCore-Mod) | ic005k / community | Bypass AMFI + `-amfipassbeta` (lets the OCLP graphics patch work on Sequoia) |
 | [AirportItlwm](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Intel Wi-Fi (Sequoia build, native AirPort after OCLP patch) |
 | [IOSkywalkFamily](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Sequoia WiFi support (downgraded build, `Kernel.Block`) |
 | [IO80211FamilyLegacy](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Legacy IO80211 stack for Sequoia WiFi |
-| [OpenCore Legacy Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher) | Dortania | Post-install root patch → native AirPort on Sequoia |
+| [OpenCore Legacy Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher) | Dortania | Post-install root patch → native AirPort **and** HD 4600 graphics on Sequoia |
 | [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware) | OpenIntelWireless | Intel BT |
 | [VoodooPS2](https://github.com/acidanthera/VoodooPS2) | acidanthera / VoodooProjects | PS2 keyboard/trackpad |
 | [VoodooRMI](https://github.com/VoodooProjects/VoodooRMI) | VoodooProjects | Synaptics trackpad (RMI I2C/SMBus) |

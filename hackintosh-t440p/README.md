@@ -47,7 +47,8 @@ Share your fixes and ideas — see [`CONTRIBUTING.md`](../CONTRIBUTING.md).
    not mount, run the manual `fsck_msdos` (see [04-direct-boot](04-direct-boot/)).
 6. **Sequoia needs the Sequoia WiFi stack** (`AirportItlwm_Sequoia` +
    `IOSkywalkFamily`/`IO80211FamilyLegacy` + `Kernel.Block`) and `AMFIPass` +
-   `-amfipassbeta` for full graphics.
+   `-amfipassbeta`, plus the **OCLP post-install patch** (which patches both the
+   network and the HD 4600 graphics).
 
 ## Layout
 

@@ -14,7 +14,7 @@ README.
 |---|------|:-------:|---------|
 | 0 | ACPIBatteryManager | ✅ | Battery readout |
 | 1 | AirportItlwm | ✅ | Intel Wi-Fi (Sonoma build, `MaxKernel 23.9.9`) |
-| 2 | AMFIPass | ✅ | Bypass AMFI so HD 4600 stays fully accelerated |
+| 2 | AMFIPass | ✅ | Bypass AMFI so HD 4600 works with the OCLP graphics patch |
 | 3 | IOSkywalkFamily | ✅ | Sequoia WiFi support (`MinKernel 24.0.0`) |
 | 4 | IO80211FamilyLegacy | ✅ | Sequoia WiFi support (`MinKernel 24.0.0`) |
 | 5 | AirportItlwm_Sequoia | ✅ | Intel Wi-Fi, Sequoia build (`MinKernel 24.0.0`) |
@@ -74,7 +74,8 @@ the EFI) loads — required for WiFi on Sequoia.
 keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1
 ```
 
-- `-amfipassbeta` — required by `AMFIPass` 1.4.0; keeps GPU acceleration on Haswell.
+- `-amfipassbeta` — required by `AMFIPass` 1.4.0; lets the HD 4600 work with the
+  OCLP graphics patch.
 - `revpatch=sbvmm` — fixes Software Update / OS selection in the App Store.
 - `keepsyms` — keeps symbols in panics.
 - `csr-active-config = 0x80003` (nvram `%03%08%00%00`) — root volume patchable

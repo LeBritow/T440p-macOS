@@ -62,12 +62,13 @@ HD 4600) is supported.
    - `AirportItlwm` → **`AirportItlwm_Sequoia`** (Sequoia build, `MinKernel 24.0.0`)
      + `IOSkywalkFamily` + `IO80211FamilyLegacy` (+ `Kernel.Block` on the system
      `IOSkywalkFamily`). The Sonoma `AirportItlwm` stays with `MaxKernel 23.9.9`.
-   - `AMFIPass` 1.4.0 + boot arg **`-amfipassbeta`** → full GPU acceleration and
-     blur kept on the HD 4600, **no OCLP graphics patch** needed.
+   - `AMFIPass` 1.4.0 + boot arg **`-amfipassbeta`** → supports GPU acceleration on
+     the HD 4600 (which OCLP then patches).
    - `BrcmPatchRAM3` (with `BlueToolFixup`) for the Broadcom BT — same as Sonoma.
    - Realtek SD kexts dropped from the Sequoia build (still disabled anyway).
-4. **WiFi = native AirPort** after running the **OCLP post-install patch** (the
-   `AirportItlwm-Mod` build). No root volume patch for graphics.
+4. **OCLP post-install patch** ran on the sealed root volume and patched **both**:
+   - **network** (`AirportItlwm-Mod` build) → WiFi runs as native AirPort;
+   - **graphics** (HD 4600) → full acceleration + blur/animations.
 5. `csr-active-config` stays `0x80003` (`%03%08%00%00`), boot args
    `keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1`.
 

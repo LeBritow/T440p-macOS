@@ -15,7 +15,7 @@ with the same laptop (or any Haswell / Intel 8-series chipset).
 |-----------|--------|
 | Boot | OpenCore picker shown at power-on (5 s timeout; select **macOS**) |
 | Wi-Fi / Bluetooth / Ethernet / Audio | ✅ Working |
-| Graphics | ✅ Full acceleration + blur/animations — HD 4600 works natively via `-amfipassbeta` (no OCLP graphics patch) |
+| Graphics | ✅ Full acceleration + blur/animations — HD 4600 with OCLP post-install patch + `-amfipassbeta` |
 | Left-side USB port (below the SD reader) | 🔌 **Dead** — EHCI controller, driver removed in macOS 14/15 (no solution) |
 | SD card reader (RTS5227) | 🔇 **Disabled** — both drivers caused boot/wake/shutdown panics |
 | ABNT2 keyboard (`?`→`/`) | ✅ Fixed with a userspace remapper (see `keyboard-remap/`) |
@@ -64,13 +64,14 @@ What was needed to get from Sonoma to Sequoia:
   upgraded in place and the root volume is sealed)
 - New/changed kexts for Sequoia:
   - `AirportItlwm_Sequoia` (Sequoia build) + `IOSkywalkFamily` + `IO80211FamilyLegacy`
-  - `AMFIPass` (1.4.0) with `-amfipassbeta` — keeps full graphics acceleration and
-    blur on Haswell without an OCLP graphics patch
+  - `AMFIPass` (1.4.0) with `-amfipassbeta` — supports full GPU acceleration on
+    Haswell (patched by OCLP)
   - `BrcmPatchRAM3` replaced `BrcmFirmwareRepo`/`IntelBluetoothFirmware`-based
     Broadcom handling (BlueToolFixup kept)
   - `IOSkywalkFamily` downgrade blocked via `Kernel.Block` for Sequoia
-- WiFi in Sequoia runs as **native AirPort** thanks to the **OCLP post-install
-  patch** (one click, no graphics patch needed)
+- **OCLP post-install patch** ran on the sealed root volume and patched **both**:
+  - **network** (AirportItlwm-Mod) → WiFi works as native AirPort
+  - **graphics** (HD 4600) → full acceleration + blur/animations
 - csr-active-config stays `0x80003` (root patchable + `-amfipassbeta`)
 
 The full upgrade log is in [`06-post-install/`](hackintosh-t440p/06-post-install/README.md).
