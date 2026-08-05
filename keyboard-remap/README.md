@@ -1,6 +1,9 @@
 # ThinkPad T440p ABNT2 Keyboard Remapping (Hackintosh)
 
-**Status: WORKING** — the `?` key types `/` (and `?` with Shift), via a userspace remapper.
+**Status: WORKING (Sequoia 15.7.8).** The `?` key types `/` (and `?` with Shift),
+via a userspace remapper. The LaunchAgent does **not** survive a fresh macOS
+install — after the Sequoia reinstall it was re-installed from `05-remap-usuario/`
+(see "Installing from scratch").
 
 ## The problem
 
@@ -43,9 +46,10 @@ via `CGEventKeyboardSetUnicodeString`.
 ```
 05-remap-usuario/
   remap-question.c     C source (single binary, no dependencies)
-  remap-question       compiled AND SIGNED binary
+  remap-question       compiled AND SIGNED binary (what the LaunchAgent runs)
+  remap-question.py    minimal Python reference (`?`/`/` only)
   com.gustavo.remap-question.plist   LaunchAgent (runs at login, KeepAlive)
-  instalar.sh          copies plist + launchctl load
+  instalar.sh          creates ~/Library/LaunchAgents + copies plist + launchctl load
   remover.sh           launchctl unload + remove
 ```
 
@@ -74,34 +78,51 @@ need to be identified: `'` only comes from kc=50, and `\` comes from a single ot
 
 ## Important technical details
 
-- **Signing (codesign):** the binary is signed with the self-signed certificate
-  `RemapQuestion Local Signing` (created via openssl, imported into the login
-  keychain). WITHOUT this, every recompile changes the cdhash and macOS revokes
-  the Accessibility permission. With a fixed signature, recompiling does not lose
-  the permission.
+- **Signing (codesign):** the binary is ad-hoc signed (`codesign -s -`) with
+  identifier `com.gustavo.remap-question`. The original self-signed certificate
+  `RemapQuestion Local Signing` is **no longer in the keychain** (was lost along
+  the way). Because macOS keys Accessibility on the **cdhash**, every recompile
+  revokes the permission and the binary must be **re-added** to Acessibilidade once.
 - **Anti-loop:** injected events go to `kCGSessionEventTap` (below our HID tap) and
   receive the marker `kCGEventSourceUserData = 0x524D5031`. The callback ignores
   events with this marker. Without this, injecting `'`/`\` would re-enter our own
   tap → infinite loop (documented: first real bug, flooded the log).
-- **Accessibility permission:** granted once on the signed binary (valid forever).
+- **Accessibility permission:** granted once per binary build. After a recompile
+  the cdhash changes → macOS revokes it → grant again (one time).
+- **Keyup (Sequoia fix, 2026-08-05):** the char-swap path originally posted **only
+  the keydown** of the replacement character and swallowed the keyup. On Sequoia
+  the app then showed the **original** character (`'` for the `\`-labeled key). The
+  fix mirrors the `?`/`/` path: post the replacement keydown **and** keyup
+  (`post_char(repl, type == kCGEventKeyDown)`), swallowing both. This is why a
+  recompile + re-grant was needed.
 
 ### Recompile after changing the code (recipe)
 
 ```
 clang -O2 -framework ApplicationServices -framework CoreFoundation -Wall -o remap-question remap-question.c
-codesign --force --sign "RemapQuestion Local Signing" --identifier com.gustavo.remap-question remap-question
+codesign --force -s - --identifier com.gustavo.remap-question remap-question
 launchctl unload ~/Library/LaunchAgents/com.gustavo.remap-question.plist
 launchctl load   ~/Library/LaunchAgents/com.gustavo.remap-question.plist
+# then re-add the binary to Acessibilidade (cdhash changed)
 ```
-Logs: `/tmp/remap-question.err.log` (shows each swap: `swap kc=...`).
+Logs: `/tmp/remap-question.err.log` (shows each swap: `swap kc=... <down|up> '<c>' -> '<c>'`).
 
-### Installing from scratch (already done on this machine)
+### Installing from scratch (redone after the Sequoia fresh install)
 
-1. Compile + sign (recipe above).
-2. `./instalar.sh`
+1. Copy the `05-remap-usuario/` folder to
+   `/Users/gustavobrito/Documents/Default Project/remap-teclado/05-remap-usuario/`
+   (the plist and `instalar.sh` hard-code this path).
+2. `./instalar.sh` — creates `~/Library/LaunchAgents`, copies the plist and runs
+   `launchctl load`.
 3. Add the `remap-question` binary to **System Settings → Privacy & Security →
    Accessibility** (once).
    > Repo path: `keyboard-remap/05-remap-usuario/remap-question`
+   > Until granted, the agent restarts in a loop and logs
+   > `event tap falhou (sem Acessibilidade)` to `/tmp/remap-question.err.log`.
+
+> The old `.py` in this folder is a minimal reference implementation (`?`/`/` only).
+> The production remapper is the C binary, which also does `'↔\`, `"↔|`,
+> Alt-Tab→Cmd-Tab and the contextual Delete.
 
 ## Key history (ABNT2 calibration)
 

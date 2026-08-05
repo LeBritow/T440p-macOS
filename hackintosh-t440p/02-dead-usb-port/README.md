@@ -1,7 +1,8 @@
-# Dead Left-Side USB Port (Below the SD Reader) — Diagnosis: EHCI, no solution on Sonoma
+# Dead Left-Side USB Port (Below the SD Reader) — Diagnosis: EHCI, no solution on Sonoma/Sequoia
 
 **Status: NO SOLUTION.** The port is controlled by the **EHCI** controller, whose
-driver Apple removed in macOS 14. Accepted as a hardware limitation.
+driver Apple removed in macOS 14 (still absent on Sequoia 15). Accepted as a
+hardware limitation.
 
 ## The problem
 

@@ -3,11 +3,12 @@ set -e
 SRC="/Users/gustavobrito/Documents/Default Project/remap-teclado/05-remap-usuario"
 DEST="$HOME/Library/LaunchAgents/com.gustavo.remap-question.plist"
 
-chmod +x "$SRC/remap-question.py"
+mkdir -p "$HOME/Library/LaunchAgents"
+chmod +x "$SRC/remap-question"
 cp "$SRC/com.gustavo.remap-question.plist" "$DEST"
 launchctl unload "$DEST" 2>/dev/null || true
 launchctl load "$DEST"
 echo "Instalado. Remapeador ativo (inicia no login automaticamente)."
-echo "Se a '?' nao funcionar: verifique Acessibilidade em"
+echo "Se a '?' nao funcionar: adicione o binario em Acessibilidade:"
 echo "  System Settings > Privacidade e Seguranca > Acessibilidade"
-echo "  e adicione: /usr/bin/python3"
+echo "  $SRC/remap-question"

@@ -11,7 +11,7 @@
 | iGPU | Intel HD Graphics 4600 | 1536 MB dynamic VRAM, Metal 2 |
 | Memory | 16 GB | |
 | Storage | 240 GB SATA SSD | GUID partition, APFS (Container `disk1`) |
-| Wi-Fi | Intel (802.11 a/b/g/n) | e.g. Centrino Wireless-N 7260 |
+| Wi-Fi | Intel Centrino 6235 (802.11 a/b/g/n) | `AirportItlwm_Sequoia` |
 | Bluetooth | Broadcom BCM_4350C2 | Identified as Apple (0x004C) |
 | Ethernet | Intel (I217-V) | |
 | Audio | Realtek ALC (integrated) | `AppleALC` + `CodecCommander` |
@@ -48,13 +48,29 @@ the dead port was identified as EHCI (see `02-dead-usb-port/`).
 
 | Item | Value |
 |------|-------|
-| macOS | 14.8.8 (Sonoma, build `23J620`) |
-| OpenCore | REL-104-2025-03-04 (**1.0.4**) |
+| macOS | 15.7.8 (Sequoia, build `24G824`) |
+| OpenCore | REL-107-2025-06-26 (**1.0.7**) |
 | SMBIOS | `MacBookPro16,1` |
-| Boot args | `keepsyms=1 amfi_get_out_of_my_way=1 revpatch=sbvmm` |
+| SIP / CSR | `csr-active-config = 0x80003` (nvram: `%03%08%00%00`) |
+| Boot args | `keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1` |
 
 ## EFI layout
 
 - EFI at `/Volumes/EFI/EFI/OC` (msdos/FAT32 partition `disk0s1`, 209 MB).
-- Boot picker disabled (`ShowPicker=false`, `Timeout=0`) — boots straight to macOS.
-- Hold **Esc** at power-on to reach the picker.
+- Boot picker shown (`ShowPicker=true`, `Timeout=5`) — select **macOS** to boot.
+- Snapshot of this EFI (placeholder SMBIOS): [`../efi-sequoia-15.7.8/`](../efi-sequoia-15.7.8/).
+
+## Sequoia-specific kext set
+
+The working Sequoia build (OC 1.0.7) loads 33 kexts. Key ones for Sequoia:
+
+| Kext | Notes |
+|------|-------|
+| `AirportItlwm_Sequoia.kext` | Sequoia build of IntelWiFi — `MinKernel 24.0.0`; native AirPort after the OCLP post-install patch |
+| `AirportItlwm.kext` | Sonoma build kept with `MaxKernel 23.9.9` (fallback, unused on Sequoia) |
+| `IOSkywalkFamily.kext` / `IO80211FamilyLegacy.kext` | Required by the Sequoia WiFi kext (`MinKernel 24.0.0`) |
+| `AMFIPass.kext` | 1.4.0 — needs `-amfipassbeta`; keeps full GPU acceleration + blur on Haswell |
+| `BrcmPatchRAM3.kext` | Broadcom firmware uploader (with `BlueToolFixup`) |
+| `Kernel.Block` | `com.apple.iokit.IOSkywalkFamily` blocked so the downgraded kext loads on Sequoia |
+
+Full reference: [`../05-open-core-config/`](../05-open-core-config/).

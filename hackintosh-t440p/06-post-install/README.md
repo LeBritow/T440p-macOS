@@ -1,9 +1,9 @@
-# Post-install, maintenance and roadmap
+# Post-install, maintenance and upgrade log
 
 Post-stabilization work and notes: TRIM, system monitoring, EFI maintenance and
-the planned upgrade to Sequoia.
+the completed Sequoia upgrade.
 
-## TRIM on the SSD (recommended)
+## TRIM on the SSD (recommended — currently OFF on this machine)
 
 Non-Apple SSDs ship with TRIM disabled on macOS (`system_profiler SPSerialATADataType`
 → `No`). Enabling it prevents gradual performance degradation over time:
@@ -13,9 +13,10 @@ sudo trimforce enable    # type "y" twice — it reboots automatically
 ```
 
 - The OpenCore `ThirdPartyDrives` quirk is **ignored on Sonoma+** (only applied up
-  to macOS 10.15). On Sonoma the only path is `trimforce`.
+  to macOS 10.15). On Sonoma/Sequoia the only path is `trimforce`.
 - Verify with: `system_profiler SPSerialATADataType | grep TRIM` → `Yes`.
-- On this machine it was enabled and the system felt noticeably more responsive.
+- On this machine it was enabled (Sonoma) and the system felt noticeably more
+  responsive. **Not yet re-enabled after the Sequoia reinstall.**
 
 ## Monitoring (CPU / RAM / temps / fan)
 
@@ -44,25 +45,45 @@ sudo fsck_msdos -y /dev/rdisk0s1 && sudo diskutil mount disk0s1
 Golden rule: **always** `cp config.plist config.plist.bak-$(date +%Y%m%d-%H%M%S)`
 before touching the config.
 
-## Roadmap: upgrade to macOS Sequoia (15)
+## Sequoia upgrade — DONE (Sonoma 14.8.8 → Sequoia 15.7.8)
 
 Motivation: current iMovie and other apps require macOS 15; the T440p (Haswell
 HD 4600) is supported.
 
-> **Not yet executed** — planned, with the safe steps defined:
+**Result:** Sequoia 15.7.8 (build 24G824) is stable and in daily use.
 
-1. **Time Machine backup** first (safety net to return to the current state).
-2. **Update OpenCore + kexts** while still on Sonoma, and test boot:
-   - `AirportItlwm` → the **Sequoia build (2.4.x)** — 2.3.0 is the Sonoma build
-     and kills Wi-Fi on Sequoia.
-   - `Lilu`, `WhateverGreen`, `AppleALC` → latest versions.
-   - `OpenCore` 1.0.4 → latest available.
-3. **OTA**: Settings → Software Update (SMBIOS `MacBookPro16,1` + boot arg
-   `revpatch=sbvmm` already allow OTA).
-4. **Post-upgrade**: verify Wi-Fi/audio/USB/battery; reinstall Stats if needed.
+### What happened
 
-Returning to Sonoma is possible (restore the old EFI + Time Machine restore), so
-the upgrade does not "burn the bridge".
+1. **In-place upgrade failed** — the OTA/upgrader kept failing (sealed root volume
+   + legacy kernel extensions), so the route was a **fresh install** from a USB
+   stick (macrecovery → Install macOS Sequoia), overwriting the Sonoma install.
+2. **OpenCore 1.0.4 → 1.0.7**, SMBIOS kept at `MacBookPro16,1`.
+3. **Kexts updated/changed for Sequoia:**
+   - `AirportItlwm` → **`AirportItlwm_Sequoia`** (Sequoia build, `MinKernel 24.0.0`)
+     + `IOSkywalkFamily` + `IO80211FamilyLegacy` (+ `Kernel.Block` on the system
+     `IOSkywalkFamily`). The Sonoma `AirportItlwm` stays with `MaxKernel 23.9.9`.
+   - `AMFIPass` 1.4.0 + boot arg **`-amfipassbeta`** → full GPU acceleration and
+     blur kept on the HD 4600, **no OCLP graphics patch** needed.
+   - `BrcmPatchRAM3` (with `BlueToolFixup`) for the Broadcom BT — same as Sonoma.
+   - Realtek SD kexts dropped from the Sequoia build (still disabled anyway).
+4. **WiFi = native AirPort** after running the **OCLP post-install patch** (the
+   `AirportItlwm-Mod` build). No root volume patch for graphics.
+5. `csr-active-config` stays `0x80003` (`%03%08%00%00`), boot args
+   `keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1`.
+
+### After the reinstall (checklist, machine-specific)
+
+- [x] WiFi (native AirPort via en1) — **192.168.1.206**
+- [x] Bluetooth, Ethernet, Audio, Battery, Trackpad
+- [x] GPU acceleration (Metal 2, 1536 MB) + blur/animations
+- [x] **ABNT2 remap reinstalled** (LaunchAgent did not survive the fresh install —
+      see `keyboard-remap/`); still needs **Acessibilidade** permission granted
+      in System Settings → Privacy & Security → Accessibility
+- [ ] **TRIM re-enabled** (`sudo trimforce enable`)
+- [ ] Optional: re-enable direct boot (`04-direct-boot/`) if desired
+
+Returning to Sonoma is still possible (restore the old EFI + Time Machine), so
+the upgrade did not "burn the bridge".
 
 ## Ports and hardware — practical summary
 
@@ -70,10 +91,10 @@ the upgrade does not "burn the bridge".
 |------|-----------|
 | **Right-side** USB (Always-On) | ✅ Working |
 | Left **USB 3.0** (top/bottom) | ✅ Working |
-| **Left-side** USB (below SD) | 🔌 Dead — EHCI without driver on Sonoma |
+| **Left-side** USB (below SD) | 🔌 Dead — EHCI without driver on macOS 14/15 |
 | **SD** card reader (RTS5227) | 🔇 Disabled (kexts panicked on boot/wake/shutdown) |
 | Wi-Fi / BT / Audio / Ethernet / Battery | ✅ Working |
-| Boot | Direct to logo; **Esc** at power-on = menu |
+| Boot | Picker shown (5 s), select **macOS** |
 
 ## Backup
 

@@ -1,8 +1,13 @@
 # Direct Boot to the Apple Logo (boot picker disabled)
 
-**Status: APPLIED.** OpenCore skips the boot menu and boots straight into macOS.
+**Status: OPTION — currently NOT applied.** The production Sequoia config keeps the
+picker **enabled** (`ShowPicker=true`, `Timeout=5`) and selects **macOS** at
+power-on. Direct boot was applied during the Sonoma era, then reverted while
+reinstalling Sequoia. This page documents how to re-enable it.
 
 ## Config changes
+
+To boot straight into macOS:
 
 ```
 Misc → Boot → ShowPicker = false

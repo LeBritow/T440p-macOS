@@ -11,7 +11,7 @@ laptop (or a similar Haswell / Intel 8-series machine), your experience is valua
 | Report a bug / symptom | Open an **issue** |
 | Share a solution or idea | Open an **issue** or a **discussion** |
 | Fix a typo or add documentation | Open a **pull request** |
-| Follow / help with the Sequoia upgrade | See **issue #1** (macOS Sequoia support) |
+| Help on another macOS version | Open a **discussion** or an **issue** |
 
 > **Discussions** are enabled — use them for ideas, general questions and "hey,
 > this worked for me" reports that don't fit an issue.
@@ -21,7 +21,7 @@ laptop (or a similar Haswell / Intel 8-series machine), your experience is valua
 Before opening an issue, search the existing ones. When you report, include:
 
 - **Exact symptom** — what happens, when (boot / sleep / wake / shutdown / app).
-- **macOS version** and **build** (e.g. `14.8.8 (23J620)`).
+- **macOS version** and **build** (e.g. `15.7.8 (24G824)`).
 - **OpenCore version** and which `config.plist` (production vs snapshot).
 - **SMBIOS** model used (e.g. `MacBookPro16,1`).
 - **Kexts involved** (names + versions from the config).

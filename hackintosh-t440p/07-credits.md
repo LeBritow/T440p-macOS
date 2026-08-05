@@ -8,7 +8,7 @@ used here and you are not credited, open an issue and it will be fixed.
 
 | Project | Author(s) | Used for |
 |---------|-----------|----------|
-| [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg) | Acidanthera | Bootloader (1.0.4) |
+| [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg) | Acidanthera | Bootloader (1.0.7) |
 | [Lilu](https://github.com/acidanthera/Lilu) | Acidanthera | Base patching framework |
 | [WhateverGreen](https://github.com/acidanthera/WhateverGreen) | Acidanthera | GPU (HD 4600) |
 | [VirtualSMC](https://github.com/acidanthera/VirtualSMC) | Acidanthera | SMC emulation |
@@ -21,7 +21,11 @@ used here and you are not credited, open an issue and it will be fixed.
 | [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | Acidanthera | Event hiding/handling |
 | [BlueToolFixup](https://github.com/acidanthera/BrcmPatchRAM) | Acidanthera | Broadcom BT |
 | [BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM) | Acidanthera | Broadcom BT firmware |
-| [AirportItlwm](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Intel Wi-Fi (2.3.0, Sonoma build) |
+| [AMFIPass](https://github.com/ic005k/OpenCore-Mod) | ic005k / community | Bypass AMFI + `-amfipassbeta` (keeps HD 4600 acceleration on Sequoia) |
+| [AirportItlwm](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Intel Wi-Fi (Sequoia build, native AirPort after OCLP patch) |
+| [IOSkywalkFamily](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Sequoia WiFi support (downgraded build, `Kernel.Block`) |
+| [IO80211FamilyLegacy](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Legacy IO80211 stack for Sequoia WiFi |
+| [OpenCore Legacy Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher) | Dortania | Post-install root patch → native AirPort on Sequoia |
 | [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware) | OpenIntelWireless | Intel BT |
 | [VoodooPS2](https://github.com/acidanthera/VoodooPS2) | acidanthera / VoodooProjects | PS2 keyboard/trackpad |
 | [VoodooRMI](https://github.com/VoodooProjects/VoodooRMI) | VoodooProjects | Synaptics trackpad (RMI I2C/SMBus) |

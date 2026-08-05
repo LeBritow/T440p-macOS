@@ -13,6 +13,22 @@ static bool del_consumed = false;
 static bool alt_down = false;
 static bool cmd_held = false;
 
+static const char *tname(CGEventType t)
+{
+    switch (t)
+    {
+    case kCGEventKeyDown: return "down";
+    case kCGEventKeyUp: return "up";
+    case kCGEventFlagsChanged: return "flags";
+    default: return "?";
+    }
+}
+
+static bool is_swap_key(CGKeyCode kc)
+{
+    return kc == 10 || kc == 50;
+}
+
 static bool frontmost_is_finder(void)
 {
     CFArrayRef list = CGWindowListCopyWindowInfo(
@@ -86,9 +102,13 @@ static bool swap_char(UniChar in, UniChar *out)
 static CGEventRef tap_cb(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon)
 {
     (void)proxy; (void)refcon;
-    if (CGEventGetIntegerValueField(event, kCGEventSourceUserData) == MY_MARKER)
-        return event;
     CGKeyCode kc = (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
+    if (CGEventGetIntegerValueField(event, kCGEventSourceUserData) == MY_MARKER)
+    {
+        if (is_swap_key(kc) || kc == 62)
+            fprintf(stderr, "marker  kc=%3d %s\n", (int)kc, tname(type));
+        return event;
+    }
     CGEventFlags fl = CGEventGetFlags(event);
 
     if (type == kCGEventFlagsChanged && (kc == 58 || kc == 61))
@@ -160,16 +180,15 @@ static CGEventRef tap_cb(CGEventTapProxy proxy, CGEventType type, CGEventRef eve
     UniChar uc[8];
     UniCharCount n = 0;
     CGEventKeyboardGetUnicodeString(event, 8, &n, uc);
+    if (is_swap_key(kc) && n != 1)
+        fprintf(stderr, "nonswap kc=%3d %s n=%lu\n", (int)kc, tname(type), (unsigned long)n);
     if (n == 1)
     {
         UniChar repl;
         if (swap_char(uc[0], &repl))
         {
-            if (type == kCGEventKeyDown)
-            {
-                fprintf(stderr, "swap kc=%d '%c' -> '%c'\n", kc, (int)uc[0], (int)repl);
-                post_char(repl, true);
-            }
+            fprintf(stderr, "swap kc=%3d %s '%c' -> '%c'\n", (int)kc, tname(type), (int)uc[0], (int)repl);
+            post_char(repl, type == kCGEventKeyDown);
             return NULL;
         }
     }
