@@ -220,9 +220,8 @@ keyboard-remap/          ABNT2 keyboard remapper (C + LaunchAgent)
 Ready-to-use EFI zips are published under
 [Releases](https://github.com/LeBritow/T440p-hackintosh-sonoma/releases):
 
-- **v1.0.0** — Sonoma 14.8.8 (OC 1.0.4).
-- **v1.0.0** — Sequoia 15.7.8 (OC 1.0.7) *(replaces the Sonoma release once the
-  repo is renamed to `T440p-hackintosh-sequoia`)*.
+- **v1.0.0** — Sonoma 14.8.8 (OC 1.0.4) *(kept — for anyone installing Sonoma)*.
+- **v2.0.0** — Sequoia 15.7.8 (OC 1.0.7) *(pending)*.
 
 Generate your own SMBIOS before using them (see the SMBIOS notice above).
 
