@@ -9,6 +9,7 @@ same laptop (or the same Haswell / 8-series chipset) and the same symptoms.
 | Issue | Status | Solution |
 |-------|--------|----------|
 | [Dead left-side USB port (below the SD reader)](02-dead-usb-port/) | 🚫 **No solution** | It is **EHCI**; macOS 14/15 removed the driver. Accepted as dead |
+| [Bluetooth — Intel chip unsupported](08-bluetooth/) | 🔇 **Dead** | `0x8087:0x07DA` not supported by IntelBluetoothFirmware; no Broadcom present |
 | [SD card reader (RTS5227)](03-sd-card-reader/) | 🔇 Disabled | Both kexts panicked (boot/wake/shutdown); reader disabled |
 | [Direct boot to logo (no menu)](04-direct-boot/) | ✅ Option (picker on) | `ShowPicker=true`/`Timeout=5` now; direct boot via **Esc** recipe documented |
 | [EFI won't mount (FAT dirty)](04-direct-boot/) | ✅ Manual fix | `sudo fsck_msdos -y /dev/rdisk0s1` |
@@ -47,8 +48,14 @@ Share your fixes and ideas — see [`CONTRIBUTING.md`](../CONTRIBUTING.md).
    not mount, run the manual `fsck_msdos` (see [04-direct-boot](04-direct-boot/)).
 6. **Sequoia needs the Sequoia WiFi stack** (`AirportItlwm_Sequoia` +
    `IOSkywalkFamily`/`IO80211FamilyLegacy` + `Kernel.Block`) and `AMFIPass` +
-   `-amfipassbeta`, plus the **OCLP post-install patch** (which patches both the
-   network and the HD 4600 graphics).
+   `-amfipassbeta`, plus the **OCLP-Mod post-install patch** (which patches both
+   the network and the HD 4600 graphics). On Sequoia you **must** use **OCLP-Mod**
+   (`laobamac/OCLP-Mod`) — the standard OCLP is only for Sonoma. Run the root
+   patch **only after** the Sonoma → Sequoia upgrade finishes.
+7. **Bluetooth on the stock Intel combo card (`0x8087:0x07DA`) is dead by
+   hardware** — `IntelBluetoothFirmware` has no personality for it and there is
+   no Broadcom to patch. The "BCM_4350C2" in `system_profiler` is a phantom
+   report. See [08-bluetooth/](08-bluetooth/).
 
 ## Layout
 
@@ -60,6 +67,7 @@ Share your fixes and ideas — see [`CONTRIBUTING.md`](../CONTRIBUTING.md).
 05-open-core-config/    production config.plist + kext/quirk reference
 06-post-install/        TRIM, monitoring, EFI maintenance, Sequoia upgrade log
 07-credits.md           credits for every kext/driver/tool used
+08-bluetooth/           Bluetooth investigation (unsupported Intel chip, accepted dead)
 efi-sonoma-14.8.8/      snapshot of the working EFI (Sonoma, OC 1.0.4)
 efi-sequoia-15.7.8/     snapshot of the working EFI (Sequoia, OC 1.0.7)
 ```

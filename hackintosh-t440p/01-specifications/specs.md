@@ -12,7 +12,7 @@
 | Memory | 16 GB | |
 | Storage | 240 GB SATA SSD | GUID partition, APFS (Container `disk1`) |
 | Wi-Fi | Intel Centrino 6235 (802.11 a/b/g/n) | `AirportItlwm_Sequoia` |
-| Bluetooth | Broadcom BCM_4350C2 | Identified as Apple (0x004C) |
+| Bluetooth | Intel `0x8087:0x07DA` (combo-card radio) | **Unsupported, dead** — see [08-bluetooth/](../08-bluetooth/) |
 | Ethernet | Intel (I217-V) | |
 | Audio | Realtek ALC (integrated) | `AppleALC` + `CodecCommander` |
 | SD reader | Realtek RTS5227 | `pci10ec,5227` — left side |

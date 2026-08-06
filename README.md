@@ -16,7 +16,8 @@ I use daily, exported from my machine.
 | Component | Status |
 |-----------|--------|
 | Boot | OpenCore picker shown at power-on (5 s timeout; select **macOS**) |
-| Wi-Fi / Bluetooth / Ethernet / Audio | ✅ Working |
+| Wi-Fi / Ethernet / Audio | ✅ Working |
+| Bluetooth | 🔇 **Dead** — Intel chip `0x8087:0x07DA` unsupported by `IntelBluetoothFirmware` (no personality for it); no Broadcom present either. Docs: `hackintosh-t440p/08-bluetooth/` |
 | Graphics | ✅ Full acceleration + blur/animations — HD 4600 with OCLP post-install patch + `-amfipassbeta` |
 | Left-side USB port (below the SD reader) | 🔌 **Dead** — EHCI controller, driver removed in macOS 14/15 (no solution) |
 | SD card reader (RTS5227) | 🔇 **Disabled** — both drivers caused boot/wake/shutdown panics |
@@ -143,14 +144,30 @@ SSD self-booting. After the first successful boot:
 
 ## 6. Post-install
 
-### 6a. OpenCore Legacy Patcher (WiFi + graphics) — REQUIRED
+### 6a. OCLP / OCLP-Mod root patch (WiFi + graphics) — REQUIRED
 
-This machine needs the OCLP root patch for **both WiFi and the HD 4600**:
+This machine needs the root patch for **both WiFi and the HD 4600** — but you
+must pick the right tool for the macOS version:
 
-1. **Get OCLP before you need it:** WiFi is **not** working yet at this point, so
-   download [OpenCore Legacy Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher)
-   on **another machine** and transfer it via USB — **or** plug an Ethernet cable
-   (the Intel I217-V works out of the box with IntelMausi).
+- **On Sonoma** — the **standard OCLP**
+  ([dortania/OpenCore-Legacy-Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher))
+  works fine.
+- **On Sequoia** — you **must use OCLP-Mod**
+  ([laobamac/OCLP-Mod](https://github.com/laobamac/OCLP-Mod)). The standard OCLP
+  does **not** patch Sequoia properly.
+
+**Order is critical:** run the **Post-Install Root Patch only after** the
+Sonoma → Sequoia upgrade (if you're going to Sequoia) has **finished** — i.e.
+after you're already booted into the final macOS you'll keep. The patch is tied
+to the running macOS version and re-seals the root volume; applying the wrong
+version's patch (or patching Sonoma while planning to upgrade to Sequoia) breaks
+the system and can force a fresh install.
+
+Steps:
+
+1. **Get it before you need it:** WiFi is **not** working yet at this point, so
+   download OCLP/OCLP-Mod on **another machine** and transfer it via USB — **or**
+   plug an Ethernet cable (the Intel I217-V works out of the box with IntelMausi).
 2. Open the app → **Post-Install Root Patch** → it applies the patches for the
    **network** (AirportItlwm-Mod → native AirPort) and the **graphics** (HD 4600).
 3. Reboot. WiFi shows up as a native AirPort interface and the UI is fully
@@ -193,7 +210,7 @@ Accessibility** (the remap can't receive keys without it). Full docs:
 | RAM | 16 GB |
 | Storage | 240 GB SATA SSD (APFS, GUID) |
 | Wi-Fi | Intel Centrino 6235 — driven by `AirportItlwm_Sequoia` (native AirPort via OCLP post-install patch) |
-| Bluetooth | Broadcom **BCM_4350C2** — driven by BrcmPatchRAM3 |
+| Bluetooth | Intel `0x8087:0x07DA` (combo-card radio) — **unsupported, dead**. No Broadcom present |
 | Ethernet | Intel (I217-V) — driven by IntelMausi |
 | Audio | Realtek ALC — AppleALC + CodecCommander |
 | SD reader | Realtek **RTS5227** (`pci10ec,5227`) — **disabled** |
@@ -216,6 +233,7 @@ Detailed specs: [`01-specifications/`](hackintosh-t440p/01-specifications/specs.
 | Direct boot (`ShowPicker=false`) + dirty-EFI repair | ✅ Solved | [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
 | Production `config.plist` + kext/quirk reference | ✅ | [`05-open-core-config/`](hackintosh-t440p/05-open-core-config/) |
 | Post-install: TRIM, monitoring, EFI maintenance, Sequoia upgrade log | ✅ | [`06-post-install/`](hackintosh-t440p/06-post-install/) |
+| Bluetooth (Intel `0x07DA`) — unsupported chip, no driver matches; `bluetoothd` crash loop | 🔇 Accepted | [`08-bluetooth/`](hackintosh-t440p/08-bluetooth/) |
 | ABNT2 keyboard remap (`?`/`/`, `'`/`\`, Delete, Cmd+Tab) | ✅ Solved | [`keyboard-remap/`](keyboard-remap/README.md) |
 
 **Maintenance tip:** the EFI partition (FAT) gets flagged `dirty` after unclean
@@ -255,6 +273,7 @@ hackintosh-t440p/        Full project documentation
   ├── 05-open-core-config/
   ├── 06-post-install/
   ├── 07-credits.md       Credits for every kext/driver/tool used
+  ├── 08-bluetooth/       Bluetooth investigation (unsupported Intel chip, accepted dead)
   ├── efi-sonoma-14.8.8/  Snapshot of the working EFI (Sonoma, OC 1.0.4)
   └── efi-sequoia-15.7.8/ Snapshot of the working EFI (Sequoia, OC 1.0.7)
 keyboard-remap/          ABNT2 keyboard remapper (C + LaunchAgent)

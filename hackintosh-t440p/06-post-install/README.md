@@ -52,6 +52,19 @@ HD 4600) is supported.
 
 **Result:** Sequoia 15.7.8 (build 24G824) is stable and in daily use.
 
+### OCLP vs OCLP-Mod — pick the right build (and the right moment)
+
+- **Sonoma:** the **standard OCLP**
+  ([dortania/OpenCore-Legacy-Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher))
+  works fine.
+- **Sequoia:** you **must** use **OCLP-Mod**
+  ([laobamac/OCLP-Mod](https://github.com/laobamac/OCLP-Mod)) — the standard OCLP
+  does not patch Sequoia properly.
+- **Order matters:** run the **Post-Install Root Patch only after** the
+  Sonoma → Sequoia upgrade has completed. The patch is tied to the running macOS
+  version and re-seals the root volume — applying the wrong version's patch
+  breaks the system and can force a fresh install.
+
 ### What happened
 
 1. **In-place upgrade failed** — the OTA/upgrader kept failing (sealed root volume
@@ -66,7 +79,8 @@ HD 4600) is supported.
      the HD 4600 (which OCLP then patches).
    - `BrcmPatchRAM3` (with `BlueToolFixup`) for the Broadcom BT — same as Sonoma.
    - Realtek SD kexts dropped from the Sequoia build (still disabled anyway).
-4. **OCLP post-install patch** ran on the sealed root volume and patched **both**:
+4. **OCLP-Mod post-install patch** ran on the sealed root volume (Sequoia build)
+   and patched **both**:
    - **network** (`AirportItlwm-Mod` build) → WiFi runs as native AirPort;
    - **graphics** (HD 4600) → full acceleration + blur/animations.
 5. `csr-active-config` stays `0x80003` (`%03%08%00%00`), boot args
@@ -75,7 +89,10 @@ HD 4600) is supported.
 ### After the reinstall (checklist, machine-specific)
 
 - [x] WiFi (native AirPort via en1) — **192.168.1.206**
-- [x] Bluetooth, Ethernet, Audio, Battery, Trackpad
+- [ ] **Bluetooth — dead (unsupported Intel chip `0x07DA`)** — see
+      `08-bluetooth/`; `bluetoothd` crash-loop is reduced by disabling BT in
+      the BIOS (`Config → Network → Bluetooth`)
+- [x] Ethernet, Audio, Battery, Trackpad
 - [x] GPU acceleration (Metal 2, 1536 MB) + blur/animations
 - [x] **ABNT2 remap reinstalled** (LaunchAgent did not survive the fresh install —
       see `keyboard-remap/`); still needs **Acessibilidade** permission granted
@@ -94,7 +111,8 @@ the upgrade did not "burn the bridge".
 | Left **USB 3.0** (top/bottom) | ✅ Working |
 | **Left-side** USB (below SD) | 🔌 Dead — EHCI without driver on macOS 14/15 |
 | **SD** card reader (RTS5227) | 🔇 Disabled (kexts panicked on boot/wake/shutdown) |
-| Wi-Fi / BT / Audio / Ethernet / Battery | ✅ Working |
+| Wi-Fi / Audio / Ethernet / Battery | ✅ Working |
+| **Bluetooth** | 🔇 Dead — Intel `0x07DA` unsupported (see `08-bluetooth/`) |
 | Boot | Picker shown (5 s), select **macOS** |
 
 ## Backup

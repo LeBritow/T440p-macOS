@@ -19,14 +19,15 @@ used here and you are not credited, open an issue and it will be fixed.
 | [HibernationFixup](https://github.com/acidanthera/HibernationFixup) | Acidanthera | Hibernation |
 | [CPUFriend](https://github.com/acidanthera/CPUFriend) | Acidanthera | CPU power profile |
 | [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | Acidanthera | Event hiding/handling |
-| [BlueToolFixup](https://github.com/acidanthera/BrcmPatchRAM) | Acidanthera | Broadcom BT |
-| [BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM) | Acidanthera | Broadcom BT firmware |
+| [BlueToolFixup](https://github.com/acidanthera/BrcmPatchRAM) | Acidanthera | Broadcom BT (loaded; **no Broadcom present — BT is dead**, see `08-bluetooth/`) |
+| [BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM) | Acidanthera | Broadcom BT firmware (kept for a future Broadcom card) |
 | [AMFIPass](https://github.com/ic005k/OpenCore-Mod) | ic005k / community | Bypass AMFI + `-amfipassbeta` (lets the OCLP graphics patch work on Sequoia) |
 | [AirportItlwm](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Intel Wi-Fi (Sequoia build, native AirPort after OCLP patch) |
 | [IOSkywalkFamily](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Sequoia WiFi support (downgraded build, `Kernel.Block`) |
 | [IO80211FamilyLegacy](https://github.com/OpenIntelWireless/itlwm) | OpenIntelWireless | Legacy IO80211 stack for Sequoia WiFi |
-| [OpenCore Legacy Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher) | Dortania | Post-install root patch → native AirPort **and** HD 4600 graphics on Sequoia |
-| [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware) | OpenIntelWireless | Intel BT |
+| [OpenCore Legacy Patcher](https://github.com/dortania/OpenCore-Legacy-Patcher) | Dortania | Post-install root patch → native AirPort **and** HD 4600 graphics (Sonoma) |
+| [OCLP-Mod](https://github.com/laobamac/OCLP-Mod) | laobamac | OCLP fork **required on Sequoia** — the standard OCLP does not patch Sequoia properly |
+| [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware) | OpenIntelWireless | Intel BT — **no personality for the stock `0x07DA` radio** (see `08-bluetooth/`) |
 | [VoodooPS2](https://github.com/acidanthera/VoodooPS2) | acidanthera / VoodooProjects | PS2 keyboard/trackpad |
 | [VoodooRMI](https://github.com/VoodooProjects/VoodooRMI) | VoodooProjects | Synaptics trackpad (RMI I2C/SMBus) |
 | [ACPIBatteryManager](https://github.com/RehabMan/OS-X-ACPI-Battery-Driver) | RehabMan | Battery readout |
