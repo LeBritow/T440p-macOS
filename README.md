@@ -15,7 +15,7 @@ I use daily, exported from my machine.
 
 | Component | Status |
 |-----------|--------|
-| Boot | OpenCore picker shown at power-on (5 s timeout; select **macOS**) |
+| Boot | Straight to the Apple logo (picker off; **hold `Esc`** to show it) — see [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
 | Wi-Fi / Ethernet / Audio | ✅ Working |
 | Bluetooth | 🔇 **Dead** — Intel chip `0x8087:0x07DA` unsupported by `IntelBluetoothFirmware` (no personality for it); no Broadcom present either. Docs: `hackintosh-t440p/08-bluetooth/` |
 | Graphics | ✅ Full acceleration + blur/animations — HD 4600 with OCLP post-install patch + `-amfipassbeta` |
