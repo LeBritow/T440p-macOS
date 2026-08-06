@@ -56,6 +56,12 @@ Share your fixes and ideas — see [`CONTRIBUTING.md`](../CONTRIBUTING.md).
    hardware** — `IntelBluetoothFirmware` has no personality for it and there is
    no Broadcom to patch. The "BCM_4350C2" in `system_profiler` is a phantom
    report. See [08-bluetooth/](08-bluetooth/).
+8. **An event-tap remapper must pause on the lock screen.** A userspace remap
+   (`CGEventTap` + `CGEventPost`) can freeze the whole keyboard after screen
+   lock/display sleep (login window + Secure Input), while the trackpad keeps
+   working. Fix: pass keys through untouched while `loginwindow` is frontmost,
+   and re-enable the tap on sleep/wake. See
+   [../keyboard-remap](../keyboard-remap/README.md).
 
 ## Layout
 

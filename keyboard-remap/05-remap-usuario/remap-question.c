@@ -2,6 +2,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define SRC_KEY 62
 #define VK_CMD 55
@@ -12,6 +13,8 @@
 static bool del_consumed = false;
 static bool alt_down = false;
 static bool cmd_held = false;
+static CFMachPortRef g_tap = NULL;
+static bool g_locked_logged = false;
 
 static const char *tname(CGEventType t)
 {
@@ -27,6 +30,51 @@ static const char *tname(CGEventType t)
 static bool is_swap_key(CGKeyCode kc)
 {
     return kc == 10 || kc == 50;
+}
+
+static bool screen_is_locked(void)
+{
+    CFArrayRef list = CGWindowListCopyWindowInfo(
+        kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
+    if (!list)
+        return false;
+    bool locked = false;
+    CFIndex n = CFArrayGetCount(list);
+    for (CFIndex i = 0; i < n; i++)
+    {
+        CFDictionaryRef info = CFArrayGetValueAtIndex(list, i);
+        if (CFGetTypeID(info) != CFDictionaryGetTypeID())
+            continue;
+        CFNumberRef layer = CFDictionaryGetValue(info, kCGWindowLayer);
+        if (layer && CFGetTypeID(layer) == CFNumberGetTypeID())
+        {
+            int lv = 0;
+            CFNumberGetValue(layer, kCFNumberIntType, &lv);
+            if (lv != 0)
+                continue;
+        }
+        CFStringRef owner = CFDictionaryGetValue(info, kCGWindowOwnerName);
+        if (!owner)
+            continue;
+        if (CFStringCompare(owner, CFSTR("loginwindow"), 0) == kCFCompareEqualTo)
+            locked = true;
+        break;
+    }
+    CFRelease(list);
+    return locked;
+}
+
+static bool locked_cache = false;
+static time_t locked_checked_at = 0;
+
+static bool is_locked(void)
+{
+    time_t now = time(NULL);
+    if (now == locked_checked_at)
+        return locked_cache;
+    locked_checked_at = now;
+    locked_cache = screen_is_locked();
+    return locked_cache;
 }
 
 static bool frontmost_is_finder(void)
@@ -102,6 +150,31 @@ static bool swap_char(UniChar in, UniChar *out)
 static CGEventRef tap_cb(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon)
 {
     (void)proxy; (void)refcon;
+    if (type == kCGEventTapDisabledByTimeout || type == kCGEventTapDisabledByUserInput)
+    {
+        fprintf(stderr, "remap: tap desabilitado (%s), reabilitando\n",
+                type == kCGEventTapDisabledByTimeout ? "timeout" : "secure-input");
+        CGEventTapEnable(g_tap, true);
+        return NULL;
+    }
+    if (!event)
+        return NULL;
+    if (is_locked())
+    {
+        if (!g_locked_logged)
+        {
+            fprintf(stderr, "remap: pausado (tela bloqueada)\n");
+            g_locked_logged = true;
+        }
+        alt_down = false;
+        cmd_held = false;
+        return event;
+    }
+    if (g_locked_logged)
+    {
+        fprintf(stderr, "remap: ativo (tela desbloqueada)\n");
+        g_locked_logged = false;
+    }
     CGKeyCode kc = (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
     if (CGEventGetIntegerValueField(event, kCGEventSourceUserData) == MY_MARKER)
     {
@@ -195,6 +268,16 @@ static CGEventRef tap_cb(CGEventTapProxy proxy, CGEventType type, CGEventRef eve
     return event;
 }
 
+static void health_check(CFRunLoopTimerRef t, void *info)
+{
+    (void)t; (void)info;
+    if (g_tap && !CGEventTapIsEnabled(g_tap))
+    {
+        fprintf(stderr, "remap: health-check achou tap desabilitado, reabilitando\n");
+        CGEventTapEnable(g_tap, true);
+    }
+}
+
 int main(void)
 {
     CGEventMask mask = (1 << kCGEventKeyDown) | (1 << kCGEventKeyUp) | (1 << kCGEventFlagsChanged);
@@ -205,10 +288,17 @@ int main(void)
         fprintf(stderr, "remap-question: event tap falhou (sem Acessibilidade)\n");
         return 1;
     }
+    g_tap = tap;
     CGEventTapEnable(tap, true);
     CFRunLoopSourceRef src = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, tap, 0);
     CFRunLoopAddSource(CFRunLoopGetCurrent(), src, kCFRunLoopDefaultMode);
     CFRelease(src);
+
+    CFRunLoopTimerRef timer = CFRunLoopTimerCreate(kCFAllocatorDefault,
+                                                   CFAbsoluteTimeGetCurrent() + 5.0, 5.0, 0, 0,
+                                                   health_check, NULL);
+    CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopDefaultMode);
+    CFRelease(timer);
 
     fprintf(stderr, "remap-question: rodando ('?'->/, '->\\, \\->', Alt-Tab, Delete-ctx)\n");
     CFRunLoopRun();

@@ -96,6 +96,36 @@ need to be identified: `'` only comes from kc=50, and `\` comes from a single ot
   (`post_char(repl, type == kCGEventKeyDown)`), swallowing both. This is why a
   recompile + re-grant was needed.
 
+### Lock-screen freeze (2026-08-06): keyboard dead after unlocking — FIXED
+
+**Symptom:** after locking the screen and leaving the display to sleep for a few
+minutes, the **internal keyboard went completely dead** on the login screen. The
+trackpad still worked. Only a power-button reset recovered the machine.
+
+**Root cause (community-documented):** the remap intercepts keys at
+`kCGHIDEventTap` (HID level) and re-injects replacements with
+`CGEventPost(kCGSessionEventTap, ...)`. While the screen is locked, the login
+window runs with **Secure Input**, and posting synthetic events into a locked
+session can block the tap callback. `kCGHIDEventTap` is synchronous — a blocked
+callback freezes the entire key stream. The trackpad is unaffected because its
+events are not key events (the remap only taps keyboard events). macOS also
+**silently disables event taps** on sleep/wake, display sleep and Secure Input
+(see SwiftShift#169, ghostty#11819, FB12113281).
+
+**Fix (build 2026-08-06):**
+1. **Lock guard** — while `loginwindow` is the frontmost window (screen locked),
+   the remap passes every key through **untouched** (no swallowing, no posting).
+   The password always reaches the login window.
+2. **Tap recovery** — `kCGEventTapDisabledByTimeout` /
+   `kCGEventTapDisabledByUserInput` are handled: the tap is re-enabled.
+3. **Health check** — a 5 s timer re-enables the tap if macOS disabled it
+   silently (`CGEventTapIsEnabled` check), covering any other sleep/lock path.
+
+**Verified:** with the remap disabled the freeze did **not** reproduce (proving
+the remap was the cause). With the fixed build the lock screen works and the log
+shows `remap: pausado (tela bloqueada)` on lock and
+`remap: ativo (tela desbloqueada)` on unlock.
+
 ### Recompile after changing the code (recipe)
 
 ```
@@ -105,7 +135,10 @@ launchctl unload ~/Library/LaunchAgents/com.gustavo.remap-question.plist
 launchctl load   ~/Library/LaunchAgents/com.gustavo.remap-question.plist
 # then re-add the binary to Acessibilidade (cdhash changed)
 ```
-Logs: `/tmp/remap-question.err.log` (shows each swap: `swap kc=... <down|up> '<c>' -> '<c>'`).
+Logs: `/tmp/remap-question.err.log` (shows each swap: `swap kc=... <down|up> '<c>' -> '<c>'`),
+and the lock guard: `remap: pausado (tela bloqueada)` / `remap: ativo (tela desbloqueada)`.
+The tap recovery logs `remap: tap desabilitado (timeout|secure-input), reabilitando`
+and `remap: health-check achou tap desabilitado, reabilitando`.
 
 ### Installing from scratch (redone after the Sequoia fresh install)
 

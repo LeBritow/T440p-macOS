@@ -28,7 +28,7 @@ I use daily, exported from my machine.
 ## Prerequisites
 
 - A **Lenovo ThinkPad T440p** with a Haswell i5/i7 (iGPU HD 4600).
-- A **mac** (or a Hackintosh) to prepare the installer USB.
+- A **mac** (or a Hackintosh) **or a Windows PC** to prepare the installer USB.
 - A **USB stick of 8 GB or more** (will be erased).
 - The files in this repo: the **`EFI/`** folder and the **`scripts/`** folder.
 - A backup of anything you don't want to lose (the target disk is erased).
@@ -63,20 +63,30 @@ set** — never reuse a serial that's already in use (iCloud/iMessage risk).
 ## 2. BIOS / UEFI settings (T440p)
 
 Set these in the BIOS (Enter at the Lenovo logo → **Config** / **Security** /
-**Startup**):
+**Startup**). All the options below were verified against the T440p's own Insyde
+UEFI BIOS (official Hardware Maintenance Manual + the machine itself):
 
-- **Config → USB**: all enabled.
-- **Config → Power → Intel SpeedStep**: Enabled.
-- **Config → CPU → Hyper-Threading**: Enabled.
-- **Security → Secure Boot**: **Disabled**.
-- **Security → Virtualization → Intel Virtualization Technology**: Enabled
-  (VT-d doesn't matter: `DisableIoMapper=true` already handles it).
-- **Startup → UEFI/Legacy Boot**: **UEFI Only** (CSM off).
-- **Startup → Boot Mode**: Quick.
-- **Startup → Boot**: make sure the USB stick is first, or use **F12** at boot.
-- **Config → Serial ATA**: **AHCI** (default on the T440p).
+| Option | Path in the T440p BIOS | Setting |
+|--------|------------------------|---------|
+| USB | **Config → USB** (`USB UEFI BIOS Support`, `Always On USB`, `Charge in Battery Mode`) | Enabled |
+| Intel SpeedStep | **Config → Power → Intel SpeedStep** | Enabled |
+| Hyper-Threading | **Config → CPU → Hyper-Threading Technology** | Enabled |
+| Secure Boot | **Security → Secure Boot** | **Disabled** |
+| Virtualization | **Security → Virtualization → Intel Virtualization Technology** | Enabled |
+| UEFI/Legacy | **Startup → UEFI/Legacy Boot** | **UEFI Only** (CSM Support disappears once set) |
+| Boot Mode | **Startup → Boot Mode** | **Quick** |
+| Serial ATA | **Config → Serial ATA → SATA Controller Mode Option** | **AHCI** (default on the T440p) |
+| Boot order | **Startup → Boot** | USB stick first (or **F12** at boot) |
 
-CFG Lock can stay **on** — the config sets `AppleXcpmCfgLock=true`.
+Caveats:
+- **Secure Boot** is only changeable when *UEFI/Legacy Boot* is already set to
+  *UEFI Only* (and some BIOS versions ask for a supervisor password first).
+- **VT-d** (`Security → Virtualization → Intel VT-d Feature`) does not matter:
+  `DisableIoMapper=true` already handles it.
+- **CFG Lock** has **no visible switch** on this BIOS — the config sets
+  `AppleXcpmCfgLock=true` instead.
+- If the machine came with a **supervisor password** set, most Security/Startup
+  items are greyed out until that password is removed.
 
 ## 3. Prepare the installer USB
 
@@ -110,6 +120,43 @@ cp -R EFI /Volumes/EFI/       # from the repo root
 > Alternative: the [Dortania OpenCore Guide](https://dortania.github.io/OpenCore-Install-Guide/)
 > has a full step-by-step for creating the USB — the `scripts/` here are the same
 > `macrecovery.py` used there.
+
+### On Windows (no Mac available)
+
+This repo's USB can be prepared entirely from Windows — the **download** step is
+the same script, and the image is written with a third-party tool:
+
+1. **Download the recovery image** — `macrecovery.py` is stdlib-only Python 3,
+   so it runs on Windows too (same board ID as above):
+   ```bat
+   python macrecovery.py -b Mac-937A206F2EE63C01 download
+   ```
+   (from [OpenCorePkg/Utilities/macrecovery](https://github.com/acidanthera/OpenCorePkg/tree/master/Utilities/macrecovery))
+   → produces `BaseSystem.dmg` + `BaseSystem.chunklist`.
+2. **Write `BaseSystem.dmg` to the USB** — macOS's `asr`/Disk Utility don't exist
+   on Windows; a known tool is **TransMac** (run as admin → right-click the USB →
+   *Restore with Disk Image* → select `BaseSystem.dmg`). The requirement is that
+   `BaseSystem` ends up restored on the stick — any tool that does that works.
+3. **Add the EFI partition** — after the restore, create a FAT32 partition for
+   OpenCore and copy the `EFI/` folder into it:
+   ```bat
+   diskpart
+   list disk
+   select disk X            REM the USB stick
+   create partition efi size=200
+   format fs=fat32 quick
+   assign letter=Y
+   exit
+   copy /s /e EFI Y:\EFI
+   ```
+   (On the T440p the EFI partition **must** be FAT32 — the BIOS/UEFI only reads
+   FAT for the ESP.)
+4. Boot the stick with **F12** as described below.
+
+> The download step was verified on Windows with this repo's `macrecovery.py`.
+> The write step used a third-party tool (the exact one isn't recorded here) —
+> the requirements above are what matter: `BaseSystem` restored on the stick
+> plus a FAT32 EFI partition holding the `EFI/` folder.
 
 ## 4. Boot the installer
 
@@ -192,6 +239,11 @@ cd ~/remap-teclado/05-remap-usuario
 editing needed. Then add the binary to **System Settings → Privacy & Security →
 Accessibility** (the remap can't receive keys without it). Full docs:
 [`keyboard-remap/`](keyboard-remap/README.md).
+
+> Recompiling the remap **revokes** the Accessibility grant (macOS keys it on the
+> binary's cdhash) — re-grant it once after each rebuild. The current build also
+> **pauses on the lock screen** so the login window always gets the real keys
+> (fixes the keyboard-freeze-after-unlock bug) — see the keyboard-remap README.
 
 ### 6c. Optional tweaks
 
