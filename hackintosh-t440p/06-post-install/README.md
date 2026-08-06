@@ -103,6 +103,62 @@ HD 4600) is supported.
 Returning to Sonoma is still possible (restore the old EFI + Time Machine), so
 the upgrade did not "burn the bridge".
 
+## Performance — what was applied and what is left
+
+Boot and day-to-day responsiveness audit (Aug 2026). Priorities, biggest first.
+
+### 1. TRIM on the SSD — OFF, re-enable (see section above)
+
+`system_profiler SPSerialATADataType` reports `No`. It was enabled under Sonoma and
+reverted by the Sequoia reinstall. Re-enable with `sudo trimforce enable` (reboots).
+
+### 2. Power management — make OC and macOS agree
+
+`HibernateMode` is `None` in OpenCore, but macOS still has `hibernatemode 3` — the
+hibernate (dark-wake / disk image) path. Align them so sleep is fast and clean:
+
+```bash
+sudo pmset -a hibernatemode 0      # match OC HibernateMode=None
+sudo pmset -b tcpkeepalive 0       # battery only: drop Wi-Fi keepalive while asleep
+```
+
+- `powernap 0` and `FileVault off` are already good on this machine (both hurt
+  battery/boot).
+- Sanity check: `pmset -g | grep -E "hibernatemode|tcpkeepalive"`.
+
+### 3. Battery-friendly while keeping speed
+
+- `tcpkeepalive` only applies while the lid is closed on battery — no perf cost.
+- Fan/heat: the i7-4700MQ under sustained load is thermal-limited in the T440p.
+  Keeping the heatsink clean and the fan curve healthy (watch it in Stats) is the
+  most effective "free" performance upgrade.
+- **Not recommended:** VoltageShift-style undervolting on this Haswell — unstable
+  on modern macOS and a real risk of boot loops for little gain.
+
+### 4. Not worth doing (checked, no win)
+
+- **CPUFriend**: loaded but has no `CPUFriendDataProvider` plugin, so it changes
+  nothing. Removing the kext would only save a few ms of load time — left in place
+  in case a real power profile is added later.
+- **Spotlight**: `Indexing enabled` is the default and cheap once the initial index
+  is done; only disable it (`sudo mdutil -i off /`) if the first minutes after
+  install feel sluggish and search is not used.
+- **Animations/transparency**: with full HD 4600 acceleration they are not the
+  bottleneck.
+- **Login items**: already clean (only the ABNT2 remap agent).
+
+### 5. Boot time — the first (cold) boot vs restarts
+
+A cold boot is always slower than a warm restart on any Mac/Hackintosh (cold APFS
+mount, kext cache, BIOS POST). The T440p's Lenovo logo delay is the BIOS POST and
+it is already minimized:
+
+- unplug USB sticks/devices (biggest single win);
+- BIOS `Startup → Boot Mode: Quick`;
+- EFI drivers kept to the minimum (Linux/NTFS/Ext4 drivers removed);
+- the rest is OpenCore + kext load + OCLP root-patch kexts, which are needed for
+  the graphics/WiFi patches — nothing safe to shave there.
+
 ## Ports and hardware — practical summary
 
 | Item | Situation |
