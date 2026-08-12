@@ -55,7 +55,7 @@ Full table: `VoodooPS2Keyboard/ApplePS2ToADBMap.h` in the acidanthera/VoodooPS2 
 - However: **the VoodooPS2 map was never applied at runtime** (the `a`→`1` test
   failed) even though the plist loads. The reason was not confirmed (suspicion:
   parsing/prelink issue, or the plist not being read where we expected).
-- Kext-independent solution: **hidutil** (native macOS) — see `../03-conserto/`.
+- Kext-independent solution: **hidutil** (native macOS) — see `../03-hidutil-fix/`.
 
 ## SUGGESTED MAP (if we ever use VoodooPS2 again)
 In the `Default` → `Custom PS2 Map`, the entry that fixes `?`:
@@ -66,4 +66,4 @@ This turns the `?` key (currently right Ctrl) into `/`. Backspace (0e) is
 unaffected. You lose right Ctrl (left Ctrl still works).
 
 > **Status: dead end.** The kext-level map was abandoned because it never applied
-> at runtime. The working solution is the userspace remapper in `../05-remap-usuario/`.
+> at runtime. The working solution is the userspace remapper in `../05-user-remap/`.

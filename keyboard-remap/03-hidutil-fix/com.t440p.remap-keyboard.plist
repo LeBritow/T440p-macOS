@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.gustavo.remap-teclado</string>
+    <string>com.t440p.remap-keyboard</string>
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/hidutil</string>

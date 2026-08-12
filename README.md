@@ -236,12 +236,12 @@ are wrong. The fix is a userspace remapper in this repo — the folder is portab
 keep it anywhere:
 
 ```bash
-cp -R keyboard-remap/05-remap-usuario ~/remap-teclado/05-remap-usuario
-cd ~/remap-teclado/05-remap-usuario
-./instalar.sh
+cp -R keyboard-remap/05-user-remap ~/keyboard-remap/05-user-remap
+cd ~/keyboard-remap/05-user-remap
+./install.sh
 ```
 
-`instalar.sh` detects its own location and rewrites the LaunchAgent path — no
+`install.sh` detects its own location and rewrites the LaunchAgent path — no
 editing needed. Then add the binary to **System Settings → Privacy & Security →
 Accessibility** (the remap can't receive keys without it). Full docs:
 [`keyboard-remap/`](keyboard-remap/README.md).

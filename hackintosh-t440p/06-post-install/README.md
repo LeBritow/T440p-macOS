@@ -96,7 +96,7 @@ HD 4600) is supported.
 - [x] Ethernet, Audio, Battery, Trackpad
 - [x] GPU acceleration (Metal 2, 1536 MB) + blur/animations
 - [x] **ABNT2 remap reinstalled** (LaunchAgent did not survive the fresh install —
-      see `keyboard-remap/`); still needs **Acessibilidade** permission granted
+      see `keyboard-remap/`); still needs **Accessibility** permission granted
       in System Settings → Privacy & Security → Accessibility
 - [ ] **TRIM re-enabled** (`sudo trimforce enable`)
 - [x] **Direct boot active** (no picker — hold `Esc` at power-on to reach it)

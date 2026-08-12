@@ -5,12 +5,12 @@ import time
 
 
 def main():
-    print("kbtest: capturando eventos de teclado...", flush=True)
-    print("Se o mapa estiver APLICADO, estas teclas digitam digitos:", flush=True)
-    print("  'a' -> '1' (keycode 18)  |  Ctrl-esq -> '2' (19)", flush=True)
-    print("  Ctrl-dir -> '3' (20)     |  '?' -> '4' (21)", flush=True)
-    print("Keycodes p/ comparar: a=0, 1=18, 2=19, 3=20, 4=21,", flush=True)
-    print("  ctrl-esq=59, ctrl-dir=62", flush=True)
+    print("kbtest: capturing keyboard events...", flush=True)
+    print("If the map is APPLIED, these keys type digits:", flush=True)
+    print("  'a' -> '1' (keycode 18)  |  Left  Ctrl -> '2' (19)", flush=True)
+    print("  Right Ctrl -> '3' (20)   |  '?' -> '4' (21)", flush=True)
+    print("Keycodes to compare: a=0, 1=18, 2=19, 3=20, 4=21,", flush=True)
+    print("  left-ctrl=59, right-ctrl=62", flush=True)
     print("-" * 60, flush=True)
 
     def cb(proxy, etype, event, refcon):
@@ -43,18 +43,18 @@ def main():
     tap = Quartz.CGEventTapCreate(Quartz.kCGHIDEventTap, Quartz.kCGHeadInsertEventTap,
                                   Quartz.kCGEventTapOptionDefault, mask, cb, None)
     if not tap:
-        print("ERRO: nao foi possivel criar o event tap.", file=sys.stderr, flush=True)
-        print("Conceda Acessibilidade ao Terminal e rode de novo.", file=sys.stderr, flush=True)
+        print("ERROR: could not create the event tap.", file=sys.stderr, flush=True)
+        print("Grant Accessibility to Terminal and try again.", file=sys.stderr, flush=True)
         sys.exit(1)
     Quartz.CGEventTapEnable(tap, True)
     src = Quartz.CFMachPortCreateRunLoopSource(None, tap, 0)
     Quartz.CFRunLoopAddSource(Quartz.CFRunLoopGetCurrent(), src, Quartz.kCFRunLoopDefaultMode)
-    print("PRONTO. Aperte agora, cada uma 2-3x: 'a', Ctrl-esq, Ctrl-dir, '?'", flush=True)
+    print("READY. Press each 2-3x: 'a', Left Ctrl, Right Ctrl, '?'", flush=True)
     end = time.time() + 90
     while time.time() < end:
         Quartz.CFRunLoopRunInMode(Quartz.kCFRunLoopDefaultMode, 0.2, False)
     print("-" * 60, flush=True)
-    print("fim.", flush=True)
+    print("done.", flush=True)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 
 **Status: WORKING (Sequoia 15.7.9).** The `?` key types `/` (and `?` with Shift),
 via a userspace remapper. The LaunchAgent does **not** survive a fresh macOS
-install — after the Sequoia reinstall it was re-installed from `05-remap-usuario/`
+install — after the Sequoia reinstall it was re-installed from `05-user-remap/`
 (see "Installing from scratch").
 
 ## The problem
@@ -23,7 +23,7 @@ this key sits at the **right-Ctrl position** and sends scan code `E0 1D`
 
 ### 1. hidutil (`UserKeyMapping` 62→44) ❌ DOES NOT WORK
 Applied live, but the `?` still reported `kc=62`. The ADB/PS2 keyboard on this
-Hackintosh does not honor the IOHIDSystem remap. Scripts in `03-conserto/`.
+Hackintosh does not honor the IOHIDSystem remap. Scripts in `03-hidutil-fix/`.
 
 ### 2. Custom PS2 Map in VoodooPS2 (plist + reboot) ❌ NOT APPLIED
 - The plist HAS the map (`CLEAN TEST v2`) and ioreg shows it loaded.
@@ -41,16 +41,16 @@ via `CGEventKeyboardSetUnicodeString`.
 - Permission: needs **Accessibility** (once, on the binary).
 - No reboot required, does not touch the EFI, does not use Karabiner.
 
-## The production solution (`05-remap-usuario/`)
+## The production solution (`05-user-remap/`)
 
 ```
-05-remap-usuario/
+05-user-remap/
   remap-question.c     C source (single binary, no dependencies)
   remap-question       compiled AND SIGNED binary (what the LaunchAgent runs)
   remap-question.py    minimal Python reference (`?`/`/` only)
-  com.gustavo.remap-question.plist   LaunchAgent (runs at login, KeepAlive)
-  instalar.sh          creates ~/Library/LaunchAgents + copies plist + launchctl load
-  remover.sh           launchctl unload + remove
+  com.t440p.remap-question.plist   LaunchAgent (runs at login, KeepAlive)
+  install.sh           creates ~/Library/LaunchAgents + copies plist + launchctl load
+  remove.sh            launchctl unload + remove
 ```
 
 The binary is running now (check with):
@@ -79,10 +79,10 @@ need to be identified: `'` only comes from kc=50, and `\` comes from a single ot
 ## Important technical details
 
 - **Signing (codesign):** the binary is ad-hoc signed (`codesign -s -`) with
-  identifier `com.gustavo.remap-question`. The original self-signed certificate
+  identifier `com.t440p.remap-question`. The original self-signed certificate
   `RemapQuestion Local Signing` is **no longer in the keychain** (was lost along
   the way). Because macOS keys Accessibility on the **cdhash**, every recompile
-  revokes the permission and the binary must be **re-added** to Acessibilidade once.
+  revokes the permission and the binary must be **re-added** to Accessibility once.
 - **Anti-loop:** injected events go to `kCGSessionEventTap` (below our HID tap) and
   receive the marker `kCGEventSourceUserData = 0x524D5031`. The callback ignores
   events with this marker. Without this, injecting `'`/`\` would re-enter our own
@@ -123,38 +123,38 @@ events are not key events (the remap only taps keyboard events). macOS also
 
 **Verified:** with the remap disabled the freeze did **not** reproduce (proving
 the remap was the cause). With the fixed build the lock screen works and the log
-shows `remap: pausado (tela bloqueada)` on lock and
-`remap: ativo (tela desbloqueada)` on unlock.
+shows `remap: paused (screen locked)` on lock and
+`remap: active (screen unlocked)` on unlock.
 
 ### Recompile after changing the code (recipe)
 
 ```
 clang -O2 -framework ApplicationServices -framework CoreFoundation -Wall -o remap-question remap-question.c
-codesign --force -s - --identifier com.gustavo.remap-question remap-question
-launchctl unload ~/Library/LaunchAgents/com.gustavo.remap-question.plist
-launchctl load   ~/Library/LaunchAgents/com.gustavo.remap-question.plist
-# then re-add the binary to Acessibilidade (cdhash changed)
+codesign --force -s - --identifier com.t440p.remap-question remap-question
+launchctl unload ~/Library/LaunchAgents/com.t440p.remap-question.plist
+launchctl load   ~/Library/LaunchAgents/com.t440p.remap-question.plist
+# then re-add the binary to Accessibility (cdhash changed)
 ```
 Logs: `/tmp/remap-question.err.log` (shows each swap: `swap kc=... <down|up> '<c>' -> '<c>'`),
-and the lock guard: `remap: pausado (tela bloqueada)` / `remap: ativo (tela desbloqueada)`.
-The tap recovery logs `remap: tap desabilitado (timeout|secure-input), reabilitando`
-and `remap: health-check achou tap desabilitado, reabilitando`.
+and the lock guard: `remap: paused (screen locked)` / `remap: active (screen unlocked)`.
+The tap recovery logs `remap: tap disabled (timeout|secure-input), re-enabling`
+and `remap: health-check found tap disabled, re-enabling`.
 
 ### Installing from scratch (redone after the Sequoia fresh install)
 
-The folder is **portable** — you can keep it anywhere (`instalar.sh` auto-detects
+The folder is **portable** — you can keep it anywhere (`install.sh` auto-detects
 its own location and rewrites the plist path at install time):
 
-1. Copy the `05-remap-usuario/` folder anywhere you like (e.g.
-   `~/remap-teclado/05-remap-usuario/`).
-2. `./instalar.sh` — creates `~/Library/LaunchAgents`, copies the plist, rewrites
+1. Copy the `05-user-remap/` folder anywhere you like (e.g.
+   `~/keyboard-remap/05-user-remap/`).
+2. `./install.sh` — creates `~/Library/LaunchAgents`, copies the plist, rewrites
    the `ProgramArguments` path to the folder's real location and runs
    `launchctl load`.
 3. Add the `remap-question` binary to **System Settings → Privacy & Security →
    Accessibility** (once).
-   > Repo path: `keyboard-remap/05-remap-usuario/remap-question`
+   > Repo path: `keyboard-remap/05-user-remap/remap-question`
    > Until granted, the agent restarts in a loop and logs
-   > `event tap falhou (sem Acessibilidade)` to `/tmp/remap-question.err.log`.
+   > `event tap creation failed (grant Accessibility)` to `/tmp/remap-question.err.log`.
 
 > The old `.py` in this folder is a minimal reference implementation (`?`/`/` only).
 > The production remapper is the C binary, which also does `'↔\`, `"↔|`,
@@ -169,9 +169,9 @@ its own location and rewrites the plist path at install time):
 ## Diagnostic files
 
 ```
-01-diagnostico/       coleta.sh + estado-completo.txt + info-plist-ATUAL.xml
-02-testes/            kbtest.py + kbtest2.py + kbtest3.py (live) + logs
-03-conserto/          hidutil apply/remove/verify + installer (dead)
-04-mapa-voodoops2/    how-to-edit-plist.md (dead)
-05-remap-usuario/     WORKING SOLUTION
+01-diagnostics/       collect.sh (writes keyboard-state.txt locally)
+02-tests/             kbtest.py + kbtest2.py + final-test.command
+03-hidutil-fix/       hidutil apply/remove/verify + installer (dead end)
+04-voodoops2-map/     how-to-edit-plist.md (dead end)
+05-user-remap/        WORKING SOLUTION
 ```

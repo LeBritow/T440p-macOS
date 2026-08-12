@@ -3,7 +3,7 @@ import Quartz
 import sys
 import os
 
-SRC = 62  # tecla '?' fisica -> reporta como right-ctrl (kc=62)
+SRC = 62  # physical '?' key -> reports as right-ctrl (kc=62)
 LOG = os.environ.get("REMAP_LOG", "/tmp/remap-question.log")
 
 
@@ -54,12 +54,12 @@ def main():
     tap = Quartz.CGEventTapCreate(Quartz.kCGHIDEventTap, Quartz.kCGHeadInsertEventTap,
                                   Quartz.kCGEventTapOptionDefault, mask, cb, None)
     if not tap:
-        log("ERRO: event tap falhou (sem permissao de Acessibilidade?)")
+        log("ERROR: event tap failed (grant Accessibility permission)")
         sys.exit(1)
     Quartz.CGEventTapEnable(tap, True)
     src = Quartz.CFMachPortCreateRunLoopSource(None, tap, 0)
     Quartz.CFRunLoopAddSource(Quartz.CFRunLoopGetCurrent(), src, Quartz.kCFRunLoopDefaultMode)
-    log("remap-question iniciado")
+    log("remap-question started")
     try:
         while True:
             Quartz.CFRunLoopRunInMode(Quartz.kCFRunLoopDefaultMode, 0.5, False)

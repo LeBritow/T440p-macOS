@@ -7,10 +7,10 @@ SECS = float(sys.argv[1]) if len(sys.argv) > 1 else 45
 
 
 def main():
-    print("kbtest2: TESTE FOCADO - '?' vs Backspace", flush=True)
-    print("A '?' deve estar na POSICAO DO CTRL DIREITO.", flush=True)
-    print("Keycodes: '?'=62(ctrl dir)  Backspace=51  Ctrl-esq=59", flush=True)
-    print("Se o mapa VoodooPS2 funcionasse: '?'=3(20), 'a'=1(18).", flush=True)
+    print("kbtest2: FOCUSED TEST - '?' vs Backspace", flush=True)
+    print("The '?' key must be at the RIGHT-CTRL position.", flush=True)
+    print("Keycodes: '?'=62(right ctrl)  Backspace=51  Left Ctrl=59", flush=True)
+    print("If the VoodooPS2 map worked: '?'=3(20), 'a'=1(18).", flush=True)
     print("-" * 60, flush=True)
 
     def cb(proxy, etype, event, refcon):
@@ -38,20 +38,20 @@ def main():
     tap = Quartz.CGEventTapCreate(Quartz.kCGHIDEventTap, Quartz.kCGHeadInsertEventTap,
                                   Quartz.kCGEventTapOptionDefault, mask, cb, None)
     if not tap:
-        print("ERRO: event tap falhou. Conceda Acessibilidade ao OpenCode.", file=sys.stderr, flush=True)
+        print("ERROR: event tap failed. Grant Accessibility to the terminal.", file=sys.stderr, flush=True)
         sys.exit(1)
     Quartz.CGEventTapEnable(tap, True)
     src = Quartz.CFMachPortCreateRunLoopSource(None, tap, 0)
     Quartz.CFRunLoopAddSource(Quartz.CFRunLoopGetCurrent(), src, Quartz.kCFRunLoopDefaultMode)
-    print(f"PRONTO por {SECS:.0f}s. Pressione em ORDEM, 3x cada:", flush=True)
-    print("  1) tecla '?'  (no Ctrl direito)", flush=True)
-    print("  2) tecla Backspace fisica (grande, acima do Enter)", flush=True)
-    print("  (NAO digite mais nada)", flush=True)
+    print(f"READY for {SECS:.0f}s. Press in ORDER, 3x each:", flush=True)
+    print("  1) the '?' key  (right Ctrl position)", flush=True)
+    print("  2) the physical Backspace key (large, above Enter)", flush=True)
+    print("  (do not type anything else)", flush=True)
     end = time.time() + SECS
     while time.time() < end:
         Quartz.CFRunLoopRunInMode(Quartz.kCFRunLoopDefaultMode, 0.2, False)
     print("-" * 60, flush=True)
-    print("fim.", flush=True)
+    print("done.", flush=True)
 
 
 if __name__ == "__main__":

@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.gustavo.remap-question</string>
+    <string>com.t440p.remap-question</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/gustavobrito/Documents/Default Project/remap-teclado/05-remap-usuario/remap-question</string>
+        <string>/path/to/remap-question</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

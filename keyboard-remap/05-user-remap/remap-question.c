@@ -8,7 +8,7 @@
 #define VK_CMD 55
 #define VK_TAB 48
 #define VK_DELETE_FWD 117
-#define MY_MARKER 0x524D5031 /* "RMP1" - eventos que o proprio remap injeta */
+#define MY_MARKER 0x524D5031 /* "RMP1" - events injected by the remap itself */
 
 static bool del_consumed = false;
 static bool alt_down = false;
@@ -152,7 +152,7 @@ static CGEventRef tap_cb(CGEventTapProxy proxy, CGEventType type, CGEventRef eve
     (void)proxy; (void)refcon;
     if (type == kCGEventTapDisabledByTimeout || type == kCGEventTapDisabledByUserInput)
     {
-        fprintf(stderr, "remap: tap desabilitado (%s), reabilitando\n",
+        fprintf(stderr, "remap: tap disabled (%s), re-enabling\n",
                 type == kCGEventTapDisabledByTimeout ? "timeout" : "secure-input");
         CGEventTapEnable(g_tap, true);
         return NULL;
@@ -163,7 +163,7 @@ static CGEventRef tap_cb(CGEventTapProxy proxy, CGEventType type, CGEventRef eve
     {
         if (!g_locked_logged)
         {
-            fprintf(stderr, "remap: pausado (tela bloqueada)\n");
+            fprintf(stderr, "remap: paused (screen locked)\n");
             g_locked_logged = true;
         }
         alt_down = false;
@@ -172,7 +172,7 @@ static CGEventRef tap_cb(CGEventTapProxy proxy, CGEventType type, CGEventRef eve
     }
     if (g_locked_logged)
     {
-        fprintf(stderr, "remap: ativo (tela desbloqueada)\n");
+        fprintf(stderr, "remap: active (screen unlocked)\n");
         g_locked_logged = false;
     }
     CGKeyCode kc = (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
@@ -273,7 +273,7 @@ static void health_check(CFRunLoopTimerRef t, void *info)
     (void)t; (void)info;
     if (g_tap && !CGEventTapIsEnabled(g_tap))
     {
-        fprintf(stderr, "remap: health-check achou tap desabilitado, reabilitando\n");
+        fprintf(stderr, "remap: health-check found tap disabled, re-enabling\n");
         CGEventTapEnable(g_tap, true);
     }
 }
@@ -285,7 +285,7 @@ int main(void)
                                          kCGEventTapOptionDefault, mask, tap_cb, NULL);
     if (!tap)
     {
-        fprintf(stderr, "remap-question: event tap falhou (sem Acessibilidade)\n");
+        fprintf(stderr, "remap-question: event tap creation failed (grant Accessibility)\n");
         return 1;
     }
     g_tap = tap;
@@ -300,7 +300,7 @@ int main(void)
     CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopDefaultMode);
     CFRelease(timer);
 
-    fprintf(stderr, "remap-question: rodando ('?'->/, '->\\, \\->', Alt-Tab, Delete-ctx)\n");
+    fprintf(stderr, "remap-question: running ('?'->/, '-\\, \\->', Alt-Tab, Delete-ctx)\n");
     CFRunLoopRun();
     return 0;
 }
