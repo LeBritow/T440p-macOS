@@ -17,10 +17,10 @@ I use daily, exported from my machine.
 |-----------|--------|
 | Boot | Straight to the Apple logo (picker off; **hold `Esc`** to show it) — see [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
 | Wi-Fi / Ethernet / Audio | ✅ Working |
-| Bluetooth | 🔇 **Dead** — Intel chip `0x8087:0x07DA` unsupported by `IntelBluetoothFirmware` (no personality for it); no Broadcom present either. Docs: `hackintosh-t440p/08-bluetooth/` |
+| Bluetooth | 🔇 **Does not work** — stock Intel chip `0x8087:0x07DA` is unsupported by `IntelBluetoothFirmware` (no matching personality), and there is no Broadcom radio to patch. Docs: [`08-bluetooth/`](hackintosh-t440p/08-bluetooth/) |
 | Graphics | ✅ Full acceleration + blur/animations — HD 4600 with OCLP post-install patch + `-amfipassbeta` |
 | Left-side USB port (below the SD reader) | 🔌 **Dead** — EHCI controller, driver removed in macOS 14/15 (no solution) |
-| SD card reader (RTS5227) | 🔇 **Disabled by default** — both kexts panicked (see [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/)). 🧪 **Path A:** the kext ships a `-rtsxnopm` boot-arg that bypasses the blocking PM call that caused the panic — tested via `EFI/OC/Config.pathA-rtsxnopm.plist` |
+| SD card reader (RTS5227) | 🔇 **Does not work in the stable EFI** — disabled by default because the available drivers caused boot/wake/shutdown panics. 🧪 Optional Path A (`EFI/OC/Config.pathA-rtsxnopm.plist`) re-enables RealtekCardReader with `-rtsxnopm`, but treat it as experimental. Docs: [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
 | Undervolting | ✅ **VoltageShift** kext in the EFI (`EFI/OC/Kexts/VoltageShift.kext`) — GUI/control: [`t440p-undervolt-control`](https://github.com/LeBritow/t440p-undervolt-control) |
 | ABNT2 keyboard (`?`→`/`) | ✅ Fixed with a userspace remapper (see `keyboard-remap/`) |
 
@@ -273,7 +273,7 @@ Accessibility** (the remap can't receive keys without it). Full docs:
 | SIP / CSR | `csr-active-config = 0x80003` (nvram shows `%03%08%00%00`) |
 | Boot args | `keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1` |
 
-Detailed specs: [`01-specifications/`](hackintosh-t440p/01-specifications/specs.md)
+Detailed specs: [`hackintosh-t440p/01-specifications/specs.md`](hackintosh-t440p/01-specifications/specs.md)
 
 ---
 
@@ -282,11 +282,11 @@ Detailed specs: [`01-specifications/`](hackintosh-t440p/01-specifications/specs.
 | Issue | Outcome | Details |
 |-------|---------|---------|
 | Dead left-side USB port, below the SD reader (EHCI, no driver in Sonoma/Sequoia) | 🚫 No solution | [`02-dead-usb-port/`](hackintosh-t440p/02-dead-usb-port/) |
-| SD reader (Realtek **RTS5227**) — boot/wake/shutdown panics with both kexts | 🔇 **Disabled by default** (stable). 🧪 **Path A** (`-rtsxnopm`, bypasses the blocking PM call) still under test — revert to `Config.plist` if it panics | [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
+| SD reader (Realtek **RTS5227**) does not work in the stable EFI | 🔇 **Disabled by default** because the tested drivers caused boot/wake/shutdown panics. 🧪 Path A (`-rtsxnopm`) remains experimental — revert to `Config.plist` if it panics | [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
 | Direct boot (`ShowPicker=false`) + dirty-EFI repair | ✅ Solved | [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
 | Production `config.plist` + kext/quirk reference | ✅ | [`05-open-core-config/`](hackintosh-t440p/05-open-core-config/) |
 | Post-install: TRIM, monitoring, EFI maintenance, Sequoia upgrade log | ✅ | [`06-post-install/`](hackintosh-t440p/06-post-install/) |
-| Bluetooth (Intel `0x07DA`) — unsupported chip, no driver matches; `bluetoothd` crash loop | 🔇 **No fix in software** — dead by hardware; only a **Broadcom card swap** (BCM94352HMB / DW1560) enables BT | [`08-bluetooth/`](hackintosh-t440p/08-bluetooth/) |
+| Bluetooth (Intel `0x8087:0x07DA`) does not work | 🔇 **No software fix** — unsupported stock combo-card radio; disable it in BIOS to stop the `bluetoothd` noise, or replace the card (for example BCM94352HMB/DW1560 or Intel 7260) | [`08-bluetooth/`](hackintosh-t440p/08-bluetooth/) |
 | Reset NVRAM wiped the macOS drive from the picker — rescue by booting `boot.efi` from the EFI Shell | ✅ Solved | [`09-nvram-reset-recovery/`](hackintosh-t440p/09-nvram-reset-recovery/) |
 | ABNT2 keyboard remap (`?`/`/`, `'`/`\`, Delete, Cmd+Tab) | ✅ Solved | [`keyboard-remap/`](keyboard-remap/README.md) |
 
