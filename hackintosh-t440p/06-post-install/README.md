@@ -133,8 +133,11 @@ sudo pmset -b tcpkeepalive 0       # battery only: drop Wi-Fi keepalive while as
 - Fan/heat: the i7-4700MQ under sustained load is thermal-limited in the T440p.
   Keeping the heatsink clean and the fan curve healthy (watch it in Stats) is the
   most effective "free" performance upgrade.
-- **Not recommended:** VoltageShift-style undervolting on this Haswell — unstable
-  on modern macOS and a real risk of boot loops for little gain.
+- **Undervolting — in use via VoltageShift** (kext in the EFI): the GUI/CLI,
+  the fan curve and the persistence helper live in
+  [`t440p-undervolt-control`](https://github.com/LeBritow/t440p-undervolt-control).
+  Start small and **validate each offset** on your own machine — too far is the
+  classic boot-loop/freeze risk, always recoverable with a hard reboot.
 
 ### 4. Not worth doing (checked, no win)
 
