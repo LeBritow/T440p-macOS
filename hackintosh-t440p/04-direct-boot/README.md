@@ -1,8 +1,8 @@
 # Direct Boot to the Apple Logo (boot picker disabled)
 
-**Status: OPTION — applied on the author's machine (Sequoia).** The **published
-EFI keeps the picker enabled** (`ShowPicker=true`, `Timeout=5`) so first-time
-installers see the menu; this page documents how to switch your own install.
+**Status: APPLIED by default.** The **published EFI now boots straight to macOS**
+(`ShowPicker=false`, `Timeout=0`). Hold **`Esc`** at power-on to reach the
+picker. This page documents how it works and how to revert to a visible menu.
 
 ## Config changes
 

@@ -1,6 +1,6 @@
 # ThinkPad T440p ABNT2 Keyboard Remapping (Hackintosh)
 
-**Status: WORKING (Sequoia 15.7.8).** The `?` key types `/` (and `?` with Shift),
+**Status: WORKING (Sequoia 15.7.9).** The `?` key types `/` (and `?` with Shift),
 via a userspace remapper. The LaunchAgent does **not** survive a fresh macOS
 install — after the Sequoia reinstall it was re-installed from `05-remap-usuario/`
 (see "Installing from scratch").

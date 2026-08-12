@@ -1,6 +1,6 @@
-# T440p Hackintosh — macOS 15.7.8 (Sequoia) via OpenCore
+# T440p Hackintosh — macOS 15.7.9 (Sequoia) via OpenCore
 
-This guide installs **macOS Sequoia 15.7.8** on a **Lenovo ThinkPad T440p** using
+This guide installs **macOS Sequoia 15.7.9** on a **Lenovo ThinkPad T440p** using
 the EFI in this repository (**OpenCore 1.0.7**). Everything here is verified on
 **my own T440p** (i7-4700MQ, HD 4600, 16 GB, Intel WiFi) — this is the exact EFI
 I use daily, exported from my machine.
@@ -162,8 +162,9 @@ the same script, and the image is written with a third-party tool:
 ## 4. Boot the installer
 
 1. Insert the USB, power on, press **F12**, choose the USB (UEFI).
-2. OpenCore's picker appears. **Reset NVRAM once** (a picker entry) — recommended
-   on the very first boot so the NVRAM variables are clean.
+2. The shipped EFI boots **directly** (picker off) — hold **`Esc`** at power-on
+   to show the picker. **Reset NVRAM once** (a picker entry) — recommended on the
+   very first boot so the NVRAM variables are clean.
 3. Select the **macOS Installer** entry (an external drive icon with the macOS
    name).
 4. When the installer loads, open **Disk Utility**, erase the internal SSD as
@@ -268,7 +269,7 @@ Accessibility** (the remap can't receive keys without it). Full docs:
 | Audio | Realtek ALC — AppleALC + CodecCommander |
 | SD reader | Realtek **RTS5227** (`pci10ec,5227`) — **disabled by default** (🧪 Path A `-rtsxnopm` experimental) |
 | SMBIOS | `MacBookPro16,1` |
-| macOS | 15.7.8 (Sequoia, build 24G824) |
+| macOS | 15.7.9 (Sequoia, build 24G830) |
 | OpenCore | 1.0.7 |
 | SIP / CSR | `csr-active-config = 0x80003` (nvram shows `%03%08%00%00`) |
 | Boot args | `keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1` |
@@ -329,9 +330,10 @@ hackintosh-t440p/        Full project documentation
   ├── 06-post-install/
   ├── 07-credits.md       Credits for every kext/driver/tool used
   ├── 08-bluetooth/       Bluetooth investigation (unsupported Intel chip, accepted dead)
+  ├── 09-nvram-reset-recovery/  NVRAM reset wiped the picker → rescue via EFI Shell boot.efi
   ├── 10-session-log-2026-08-11.md  Session backup (SD Path A, caddy fix, decisions)
   ├── efi-sonoma-14.8.8/  Snapshot of the working EFI (Sonoma, OC 1.0.4)
-  └── efi-sequoia-15.7.8/ Snapshot of the working EFI (Sequoia, OC 1.0.7)
+  └── efi-sequoia-15.7.9/ Snapshot of the working EFI (Sequoia, OC 1.0.7)
 keyboard-remap/          ABNT2 keyboard remapper (C + LaunchAgent)
 ```
 
@@ -341,7 +343,7 @@ Ready-to-use EFI zips are published under
 [Releases](https://github.com/LeBritow/T440p-hackintosh-sonoma/releases):
 
 - **v1.0.0** — Sonoma 14.8.8 (OC 1.0.4) *(kept — for anyone installing Sonoma)*.
-- **v2.0.0** — Sequoia 15.7.8 (OC 1.0.7).
+- **v2.0.0** — Sequoia 15.7.9 (OC 1.0.7).
 
 Generate your own SMBIOS before using them (see the SMBIOS notice above).
 

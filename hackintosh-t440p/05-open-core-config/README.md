@@ -1,4 +1,4 @@
-# Production `config.plist` (OpenCore 1.0.7 — Sequoia 15.7.8)
+# Production `config.plist` (OpenCore 1.0.7 — Sequoia 15.7.9)
 
 This is the `config.plist` **in production** (faithful copy from the EFI). The
 tables and notes below serve as a quick reference; the actual file is next to this
@@ -42,10 +42,15 @@ README.
 | 30 | CPUFriend | ✅ | CPU power profile |
 | 31 | RestrictEvents | ✅ | Hide/handle events |
 | 32 | BrcmPatchRAM3 | ✅ | Broadcom BT firmware |
+| 33 | RealtekCardReader | ❌ | SD reader — **disabled** (`Enabled=false`); kept only for the Path A test (`-rtsxnopm`) |
+| 34 | VoltageShift | ✅ | Undervolting (managed in its own repo: `t440p-undervolt-control`) |
 
-> The Realtek SD reader kexts from Sonoma are **removed** in the Sequoia build
-> (kept disabled in Sonoma). Index 15 is a disabled `VoodooInput` plug-in inside
-> `VoodooPS2Controller` — harmless residue.
+> The SD reader / Bluetooth / Broadcom kexts are loaded-but-inert on this machine:
+> `RealtekCardReader` (33) is **disabled** because its power management panics on
+> wake (see `03-sd-card-reader/`); `IntelBluetoothFirmware` (7), `BlueToolFixup`
+> (25) and `BrcmPatchRAM3` (32) load but have **nothing to drive** — the stock BT
+> chip (`0x07DA`) is unsupported. Index 15 is a disabled `VoodooInput` plug-in
+> inside `VoodooPS2Controller` — harmless residue.
 
 ## ACPI (15 SSDTs)
 
@@ -65,8 +70,11 @@ the EFI) loads — required for WiFi on Sequoia.
 
 ## Drivers (UEFI)
 
-`OpenRuntime`, `OpenHfsPlus` (HFS+), `OpenCanopy` (GUI), `OpenLinuxBoot`,
-`AudioDxe`, `FirmwareSettingsEntry`, `ResetNvramEntry`, `Ext4Dxe`, `OpenNtfsDxe`.
+`OpenRuntime`, `OpenHfsPlus` (HFS+), `OpenCanopy` (GUI), `AudioDxe`,
+`FirmwareSettingsEntry`, `ResetNvramEntry`.
+
+> `OpenLinuxBoot.efi`, `Ext4Dxe.efi` and `OpenNtfsDxe.efi` were **removed** — they
+> only extend the filesystem probe surface and slow the boot (see `04-direct-boot/`).
 
 ## Boot args (NVRAM)
 
@@ -91,6 +99,8 @@ keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1
 
 ## Boot
 
-- `ShowPicker=true`, `Timeout=5` → picker shown, select **macOS**.
+- `ShowPicker=false`, `Timeout=0` → **direct boot**; hold **`Esc`** at power-on
+  for the picker (`PollAppleHotKeys=true`). Set `ShowPicker=true` + a `Timeout` to
+  bring the menu back during installs.
 - `PickerVariant=Acidanthera\GoldenGate` (OpenCanopy).
 - `HideAuxiliary=true`, `PickerMode=External`.

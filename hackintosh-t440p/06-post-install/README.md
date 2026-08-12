@@ -45,12 +45,12 @@ sudo fsck_msdos -y /dev/rdisk0s1 && sudo diskutil mount disk0s1
 Golden rule: **always** `cp config.plist config.plist.bak-$(date +%Y%m%d-%H%M%S)`
 before touching the config.
 
-## Sequoia upgrade — DONE (Sonoma 14.8.8 → Sequoia 15.7.8)
+## Sequoia upgrade — DONE (Sonoma 14.8.8 → Sequoia 15.7.9)
 
 Motivation: current iMovie and other apps require macOS 15; the T440p (Haswell
 HD 4600) is supported.
 
-**Result:** Sequoia 15.7.8 (build 24G824) is stable and in daily use.
+**Result:** Sequoia 15.7.9 (build 24G830) is stable and in daily use.
 
 ### OCLP vs OCLP-Mod — pick the right build (and the right moment)
 
@@ -78,7 +78,8 @@ HD 4600) is supported.
    - `AMFIPass` 1.4.0 + boot arg **`-amfipassbeta`** → supports GPU acceleration on
      the HD 4600 (which OCLP then patches).
    - `BrcmPatchRAM3` (with `BlueToolFixup`) for the Broadcom BT — same as Sonoma.
-   - Realtek SD kexts dropped from the Sequoia build (still disabled anyway).
+   - `RealtekCardReader.kext` kept **disabled** in the Sequoia build (present for
+     the Path A experiment only — see `03-sd-card-reader/`).
 4. **OCLP-Mod post-install patch** ran on the sealed root volume (Sequoia build)
    and patched **both**:
    - **network** (`AirportItlwm-Mod` build) → WiFi runs as native AirPort;
@@ -90,15 +91,15 @@ HD 4600) is supported.
 
 - [x] WiFi (native AirPort via en1) — **192.168.1.206**
 - [ ] **Bluetooth — dead (unsupported Intel chip `0x07DA`)** — see
-      `08-bluetooth/`; `bluetoothd` crash-loop is reduced by disabling BT in
-      the BIOS (`Config → Network → Bluetooth`)
+      `08-bluetooth/`; the `bluetoothd` crash loop has **no BIOS toggle** on the
+      T440p (BT is part of the Wi-Fi combo card) — only a card swap fixes it
 - [x] Ethernet, Audio, Battery, Trackpad
 - [x] GPU acceleration (Metal 2, 1536 MB) + blur/animations
 - [x] **ABNT2 remap reinstalled** (LaunchAgent did not survive the fresh install —
       see `keyboard-remap/`); still needs **Acessibilidade** permission granted
       in System Settings → Privacy & Security → Accessibility
 - [ ] **TRIM re-enabled** (`sudo trimforce enable`)
-- [ ] Optional: re-enable direct boot (`04-direct-boot/`) if desired
+- [x] **Direct boot active** (no picker — hold `Esc` at power-on to reach it)
 
 Returning to Sonoma is still possible (restore the old EFI + Time Machine), so
 the upgrade did not "burn the bridge".
@@ -169,7 +170,7 @@ it is already minimized:
 | **SD** card reader (RTS5227) | 🔇 Disabled (kexts panicked on boot/wake/shutdown) |
 | Wi-Fi / Audio / Ethernet / Battery | ✅ Working |
 | **Bluetooth** | 🔇 Dead — Intel `0x07DA` unsupported (see `08-bluetooth/`) |
-| Boot | Picker shown (5 s), select **macOS** |
+| Boot | Direct boot (no picker) — hold **Esc** for the picker |
 
 ## Backup
 

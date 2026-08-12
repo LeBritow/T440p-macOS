@@ -48,7 +48,7 @@ the dead port was identified as EHCI (see `02-dead-usb-port/`).
 
 | Item | Value |
 |------|-------|
-| macOS | 15.7.8 (Sequoia, build `24G824`) |
+| macOS | 15.7.9 (Sequoia, build `24G830`) |
 | OpenCore | REL-107-2025-06-26 (**1.0.7**) |
 | SMBIOS | `MacBookPro16,1` |
 | SIP / CSR | `csr-active-config = 0x80003` (nvram: `%03%08%00%00`) |
@@ -57,8 +57,9 @@ the dead port was identified as EHCI (see `02-dead-usb-port/`).
 ## EFI layout
 
 - EFI at `/Volumes/EFI/EFI/OC` (msdos/FAT32 partition `disk0s1`, 209 MB).
-- Boot picker shown (`ShowPicker=true`, `Timeout=5`) — select **macOS** to boot.
-- Snapshot of this EFI (placeholder SMBIOS): [`../efi-sequoia-15.7.8/`](../efi-sequoia-15.7.8/).
+- **Direct boot** (`ShowPicker=false`) — boots straight to macOS; hold **`Esc`**
+  at power-on to reach the picker (see `04-direct-boot/`).
+- Snapshot of this EFI (placeholder SMBIOS): [`../efi-sequoia-15.7.9/`](../efi-sequoia-15.7.9/).
 
 ## Sequoia-specific kext set
 

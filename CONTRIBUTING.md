@@ -21,7 +21,7 @@ laptop (or a similar Haswell / Intel 8-series machine), your experience is valua
 Before opening an issue, search the existing ones. When you report, include:
 
 - **Exact symptom** — what happens, when (boot / sleep / wake / shutdown / app).
-- **macOS version** and **build** (e.g. `15.7.8 (24G824)`).
+- **macOS version** and **build** (e.g. `15.7.9 (24G830)`).
 - **OpenCore version** and which `config.plist` (production vs snapshot).
 - **SMBIOS** model used (e.g. `MacBookPro16,1`).
 - **Kexts involved** (names + versions from the config).

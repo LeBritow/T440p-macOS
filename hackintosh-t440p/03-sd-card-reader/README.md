@@ -16,12 +16,12 @@ are now stable.
 
 | Driver | Reader works? | Defects |
 |--------|---------------|---------|
-| **RealtekCardReader 0.9.8** (`science.firewolf.rtsx`) | Yes | 1. **Boot panic** with a card in the slot; 2. **Wake-from-sleep panic** (even with no card) |
+| **RealtekCardReader 0.9.7** (`science.firewolf.rtsx`) | Yes | 1. **Boot panic** with a card in the slot; 2. **Wake-from-sleep panic** (even with no card) |
 | **Sinetek-rtsx 9.0** | Yes | **Shutdown/restart bug** (wallpaper stuck on shutdown) |
 
 ## Timeline
 
-1. **RealtekCardReader 0.9.8** chosen ("worked perfectly") under a usage protocol:
+1. **RealtekCardReader 0.9.7** chosen ("worked perfectly") under a usage protocol:
    no card at boot, insert only after boot, eject before shutdown.
 2. **New symptom:** during a normal sleep/wake cycle **with no card in the slot**,
    the machine panicked on wake:
