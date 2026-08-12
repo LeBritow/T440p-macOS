@@ -263,7 +263,7 @@ Accessibility** (the remap can't receive keys without it). Full docs:
 | RAM | 16 GB |
 | Storage | 240 GB SATA SSD (APFS, GUID) |
 | Wi-Fi | Intel Centrino 6235 — driven by `AirportItlwm_Sequoia` (native AirPort via OCLP post-install patch) |
-| Bluetooth | Intel `0x8087:0x07DA` (combo-card radio) — **unsupported, dead**. No Broadcom present |
+| Bluetooth | Intel `0x8087:0x07DA` (combo-card radio) — **unsupported, dead**. |
 | Ethernet | Intel (I217-V) — driven by IntelMausi |
 | Audio | Realtek ALC — AppleALC + CodecCommander |
 | SD reader | Realtek **RTS5227** (`pci10ec,5227`) — **disabled** |
