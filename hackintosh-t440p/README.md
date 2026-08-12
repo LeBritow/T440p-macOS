@@ -10,7 +10,7 @@ same laptop (or the same Haswell / 8-series chipset) and the same symptoms.
 |-------|--------|----------|
 | [Dead left-side USB port (below the SD reader)](02-dead-usb-port/) | 🚫 **No solution** | It is **EHCI**; macOS 14/15 removed the driver. Accepted as dead |
 | [Bluetooth — Intel chip unsupported](08-bluetooth/) | 🔇 **Dead** | `0x8087:0x07DA` not supported by IntelBluetoothFirmware; no Broadcom present |
-| [SD card reader (RTS5227)](03-sd-card-reader/) | 🔇 Disabled | Both kexts panicked (boot/wake/shutdown); reader disabled |
+| [SD card reader (RTS5227)](03-sd-card-reader/) | 🔇 Default off · 🧪 Path A | Stable `Config.plist` disables it; experimental `-rtsxnopm` variant may fix it (see doc) |
 | [Direct boot to logo (no menu)](04-direct-boot/) | ✅ Option (picker on) | `ShowPicker=true`/`Timeout=5` now; direct boot via **Esc** recipe documented |
 | [EFI won't mount (FAT dirty)](04-direct-boot/) | ✅ Manual fix | `sudo fsck_msdos -y /dev/rdisk0s1` |
 | Production config.plist | — | [05-open-core-config/](05-open-core-config/) |
@@ -44,6 +44,11 @@ Share your fixes and ideas — see [`CONTRIBUTING.md`](../CONTRIBUTING.md).
    OCLP route panics. Accept the dead port and move on.
 4. **The Realtek SD reader is a trap on Sonoma/Sequoia:** panics at boot **and** on
    wake from sleep (even with no card); Sinetek has a shutdown bug. Both were disabled.
+   **2026-08-11:** a binary analysis found the panic is a **power-management bug in
+   the kext** (blocking call in `setPowerState`) and that the kext ships a
+   **`-rtsxnopm`** boot argument that bypasses it — see
+   [03-sd-card-reader](03-sd-card-reader/). Path A (kext on + `-rtsxnopm`) is being
+   tested; the stable default keeps the reader off.
 5. **The EFI partition gets `dirty` after unclean shutdowns** — if the EFI will
    not mount, run the manual `fsck_msdos` (see [04-direct-boot](04-direct-boot/)).
 6. **Sequoia needs the Sequoia WiFi stack** (`AirportItlwm_Sequoia` +
@@ -74,6 +79,7 @@ Share your fixes and ideas — see [`CONTRIBUTING.md`](../CONTRIBUTING.md).
 06-post-install/        TRIM, monitoring, EFI maintenance, Sequoia upgrade log
 07-credits.md           credits for every kext/driver/tool used
 08-bluetooth/           Bluetooth investigation (unsupported Intel chip, accepted dead)
+10-session-log-2026-08-11.md  full session backup (SD Path A, caddy fix, decisions)
 efi-sonoma-14.8.8/      snapshot of the working EFI (Sonoma, OC 1.0.4)
 efi-sequoia-15.7.8/     snapshot of the working EFI (Sequoia, OC 1.0.7)
 ```

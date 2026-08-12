@@ -2171,7 +2171,7 @@
 				<key>Comment</key>
 				<string></string>
 				<key>Enabled</key>
-				<false/>
+				<true/>
 				<key>ExecutablePath</key>
 				<string>Contents/MacOS/RealtekCardReader</string>
 				<key>MaxKernel</key>
@@ -3099,7 +3099,7 @@
 				AAAAAAAAAAAAAAAAAAAAAA==
 				</data>
 				<key>boot-args</key>
-				<string>keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1</string>
+				<string>keepsyms=1 revpatch=sbvmm -amfipassbeta amfi_get_out_of_my_way=1 -rtsxnopm</string>
 				<key>csr-active-config</key>
 				<data>
 				AwgAAA==

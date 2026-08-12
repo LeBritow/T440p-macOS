@@ -20,7 +20,8 @@ I use daily, exported from my machine.
 | Bluetooth | 🔇 **Dead** — Intel chip `0x8087:0x07DA` unsupported by `IntelBluetoothFirmware` (no personality for it); no Broadcom present either. Docs: `hackintosh-t440p/08-bluetooth/` |
 | Graphics | ✅ Full acceleration + blur/animations — HD 4600 with OCLP post-install patch + `-amfipassbeta` |
 | Left-side USB port (below the SD reader) | 🔌 **Dead** — EHCI controller, driver removed in macOS 14/15 (no solution) |
-| SD card reader (RTS5227) | 🔇 **Disabled** — both drivers caused boot/wake/shutdown panics |
+| SD card reader (RTS5227) | 🔇 **Disabled by default** — both kexts panicked (see [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/)). 🧪 **Path A:** the kext ships a `-rtsxnopm` boot-arg that bypasses the blocking PM call that caused the panic — tested via `EFI/OC/Config.pathA-rtsxnopm.plist` |
+| Undervolting | ✅ **VoltageShift** kext in the EFI (`EFI/OC/Kexts/VoltageShift.kext`) — GUI/control: [`t440p-undervolt-control`](https://github.com/LeBritow/t440p-undervolt-control) |
 | ABNT2 keyboard (`?`→`/`) | ✅ Fixed with a userspace remapper (see `keyboard-remap/`) |
 
 ---
@@ -281,7 +282,7 @@ Detailed specs: [`01-specifications/`](hackintosh-t440p/01-specifications/specs.
 | Issue | Outcome | Details |
 |-------|---------|---------|
 | Dead left-side USB port, below the SD reader (EHCI, no driver in Sonoma/Sequoia) | 🚫 No solution | [`02-dead-usb-port/`](hackintosh-t440p/02-dead-usb-port/) |
-| SD card reader (boot/wake/shutdown panics) — full investigation + fix research | 🔇 Disabled | [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
+| SD card reader (boot/wake/shutdown panics) — full investigation + fix research | 🔇 Default off · 🧪 Path A (`-rtsxnopm`) being tested | [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
 | Direct boot (`ShowPicker=false`) + dirty-EFI repair | ✅ Solved | [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
 | Production `config.plist` + kext/quirk reference | ✅ | [`05-open-core-config/`](hackintosh-t440p/05-open-core-config/) |
 | Post-install: TRIM, monitoring, EFI maintenance, Sequoia upgrade log | ✅ | [`06-post-install/`](hackintosh-t440p/06-post-install/) |
@@ -317,6 +318,7 @@ shutdowns and stops mounting — fix with
 
 ```
 EFI/                     OpenCore EFI — placeholder SMBIOS (Sequoia, OC 1.0.7)
+                          (Config.plist = stable; Config.pathA-rtsxnopm.plist = SD reader experiment)
 scripts/                 Recovery download utilities (macrecovery)
 hackintosh-t440p/        Full project documentation
   ├── 01-specifications/
@@ -327,6 +329,7 @@ hackintosh-t440p/        Full project documentation
   ├── 06-post-install/
   ├── 07-credits.md       Credits for every kext/driver/tool used
   ├── 08-bluetooth/       Bluetooth investigation (unsupported Intel chip, accepted dead)
+  ├── 10-session-log-2026-08-11.md  Session backup (SD Path A, caddy fix, decisions)
   ├── efi-sonoma-14.8.8/  Snapshot of the working EFI (Sonoma, OC 1.0.4)
   └── efi-sequoia-15.7.8/ Snapshot of the working EFI (Sequoia, OC 1.0.7)
 keyboard-remap/          ABNT2 keyboard remapper (C + LaunchAgent)

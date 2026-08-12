@@ -52,12 +52,43 @@ the path to test (Sinetek + `rtsx_sleep_wake_delay_ms=1000`).
 **RealtekCardReader** has no sleep/wake boot argument (its `rtsxdcib` only delays
 card init at boot), which is why disabling it entirely won.
 
+## 2026-08-11 — New lead: `-rtsxnopm` boot argument (Path A)
+
+A **binary analysis** of `RealtekCardReader.kext` (v0.9.7, the version shipped in
+the EFI) found the exact panic path and a built-in escape hatch:
+
+1. The kext **does** carry an `RealtekRTS5227Controller` personality
+   (`IOPCIMatch 0x522710EC`) — it matches this chip. It simply never loaded
+   because `Enabled=false`.
+2. The wake-panic chain (confirmed in assembly):
+   `prepareToWakeUp` → `IOCommandGateRunAction(onSDCardInsertedSync)` →
+   `onSDCardInsertedSyncGated` waits on `onSDCardEventProcessedSyncCompletion`,
+   and `setPowerState` calls a power-management virtual method (vtable+0x9d0)
+   that **blocks forever** → the kernel's 180 s wake-transition timeout fires →
+   panic. This is a **driver power-management bug**, independent of the macOS
+   version.
+3. The kext parses the boot argument **`-rtsxnopm`** and, when present,
+   `setPowerState` **returns immediately** without calling the blocking PM
+   routine — the author's own mitigation.
+
+**Path A (in progress):** `EFI/OC/Config.pathA-rtsxnopm.plist` re-enables
+`RealtekCardReader.kext` (`Enabled=true`) and adds `-rtsxnopm` to the boot-args.
+
+Test protocol:
+- Boot **without** a card in the slot; insert the card only after login.
+- Eject the card before shutdown.
+- Most important: exercise **sleep → wake** (that is where the old panic hit).
+
+If it still panics on wake, fall back to the **stable `Config.plist`** and try
+**Path B** (Sinetek + `rtsx_sleep_wake_delay_ms=1000`, verified on T440S/X240).
+
 ## Current state in `config.plist`
 
-- `RealtekCardReader.kext` → **Enabled = false**
-- `Sinetek-rtsx.kext` → **Enabled = false**
+- `Config.plist` (stable default) → `RealtekCardReader.kext` **Enabled = false**
+- `Config.pathA-rtsxnopm.plist` (experimental) → **Enabled = true** + `-rtsxnopm`
+- `Sinetek-rtsx.kext` → **Enabled = false** (Path B, not yet re-tested)
 
-(Both kexts remain in the `kexts/` folder, just disabled — easy to re-enable.)
+(Rename the variant to `Config.plist` to activate, keeping a `.bak` first.)
 
 ## Quick diagnostics
 
