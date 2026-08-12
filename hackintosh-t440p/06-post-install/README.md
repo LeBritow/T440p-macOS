@@ -89,7 +89,7 @@ HD 4600) is supported.
 
 ### After the reinstall (checklist, machine-specific)
 
-- [x] WiFi (native AirPort via en1) — **192.168.1.206**
+- [x] WiFi (native AirPort via en1, DHCP)
 - [ ] **Bluetooth — dead (unsupported Intel chip `0x07DA`)** — see
       `08-bluetooth/`; the `bluetoothd` crash loop has **no BIOS toggle** on the
       T440p (BT is part of the Wi-Fi combo card) — only a card swap fixes it

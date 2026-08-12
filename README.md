@@ -169,6 +169,11 @@ the same script, and the image is written with a third-party tool:
 4. When the installer loads, open **Disk Utility**, erase the internal SSD as
    **APFS, GUID Partition Map**, close Disk Utility, and run **Install macOS
    Sequoia**.
+
+> **During the install the screen looks slow/laggy and WiFi is off.** That is
+> expected: the HD 4600 is only accelerated after the OCLP root patch (step 6a),
+> and AirPort only shows up in the installed system once the patch is applied.
+> The installer works fine on the unaccelerated framebuffer.
 5. The machine reboots several times. If the picker doesn't show the install
    volume automatically, keep selecting the **macOS Installer** entry each time
    until the installer finishes and you reach the setup assistant.
@@ -254,6 +259,16 @@ Accessibility** (the remap can't receive keys without it). Full docs:
   control tool. GUI + CLI: [`t440p-undervolt-control`](https://github.com/LeBritow/t440p-undervolt-control),
   full notes in `hackintosh-t440p/06-post-install/`.
 - **Direct boot** (skip the picker): see `hackintosh-t440p/04-direct-boot/`.
+
+### 6d. First boot / troubleshooting (quick)
+
+| Symptom | Fix |
+|---------|-----|
+| No boot menu at the Lenovo logo | **Hold `Esc`** at power-on — the shipped EFI boots directly |
+| Installer never appears when booting the USB | In the T440p BIOS set `Startup → UEFI/Legacy Boot → UEFI Only`, press **F12**, pick the USB (UEFI), hold `Esc` |
+| Kext/config change breaks boot | Restore `config.plist.bak-<date>` (keep one **before** every edit) |
+| EFI partition won't mount later (`dirty` FAT) | `sudo fsck_msdos -y /dev/rdisk0s1 && sudo diskutil mount disk0s1` — see [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
+| macOS drive vanished from the picker after **Reset NVRAM** | Recover by booting `boot.efi` from the EFI Shell — see [`09-nvram-reset-recovery/`](hackintosh-t440p/09-nvram-reset-recovery/) |
 
 ---
 
@@ -342,12 +357,14 @@ keyboard-remap/          ABNT2 keyboard remapper (C + LaunchAgent)
 ## Releases
 
 Ready-to-use EFI zips are published under
-[Releases](https://github.com/LeBritow/T440p-hackintosh-sonoma/releases):
+[Releases](https://github.com/LeBritow/T440p-macOS/releases):
 
+- **v2.0.1** — **Sequoia 15.7.9, OC 1.0.7** (current; matches the repo `EFI/`).
 - **v1.0.0** — Sonoma 14.8.8 (OC 1.0.4) *(kept — for anyone installing Sonoma)*.
-- **v2.0.0** — Sequoia 15.7.9 (OC 1.0.7).
 
-Generate your own SMBIOS before using them (see the SMBIOS notice above).
+> **The repo's `EFI/` folder is the source of truth** — always use the latest
+> commit there (or the newest release) rather than an old zip.
+> Generate your own SMBIOS before using any of them (see the notice above).
 
 ## Contributing
 
