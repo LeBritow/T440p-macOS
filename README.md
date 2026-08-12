@@ -21,7 +21,6 @@ I use daily, exported from my machine.
 | Graphics | ✅ Full acceleration + blur/animations — HD 4600 with OCLP post-install patch + `-amfipassbeta` |
 | Left-side USB port (below the SD reader) | 🔌 **Dead** — EHCI controller, driver removed in macOS 14/15 (no solution) |
 | SD card reader (RTS5227) | 🔇 **Does not work in the stable EFI** — disabled by default because the available drivers caused boot/wake/shutdown panics. 🧪 Optional Path A (`EFI/OC/Config.pathA-rtsxnopm.plist`) re-enables RealtekCardReader with `-rtsxnopm`, but treat it as experimental. Docs: [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
-| Undervolting | ✅ **VoltageShift** kext in the EFI (`EFI/OC/Kexts/VoltageShift.kext`) — GUI/control: [`t440p-undervolt-control`](https://github.com/LeBritow/t440p-undervolt-control) |
 | ABNT2 keyboard (`?`→`/`) | ✅ Fixed with a userspace remapper (see `keyboard-remap/`) |
 
 ---
@@ -250,6 +249,10 @@ Accessibility** (the remap can't receive keys without it). Full docs:
 ### 6c. Optional tweaks
 
 - **TRIM** for the SSD: `sudo trimforce enable` (type `y` twice; auto-reboots).
+- **Undervolting / fan control** — only if your machine runs hot (not required for
+  macOS to work): the `VoltageShift.kext` ships in the EFI but is inert without a
+  control tool. GUI + CLI: [`t440p-undervolt-control`](https://github.com/LeBritow/t440p-undervolt-control),
+  full notes in `hackintosh-t440p/06-post-install/`.
 - **Direct boot** (skip the picker): see `hackintosh-t440p/04-direct-boot/`.
 
 ---
