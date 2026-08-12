@@ -43,7 +43,7 @@ README.
 | 31 | RestrictEvents | ✅ | Hide/handle events |
 | 32 | BrcmPatchRAM3 | ✅ | Broadcom BT firmware |
 | 33 | RealtekCardReader | ❌ | SD reader — **disabled** (`Enabled=false`); kept only for the Path A test (`-rtsxnopm`) |
-| 34 | VoltageShift | ✅ | Undervolting (managed in its own repo: `t440p-undervolt-control`) |
+| 34 | VoltageShift | ✅ | Undervolting — kext + control GUI live in [t440p-undervolt-control](https://github.com/LeBritow/t440p-undervolt-control) |
 
 > The SD reader / Bluetooth / Broadcom kexts are loaded-but-inert on this machine:
 > `RealtekCardReader` (33) is **disabled** because its power management panics on
