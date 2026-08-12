@@ -266,7 +266,7 @@ Accessibility** (the remap can't receive keys without it). Full docs:
 | Bluetooth | Intel `0x8087:0x07DA` (combo-card radio) — **unsupported, dead**. |
 | Ethernet | Intel (I217-V) — driven by IntelMausi |
 | Audio | Realtek ALC — AppleALC + CodecCommander |
-| SD reader | Realtek **RTS5227** (`pci10ec,5227`) — **disabled** |
+| SD reader | Realtek **RTS5227** (`pci10ec,5227`) — **disabled by default** (🧪 Path A `-rtsxnopm` experimental) |
 | SMBIOS | `MacBookPro16,1` |
 | macOS | 15.7.8 (Sequoia, build 24G824) |
 | OpenCore | 1.0.7 |
@@ -282,11 +282,11 @@ Detailed specs: [`01-specifications/`](hackintosh-t440p/01-specifications/specs.
 | Issue | Outcome | Details |
 |-------|---------|---------|
 | Dead left-side USB port, below the SD reader (EHCI, no driver in Sonoma/Sequoia) | 🚫 No solution | [`02-dead-usb-port/`](hackintosh-t440p/02-dead-usb-port/) |
-| SD card reader (boot/wake/shutdown panics) — full investigation + fix research | 🔇 Default off · 🧪 Path A (`-rtsxnopm`) being tested | [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
+| SD reader (Realtek **RTS5227**) — boot/wake/shutdown panics with both kexts | 🔇 **Disabled by default** (stable). 🧪 **Path A** (`-rtsxnopm`, bypasses the blocking PM call) still under test — revert to `Config.plist` if it panics | [`03-sd-card-reader/`](hackintosh-t440p/03-sd-card-reader/) |
 | Direct boot (`ShowPicker=false`) + dirty-EFI repair | ✅ Solved | [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
 | Production `config.plist` + kext/quirk reference | ✅ | [`05-open-core-config/`](hackintosh-t440p/05-open-core-config/) |
 | Post-install: TRIM, monitoring, EFI maintenance, Sequoia upgrade log | ✅ | [`06-post-install/`](hackintosh-t440p/06-post-install/) |
-| Bluetooth (Intel `0x07DA`) — unsupported chip, no driver matches; `bluetoothd` crash loop | 🔇 Accepted | [`08-bluetooth/`](hackintosh-t440p/08-bluetooth/) |
+| Bluetooth (Intel `0x07DA`) — unsupported chip, no driver matches; `bluetoothd` crash loop | 🔇 **No fix in software** — dead by hardware; only a **Broadcom card swap** (BCM94352HMB / DW1560) enables BT | [`08-bluetooth/`](hackintosh-t440p/08-bluetooth/) |
 | Reset NVRAM wiped the macOS drive from the picker — rescue by booting `boot.efi` from the EFI Shell | ✅ Solved | [`09-nvram-reset-recovery/`](hackintosh-t440p/09-nvram-reset-recovery/) |
 | ABNT2 keyboard remap (`?`/`/`, `'`/`\`, Delete, Cmd+Tab) | ✅ Solved | [`keyboard-remap/`](keyboard-remap/README.md) |
 
