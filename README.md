@@ -334,7 +334,6 @@ hackintosh-t440p/        Full project documentation
   ├── 07-credits.md       Credits for every kext/driver/tool used
   ├── 08-bluetooth/       Bluetooth investigation (unsupported Intel chip, accepted dead)
   ├── 09-nvram-reset-recovery/  NVRAM reset wiped the picker → rescue via EFI Shell boot.efi
-  ├── 10-session-log-2026-08-11.md  Session backup (SD Path A, caddy fix, decisions)
   ├── efi-sonoma-14.8.8/  Snapshot of the working EFI (Sonoma, OC 1.0.4)
   └── efi-sequoia-15.7.9/ Snapshot of the working EFI (Sequoia, OC 1.0.7)
 keyboard-remap/          ABNT2 keyboard remapper (C + LaunchAgent)

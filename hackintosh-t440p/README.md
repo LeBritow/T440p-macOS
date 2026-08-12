@@ -22,7 +22,6 @@ reader off.
 | [`07-credits.md`](07-credits.md) | Credits for every kext/driver/tool | ✅ |
 | [`08-bluetooth/`](08-bluetooth/) | Bluetooth dead by hardware (Intel `0x07DA`, no BIOS toggle) | 🔇 Accepted |
 | [`09-nvram-reset-recovery/`](09-nvram-reset-recovery/) | NVRAM reset wiped the picker → rescue via EFI Shell `boot.efi` | ✅ Solved |
-| [`10-session-log-2026-08-11.md`](10-session-log-2026-08-11.md) | Full session backup (SD Path A, caddy fix, decisions) | ✅ |
 
 EFI snapshots: [`efi-sonoma-14.8.8/`](efi-sonoma-14.8.8/) (historical, OC 1.0.4) and
 [`efi-sequoia-15.7.9/`](efi-sequoia-15.7.9/) (current working EFI, OC 1.0.7,
