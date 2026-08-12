@@ -9,8 +9,8 @@ same laptop (or the same Haswell / 8-series chipset) and the same symptoms.
 | Issue | Status | Solution |
 |-------|--------|----------|
 | [Dead left-side USB port (below the SD reader)](02-dead-usb-port/) | 🚫 **No solution** | It is **EHCI**; macOS 14/15 removed the driver. Accepted as dead |
-| [Bluetooth — Intel chip unsupported](08-bluetooth/) | 🔇 **Dead** | `0x8087:0x07DA` not supported by IntelBluetoothFirmware; no Broadcom present |
-| [SD card reader (RTS5227)](03-sd-card-reader/) | 🔇 Default off · 🧪 Path A | Stable `Config.plist` disables it; experimental `-rtsxnopm` variant may fix it (see doc) |
+| [Bluetooth — Intel chip unsupported](08-bluetooth/) | 🔇 **Does not work** | Stock Intel `0x8087:0x07DA` radio has no supported firmware path; disable in BIOS or swap the combo card |
+| [SD card reader (RTS5227)](03-sd-card-reader/) | 🔇 **Does not work in stable EFI** · 🧪 Path A | Stable `Config.plist` disables it after driver panics; experimental `-rtsxnopm` variant is documented for testing |
 | [Direct boot to logo (no menu)](04-direct-boot/) | ✅ Option (picker on) | `ShowPicker=true`/`Timeout=5` now; direct boot via **Esc** recipe documented |
 | [EFI won't mount (FAT dirty)](04-direct-boot/) | ✅ Manual fix | `sudo fsck_msdos -y /dev/rdisk0s1` |
 | Production config.plist | — | [05-open-core-config/](05-open-core-config/) |
@@ -20,10 +20,10 @@ same laptop (or the same Haswell / 8-series chipset) and the same symptoms.
 ## Quick specs
 
 ThinkPad **T440p** · Core **i7-4700MQ** · **HD 4600** (Metal 2) · **16 GB** RAM ·
-SSD **240 GB** SATA/APFS · Wi-Fi **Intel Centrino 6235** · BT **Broadcom BCM_4350C2** ·
-SD reader **Realtek RTS5227** · SMBIOS `MacBookPro16,1` · macOS 15.7.8 (24G824).
+SSD **240 GB** SATA/APFS · Wi-Fi **Intel Centrino 6235** · BT **Intel `0x8087:0x07DA` (unsupported)** ·
+SD reader **Realtek RTS5227** (disabled in the stable EFI) · SMBIOS `MacBookPro16,1` · macOS 15.7.8 (24G824).
 
-Full details: [01-specifications/](01-specifications/specs.md)
+Full specs tab/details: [01-specifications/specs.md](01-specifications/specs.md)
 
 ## Status and roadmap
 
@@ -71,7 +71,7 @@ Share your fixes and ideas — see [`CONTRIBUTING.md`](../CONTRIBUTING.md).
 ## Layout
 
 ```
-01-specifications/      laptop specs (collected from the system)
+01-specifications/      laptop specs (collected from the system; specs tab/details)
 02-dead-usb-port/       EHCI diagnosis + SSDT-DEHCI.aml + USBInjectAll attempt
 03-sd-card-reader/      RealtekCardReader vs Sinetek saga + fix research
 04-direct-boot/         ShowPicker + dirty-EFI repair
