@@ -286,7 +286,7 @@ Detailed specs: [`hackintosh-t440p/01-specifications/specs.md`](hackintosh-t440p
 | Direct boot (`ShowPicker=false`) + dirty-EFI repair | ✅ Solved | [`04-direct-boot/`](hackintosh-t440p/04-direct-boot/) |
 | Production `config.plist` + kext/quirk reference | ✅ | [`05-open-core-config/`](hackintosh-t440p/05-open-core-config/) |
 | Post-install: TRIM, monitoring, EFI maintenance, Sequoia upgrade log | ✅ | [`06-post-install/`](hackintosh-t440p/06-post-install/) |
-| Bluetooth (Intel `0x8087:0x07DA`) does not work | 🔇 **No software fix** — unsupported stock combo-card radio; disable it in BIOS to stop the `bluetoothd` noise, or replace the card (for example BCM94352HMB/DW1560 or Intel 7260) | [`08-bluetooth/`](hackintosh-t440p/08-bluetooth/) |
+| Bluetooth (Intel `0x8087:0x07DA`) does not work | 🔇 **No fix in software or BIOS** — no BT toggle on the T440p (radio is part of the Wi-Fi combo card). Only a card swap (BCM94352HMB/DW1560 or Intel 7260) enables BT + AirDrop | [`08-bluetooth/`](hackintosh-t440p/08-bluetooth/) |
 | Reset NVRAM wiped the macOS drive from the picker — rescue by booting `boot.efi` from the EFI Shell | ✅ Solved | [`09-nvram-reset-recovery/`](hackintosh-t440p/09-nvram-reset-recovery/) |
 | ABNT2 keyboard remap (`?`/`/`, `'`/`\`, Delete, Cmd+Tab) | ✅ Solved | [`keyboard-remap/`](keyboard-remap/README.md) |
 

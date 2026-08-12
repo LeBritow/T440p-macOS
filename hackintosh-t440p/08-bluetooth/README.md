@@ -81,7 +81,7 @@ it cannot initialize the controller and faults.
 
 | Option | Result |
 |--------|--------|
-| **Broadcom `BCM94352HMB` (DW1560)** — half mini-PCIe | Native AirPort + BT via the `BrcmPatchRAM3`/`BlueToolFixup` already in the config. Best compatibility (Airdrop/Handoff). Needs purchase (~R$150-250) |
+| **Broadcom `BCM94352HMB` (DW1560)** — half mini-PCIe | Native AirPort + BT via the `BrcmPatchRAM3`/`BlueToolFixup` already in the config. Best compatibility — **AirDrop/Handoff only work with this card**, not with the current Intel combo card. Needs purchase (~R$150-250) |
 | **Intel 7260** — half mini-PCIe, cheap | BT works via the `IntelBluetoothFirmware` already in the config; WiFi stays on `AirportItlwm`. ~R$40-60 |
 | Keep the current card | BT stays dead; document (this page) |
 
@@ -90,8 +90,9 @@ present in `EFI/OC/Kexts/`.
 
 ## Reducing the bluetoothd crash loop (while BT is dead)
 
-1. **BIOS:** `Config → Network → Bluetooth → Disabled` on the T440p removes the
-   USB BT device at the source — `bluetoothd` stops crashing. This is the
-   cleanest option.
-2. Otherwise the crash loop is harmless log/CPU noise: `bluetoothd` restarts
-   every few minutes and never initializes anything.
+1. **There is no BIOS toggle on the T440p** — the Bluetooth radio is part of the
+   Wi-Fi combo card; the BIOS only has a combined Wireless LAN Radio switch, so
+   disabling it would also kill Wi-Fi. There is no way to remove the BT device
+   at the source (other than swapping the card).
+2. The crash loop is harmless log/CPU noise: `bluetoothd` restarts every few
+   minutes and never initializes anything.
